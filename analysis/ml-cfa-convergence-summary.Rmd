@@ -1,0 +1,392 @@
+---
+title: "ML-CFA: Convergence and Admissibility Summary"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r init, warning=FALSE, message=FALSE}
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+source(paste0(getwd(),"/code/get_data.R"))
+
+```
+
+```{r}
+sessionInfo()
+```
+
+
+# Convergence
+
+Model converge is when ...
+
+## Single Condition Breakdown
+
+### Estimation Method
+
+```{r}
+
+
+c <- sim_results %>%
+  group_by(Estimator) %>%
+  summarise(Converge=mean(Converge))
+colnames(c)<- c("Estimation Method", "Convergence")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+### Level-2 Sample Size
+
+```{r}
+
+
+c <- sim_results %>%
+  group_by(ss_l2) %>%
+  summarise(Converge=mean(Converge))
+colnames(c)<- c("Level-2 N", "Convergence")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+### Level-1 Sample Size
+
+```{r}
+
+
+c <- sim_results %>%
+  group_by(ss_l1) %>%
+  summarise(Converge=mean(Converge))
+colnames(c)<- c("Level-1 N", "Convergence")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+
+### ICC *Observed* Variables
+
+```{r}
+
+
+c <- sim_results %>%
+  group_by(icc_ov) %>%
+  summarise(Converge=mean(Converge))
+colnames(c)<- c("ICC Observed Variable", "Convergence")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+### ICC *Latent* Variables
+
+```{r}
+
+
+c <- sim_results %>%
+  group_by(icc_lv) %>%
+  summarise(Converge=mean(Converge))
+colnames(c)<- c("ICC Latent Variable", "Convergence")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+## Convergence by Estimation Method and Sample Sizes
+
+### Estimation Method & Level-2 Sample Size
+
+```{r}
+
+
+c <- sim_results %>%
+  group_by(Estimator, ss_l2) %>%
+  summarise(Converge=mean(Converge))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'ss_l2', 'Converge')], 
+           c[ c$Estimator == 'ULSMV', 'Converge'], 
+           c[ c$Estimator == 'WLSMV', 'Converge'])
+colnames(c1) <- c('Level-2 N', 'MLR', 'ULSMV', 'WLSMV')
+
+
+kable(c1, format='html', digits=4) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '= 1, 'Estimation Method'=3))
+
+```
+
+### Estimation Method & Level-1 Sample Size
+
+```{r}
+
+
+c <- sim_results %>%
+  group_by(Estimator, ss_l1) %>%
+  summarise(Converge=mean(Converge))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'ss_l1', 'Converge')], 
+           c[ c$Estimator == 'ULSMV', 'Converge'], 
+           c[ c$Estimator == 'WLSMV', 'Converge'])
+colnames(c1) <- c('Level-1 N', 'MLR', 'ULSMV', 'WLSMV')
+
+
+kable(c1, format='html', digits=4) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '= 1, 'Estimation Method'=3))
+```
+
+### Estimation Method, Level-2 Sample Size & Level-1 Sample Size
+
+```{r}
+
+
+c <- sim_results %>%
+  group_by(Estimator, ss_l1, ss_l2) %>%
+  summarise(Converge=mean(Converge))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'ss_l1', 'ss_l2', 'Converge')], 
+           c[ c$Estimator == 'ULSMV', 'Converge'], 
+           c[ c$Estimator == 'WLSMV', 'Converge'])
+colnames(c1) <- c('Level-1 N', 'Level-2 N', 'MLR', 'ULSMV', 'WLSMV')
+
+
+kable(c1, format='html', digits=4) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '= 2, 'Estimation Method'=3))
+
+```
+
+
+
+## Across all conditions
+
+```{r}
+
+
+c <- sim_results %>%
+  group_by(Estimator, ss_l1, ss_l2, icc_ov, icc_lv) %>%
+  summarise(Converge=mean(Converge))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c('ss_l2', 'ss_l1', 'icc_ov', 'icc_lv', 'Converge')],
+            c[ c$Estimator == 'ULSMV', 'Converge'],
+            c[ c$Estimator == 'WLSMV', 'Converge'])
+colnames(c1) <- c('Level-2 N', 'Level-1 N', 'ICC-OV', 'ICC-LV', 'MLR', 'ULSMV', 'WLSMV')
+
+
+kable(c1, format='html', digits=4) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '= 4, 'Estimation Method'=3))
+
+```
+
+
+
+# Admissibility Summary
+
+Admissibility rates are first subsetted to the converged models. 
+So, the rates may seem misleading and not directly relatable across all conditions and models due to differences in convergence rates.
+
+```{r}
+
+c.sim_results <- filter(sim_results, Converge == 1)
+
+```
+
+## Single Condition Breakdown
+
+### Estimation Method
+
+```{r}
+
+
+c <- c.sim_results %>%
+  group_by(Estimator) %>%
+  summarise(Admissible=mean(Admissible))
+colnames(c)<- c("Estimation Method", "Admissible")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+### Level-2 Sample Size
+
+```{r}
+
+
+c <- c.sim_results %>%
+  group_by(ss_l2) %>%
+  summarise(Admissible=mean(Admissible))
+colnames(c)<- c("Level-2 N", "Admissible")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+### Level-1 Sample Size
+
+```{r}
+
+
+c <- c.sim_results %>%
+  group_by(ss_l1) %>%
+  summarise(Admissible=mean(Admissible))
+colnames(c)<- c("Level-1 N", "Admissible")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+
+### ICC *Observed* Variables
+
+```{r}
+
+
+c <- c.sim_results %>%
+  group_by(icc_ov) %>%
+  summarise(Admissible=mean(Admissible))
+colnames(c)<- c("ICC Observed Variable", "Admissible")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+### ICC *Latent* Variables
+
+```{r}
+
+
+c <- c.sim_results %>%
+  group_by(icc_lv) %>%
+  summarise(Admissible=mean(Admissible))
+colnames(c)<- c("ICC Latent Variable", "Admissible")
+
+kable(c, format='html', digits=4) %>%
+    kable_styling(full_width = T)
+
+```
+
+## Admissible Replications by Estimation Method and Sample Sizes
+
+### Estimation Method & Level-2 Sample Size
+
+```{r}
+
+
+c <- c.sim_results %>%
+  group_by(Estimator, ss_l2) %>%
+  summarise(Admissible=mean(Admissible))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'ss_l2', 'Admissible')], 
+           c[ c$Estimator == 'ULSMV', 'Admissible'], 
+           c[ c$Estimator == 'WLSMV', 'Admissible'])
+colnames(c1) <- c('Level-2 N', 'MLR', 'ULSMV', 'WLSMV')
+
+kable(c1, format='html', digits=4) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '= 1, 'Estimation Method'=3))
+
+```
+
+### Estimation Method & Level-1 Sample Size
+
+```{r}
+
+c <- c.sim_results %>%
+  group_by(Estimator, ss_l1) %>%
+  summarise(Admissible=mean(Admissible))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'ss_l1', 'Admissible')], 
+           c[ c$Estimator == 'ULSMV', 'Admissible'], 
+           c[ c$Estimator == 'WLSMV', 'Admissible'])
+colnames(c1) <- c('Level-1 N', 'MLR', 'ULSMV', 'WLSMV')
+
+kable(c1, format='html', digits=4) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '= 1, 'Estimation Method'=3))
+```
+
+### Estimation Method, Level-2 Sample Size & Level-1 Sample Size
+
+```{r}
+
+
+c <- c.sim_results %>%
+  group_by(Estimator, ss_l1, ss_l2) %>%
+  summarise(Admissible=mean(Admissible))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'ss_l1', 'ss_l2', 'Admissible')], 
+           c[ c$Estimator == 'ULSMV', 'Admissible'], 
+           c[ c$Estimator == 'WLSMV', 'Admissible'])
+colnames(c1) <- c('Level-1 N', 'Level-2 N', 'MLR', 'ULSMV', 'WLSMV')
+
+kable(c1, format='html', digits=4) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '= 2, 'Estimation Method'=3))
+
+```
+
+## Admissible Replications for individual conditions
+
+```{r}
+
+
+c <- c.sim_results %>%
+  group_by(Estimator, ss_l1, ss_l2, icc_ov, icc_lv) %>%
+  summarise(Admissible=mean(Admissible))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c('ss_l2', 'ss_l1', 'icc_ov', 'icc_lv', 'Admissible')],
+            c[ c$Estimator == 'ULSMV', 'Admissible'],
+            c[ c$Estimator == 'WLSMV', 'Admissible'])
+colnames(c1) <- c('Level-2 N', 'Level-1 N', 'ICC-OV', 'ICC-LV', 'MLR', 'ULSMV', 'WLSMV')
+
+
+kable(c1, format='html', digits=4) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '= 4, 'Estimation Method'=3))
+
+```
+
+
+# Manuscript Table
+
+```{r man-table}
+
+
+c <- sim_results %>%
+  group_by(Estimator, ss_l2) %>%
+  mutate(A = ifelse(is.na(Admissible), 0, Admissible)) %>%
+  summarise(Admissible=mean(A, na.rm = T))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'ss_l2','Admissible')], 
+           c[ c$Estimator == 'ULSMV', 'Admissible'], 
+           c[ c$Estimator == 'WLSMV', 'Admissible'])
+colnames(c1) <- c('Level-2 N_2', 'MLR', 'ULSMV', 'WLSMV')
+
+
+kable(c1, format='html', digits=3) %>%
+  kable_styling(full_width = T)
+
+
+print(xtable(c1, digits = 3,align=c("l", "l", "r", "r", "r"),
+             display=c("s", "d", "f", "f", "f"),
+             caption="Rates of admissible replications",
+             label="tb:admiss"),
+      booktabs = T, include.rownames = F,
+      caption.placement = "top")
+
+```

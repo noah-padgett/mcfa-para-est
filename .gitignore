@@ -9,5 +9,7 @@ analysis/*html
 analysis/*_cache
 analysis/site_libs
 manuscript/**
-.pdf
+*pdf
 sera-presentation/**
+data/**
+*png

@@ -1,0 +1,143 @@
+---
+title: "ML-CFA: Convergence of Parameter Estimates"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r init, warning=FALSE, message=FALSE}
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+source(paste0(getwd(),"/code/get_data.R"))
+
+```
+
+```{r}
+sessionInfo()
+```
+
+
+# Trace Plots
+
+```{r}
+
+sim_results <- filter(sim_results, Converge==1 & Admissible==1)
+
+
+```
+
+## Factor Covariance
+
+
+```{r}
+
+# Small N
+con_dat <- filter(sim_results, ss_l2==30, ss_l1==10,
+                  icc_lv==0.1, icc_ov==0.3)
+
+p <- ggplot(con_dat, aes(x=Replication, y=psiB12, 
+                         group=Estimator, color=Estimator)) +
+  geom_line() +
+  labs(y='Level-2 Factor Covariance')+
+  theme_bw()
+p
+ggsave("manuscript/fig/fact-cov-converge-smallN.pdf", plot=p, width=7, height=4, units="in")
+# Medium N
+con_dat <- filter(sim_results, ss_l2==100, ss_l1==10,
+                  icc_lv==0.1, icc_ov==0.3)
+p <- ggplot(con_dat, aes(x=Replication, y=psiB12, 
+                         group=Estimator, color=Estimator)) +
+  geom_line() +
+  labs(y='Level-2 Factor Covariance')+
+  theme_bw()
+p
+ggsave("manuscript/fig/fact-cov-converge-medN.pdf", plot=p, width=7, height=4, units="in")
+## Large N
+con_dat <- filter(sim_results, ss_l2==200, ss_l1==10,
+                  icc_lv==0.1, icc_ov==0.3)
+p <- ggplot(con_dat, aes(x=Replication, y=psiB12, 
+                         group=Estimator, color=Estimator)) +
+  geom_line() +
+  labs(y='Level-2 Factor Covariance')+
+  theme_bw()
+p
+ggsave("manuscript/fig/fact-cov-converge-largeN.pdf", plot=p, width=7, height=4, units="in")
+
+```
+
+## Factor Covariance
+
+
+```{r}
+
+# Small N
+con_dat <- filter(sim_results, ss_l2==30, ss_l1==10,
+                  icc_lv==0.1, icc_ov==0.3)
+
+p <- ggplot(con_dat, aes(x=Replication, y=psiB1, 
+                         group=Estimator, color=Estimator)) +
+  geom_line() +
+  geom_hline(yintercept = 0.11, linetype="dashed")+
+  labs(y='Level-2 Factor Variance')+
+  theme_bw()
+p
+ggsave("manuscript/fig/fact-var-converge-smallN.pdf", plot=p, width=7, height=4, units="in")
+## Large N
+con_dat <- filter(sim_results, ss_l2==200, ss_l1==10,
+                  icc_lv==0.1, icc_ov==0.3)
+p <- ggplot(con_dat, aes(x=Replication, y=psiB1, 
+                         group=Estimator, color=Estimator)) +
+  geom_line() +
+  geom_hline(yintercept = 0.11, linetype="dashed")+
+  labs(y='Level-2 Factor Variance')+
+  theme_bw()
+p
+ggsave("manuscript/fig/fact-var-converge-largeN.pdf", plot=p, width=7, height=4, units="in")
+
+```
+
+
+## Item 1 Loading
+
+
+```{r}
+
+# Small N
+con_dat <- filter(sim_results, ss_l2==30, ss_l1==10,
+                  icc_lv==0.1, icc_ov==0.3)
+p <- ggplot(con_dat, aes(x=Replication, y=lambda11, 
+                         group=Estimator, color=Estimator)) +
+  geom_line() +
+  geom_hline(yintercept = 0.6, linetype="dashed")+
+  labs(y='Factor Loading (Item 1)')+
+  theme_bw()
+p
+ggsave("manuscript/fig/loading-converge-smallN.pdf", plot=p, width=7, height=4, units="in")
+# Medium N
+con_dat <- filter(sim_results, ss_l2==100, ss_l1==10,
+                  icc_lv==0.1, icc_ov==0.3)
+p <- ggplot(con_dat, aes(x=Replication, y=lambda11, 
+                         group=Estimator, color=Estimator)) +
+  geom_line() +
+  geom_hline(yintercept = 0.6, linetype="dashed")+
+  labs(y='Factor Loading (Item 1)')+
+  theme_bw()
+p
+ggsave("manuscript/fig/loading-converge-medN.pdf", plot=p, width=7, height=4, units="in")
+
+## Large N
+con_dat <- filter(sim_results, ss_l2==200, ss_l1==10,
+                  icc_lv==0.1, icc_ov==0.3)
+p <- ggplot(con_dat, aes(x=Replication, y=lambda11, 
+                         group=Estimator, color=Estimator)) +
+  geom_line() +
+  geom_hline(yintercept = 0.6, linetype="dashed")+
+  labs(y='Factor Loading (Item 1)')+
+  theme_bw()
+p
+ggsave("manuscript/fig/loading-converge-largeN.pdf", plot=p, width=7, height=4, units="in")
+
+```
