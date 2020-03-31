@@ -20,10 +20,23 @@ This project is additional results from R. Noah Padgett's master's thesis projec
 The simulation project was quite extensive and mainly focused on fit statistics.
 This project extends that work by using the a subset of the output files to report on parameter recovery. 
 
+## Admissible Replications
 
-*[Model convergence](ml-cfa-convergence-summary.html)
+*[Admissible Replications and Convergence](ml-cfa-convergence-summary.html)
 
-*[Parameter relative bias](ml-cfa-parameter-bias-RB.html)
+## Parameter Recovery Results
+
+*[Overview of Methods](ml-cfa-parameter-bias-overview.html)
+
+*[Results - Factor Loadings](ml-cfa-parameter-bias-factor-loadings.html)
+
+*[Results - Level-1 Factor Covariance](ml-cfa-parameter-bias-level-1-factor-covariance.html)
+
+*[Results - Level-2 Factor Covariance](ml-cfa-parameter-bias-level-2-factor-covariance.html)
+
+*[Results - Level-2 Factor Variance](ml-cfa-parameter-bias-level-2-factor-variance.html)
+
+## Convergence of Estimates Results
 
 *[Parameter convergence](ml-cfa-parameter-convergence.html)
 

@@ -4,11 +4,11 @@
 .Ruserdata
 .Rapp.history
 .DS_Store
+*pdf
 analysis/*png
 analysis/*html
 analysis/*_cache
 analysis/site_libs
 manuscript/**
-*pdf
 sera-presentation/**
 data/**
