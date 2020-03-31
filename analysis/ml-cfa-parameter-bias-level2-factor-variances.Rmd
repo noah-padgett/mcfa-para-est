@@ -426,7 +426,7 @@ kable(c, format='html', digits=3,
 
 ### Estimation Method & Level-2 Sample Size
 
-```{r}
+```{r fig.height=8}
 
 ggplot(sdat, aes(y=estMean, x=TrueValue, group=TrueValue))+
   geom_boxplot()+
@@ -466,7 +466,7 @@ kable(c1, format='html', digits=3, row.names = F) %>%
 
 ### Estimation Method & Level-1 Sample Size
 
-```{r}
+```{r fig.height=8}
 
 ggplot(sdat, aes(y=estMean, x=TrueValue, group=TrueValue))+
   geom_boxplot()+
@@ -506,7 +506,7 @@ kable(c1, format='html', digits=3, row.names = F) %>%
 
 ### Estimation Method, Level-2 Sample Size & Level-1 Sample Size
 
-```{r}
+```{r fig.height=8}
 
 ggplot(sdat, aes(y=estMean,, x=TrueValue, group=TrueValue))+
   geom_boxplot()+

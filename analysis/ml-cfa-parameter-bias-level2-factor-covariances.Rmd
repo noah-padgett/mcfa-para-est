@@ -66,7 +66,7 @@ sdat <- filter(result, Variable %in% c("psiB12"))
 sdat <- sdat %>%
   mutate(TrueValue = factor(TrueValue))
 
-TRUEVALUE <- as.numeric(unique(sdat$TrueValue))
+TRUEVALUE <- as.numeric(levels(sdat$TrueValue))
 
 p1 <- ggplot(sdat, aes(y=estMean, x=TrueValue, group=TrueValue))+
   geom_boxplot()+
@@ -428,7 +428,7 @@ kable(c, format='html', digits=3,
 
 ### Estimation Method & Level-2 Sample Size
 
-```{r}
+```{r fig.height=8}
 
 ggplot(sdat, aes(y=estMean, x=TrueValue, group=TrueValue))+
   geom_boxplot()+
@@ -469,7 +469,7 @@ kable(c1, format='html', digits=3, row.names = F) %>%
 
 ### Estimation Method & Level-1 Sample Size
 
-```{r}
+```{r fig.height=8}
 
 ggplot(sdat, aes(y=estMean, x=TrueValue, group=TrueValue))+
   geom_boxplot()+
@@ -509,7 +509,7 @@ kable(c1, format='html', digits=3, row.names = F) %>%
 
 ### Estimation Method, Level-2 Sample Size & Level-1 Sample Size
 
-```{r}
+```{r fig.height=8}
 
 ggplot(sdat, aes(y=estMean, x=TrueValue, group=TrueValue))+
   geom_boxplot()+
