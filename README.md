@@ -1,4 +1,4 @@
-# mcfa-para-est
+# ML-CFA Parameter Recovery and Estimation
 
 A [workflowr][] project.
 

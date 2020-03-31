@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "Abstract"
 output:
   workflowr::wflow_html:
     toc: false
@@ -7,4 +7,4 @@ editor_options:
   chunk_output_type: console
 ---
 
-Describe your project.
+Put fancy abstract (about 150-200 words) that says things about things that make this project sound interesting to peoples.

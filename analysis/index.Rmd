@@ -3,9 +3,31 @@ title: "Home"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
-    toc: false
+    toc: true
 editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+Welcome to our research website on multilevel CFA.
+On this site, you will find the results of our study on parameter recovery across robust estimation methods for multilevel CFA.
+We utilizes three different estimators:
+
+  1. MLR: maximum likelihood with robust standard errors
+  2. ULSMV: unweighted least squares with mean and variance adjusted $\chi^2$
+  3. WLSMV: weighted least squares with mean and variance adjusted $\chi^2$
+  
+This project is additional results from R. Noah Padgett's master's thesis project. 
+The simulation project was quite extensive and mainly focused on fit statistics.
+This project extends that work by using the a subset of the output files to report on parameter recovery. 
+
+
+*[Model convergence](ml-cfa-convergence-summary.html)
+
+*[Parameter relative bias](ml-cfa-parameter-bias-RB.html)
+
+*[Parameter convergence](ml-cfa-parameter-convergence.html)
+
+
+## Data Cleaning
+
+*[Data Cleaning](data-cleaning.html)

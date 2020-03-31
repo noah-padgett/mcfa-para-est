@@ -1,7 +1,7 @@
-name: "mcfa-para-est"
+name: "ML-CFA Parameter Recovery and Estimation"
 output_dir: ../docs
 navbar:
-  title: "mcfa-para-est"
+  title: "ML-CFA Parameter Recovery and Estimation"
   left:
   - text: Home
     href: index.html
