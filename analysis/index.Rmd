@@ -30,11 +30,11 @@ This project extends that work by using the a subset of the output files to repo
 
 *[Results - Factor Loadings](ml-cfa-parameter-bias-factor-loadings.html)
 
-*[Results - Level-1 Factor Covariance](ml-cfa-parameter-bias-level-1-factor-covariance.html)
+*[Results - Level-1 Factor Covariance](ml-cfa-parameter-bias-level-1-factor-covariances.html)
 
-*[Results - Level-2 Factor Covariance](ml-cfa-parameter-bias-level-2-factor-covariance.html)
+*[Results - Level-2 Factor Covariance](ml-cfa-parameter-bias-level-2-factor-covariances.html)
 
-*[Results - Level-2 Factor Variance](ml-cfa-parameter-bias-level-2-factor-variance.html)
+*[Results - Level-2 Factor Variance](ml-cfa-parameter-bias-level-2-factor-variances.html)
 
 ## Convergence of Estimates Results
 
