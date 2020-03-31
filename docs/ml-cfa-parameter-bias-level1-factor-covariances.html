@@ -1,0 +1,3254 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>ML-CFA: Parameter Bias - Factor (co)Variances</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">ML-CFA Parameter Recovery and Estimation</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">ML-CFA: Parameter Bias - Factor (co)Variances</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-03-31
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>mcfa-para-est/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.5.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190614code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190614)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190614code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190614)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeba967f57163469fe7f9733108f764940f474827etargetblankba967f5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/mcfa-para-est/tree/ba967f57163469fe7f9733108f764940f474827e" target="_blank">ba967f5</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeba967f57163469fe7f9733108f764940f474827etargetblankba967f5a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    data/compiled_para_results.txt
+    Ignored:    data/results_bias_est.csv
+    Ignored:    manuscript/
+    Ignored:    output/fact-cov-converge-largeN.pdf
+    Ignored:    output/fact-cov-converge-medN.pdf
+    Ignored:    output/fact-cov-converge-smallN.pdf
+    Ignored:    output/loading-converge-largeN.pdf
+    Ignored:    output/loading-converge-medN.pdf
+    Ignored:    output/loading-converge-smallN.pdf
+    Ignored:    sera-presentation/
+
+Untracked files:
+    Untracked:  analysis/figure/
+    Untracked:  analysis/ml-cfa-parameter-bias-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-level1-factor-covariances.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-level2-factor-covariances.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-level2-factor-variances.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-overview.Rmd
+
+Unstaged changes:
+    Modified:   .gitignore
+    Deleted:    analysis/ml-cfa-parameter-bias-RB.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>rm(list=ls())
+source(paste0(getwd(),&quot;/code/load_packages.R&quot;))
+#source(paste0(getwd(),&quot;/code/get_data.R&quot;))</code></pre>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18362)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] xtable_1.8-4          kableExtra_1.1.0      MplusAutomation_0.7-3
+ [4] data.table_1.12.6     patchwork_1.0.0       forcats_0.4.0        
+ [7] stringr_1.4.0         dplyr_0.8.3           purrr_0.3.3          
+[10] readr_1.3.1           tidyr_1.0.0           tibble_2.1.3         
+[13] ggplot2_3.2.1         tidyverse_1.3.0      
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.3        lubridate_1.7.4   lattice_0.20-38   assertthat_0.2.1 
+ [5] zeallot_0.1.0     rprojroot_1.3-2   digest_0.6.23     R6_2.4.1         
+ [9] cellranger_1.1.0  plyr_1.8.4        backports_1.1.5   reprex_0.3.0     
+[13] evaluate_0.14     coda_0.19-3       httr_1.4.1        pillar_1.4.2     
+[17] rlang_0.4.2       lazyeval_0.2.2    readxl_1.3.1      rstudioapi_0.10  
+[21] texreg_1.36.23    rmarkdown_1.18    gsubfn_0.7        proto_1.0.0      
+[25] webshot_0.5.2     pander_0.6.3      munsell_0.5.0     broom_0.5.2      
+[29] compiler_3.6.1    httpuv_1.5.2      modelr_0.1.5      xfun_0.11        
+[33] pkgconfig_2.0.3   htmltools_0.4.0   tidyselect_0.2.5  workflowr_1.5.0  
+[37] viridisLite_0.3.0 crayon_1.3.4      dbplyr_1.4.2      withr_2.1.2      
+[41] later_1.0.0       grid_3.6.1        nlme_3.1-140      jsonlite_1.6     
+[45] gtable_0.3.0      lifecycle_0.1.0   DBI_1.0.0         git2r_0.26.1     
+[49] magrittr_1.5      scales_1.1.0      cli_1.1.0         stringi_1.4.3    
+[53] fs_1.3.1          promises_1.1.0    xml2_1.2.2        generics_0.0.2   
+[57] vctrs_0.2.0       boot_1.3-22       tools_3.6.1       glue_1.3.1       
+[61] hms_0.5.2         parallel_3.6.1    yaml_2.2.0        colorspace_1.4-1 
+[65] rvest_0.3.5       knitr_1.26        haven_2.2.0      </code></pre>
+<pre class="r"><code># general options
+theme_set(theme_bw())
+options(digits=3)</code></pre>
+<pre class="r"><code># set up vectors of variable names
+pvec &lt;- c(paste0(&#39;lambda1&#39;,1:6), paste0(&#39;lambda2&#39;,6:10), &#39;psiW12&#39;,&#39;psiB1&#39;, &#39;psiB2&#39;, &#39;psiB12&#39;, paste0(&#39;thetaB&#39;,1:10), &#39;icc_lv1_est&#39;, &#39;icc_lv2_est&#39;, paste0(&#39;icc_ov&#39;,1:10,&#39;_est&#39;))
+# stored &quot;true&quot; values of parameters by each condition
+ptvec &lt;- c(rep(&#39;lambdaT&#39;,11), &#39;psiW12T&#39;, &#39;psiB1T&#39;, &#39;psiB2T&#39;, &#39;psiB12T&#39;, rep(&quot;thetaBT&quot;, 10), rep(&#39;icc_lv&#39;,2), rep(&#39;icc_ov&#39;,10))
+
+result &lt;- read_csv(paste0(w.d, &quot;/data/results_bias_est.csv&quot;))</code></pre>
+<pre><code>Parsed with column specification:
+cols(
+  N1 = col_double(),
+  N2 = col_double(),
+  ICC_LV = col_double(),
+  ICC_OV = col_double(),
+  Variable = col_character(),
+  Estimator = col_character(),
+  TrueValue = col_double(),
+  RB = col_double(),
+  RMSE = col_double(),
+  Bias = col_double(),
+  SampVar = col_double(),
+  muRE = col_double(),
+  mwRE = col_double(),
+  uwRE = col_double(),
+  nRep = col_double(),
+  estMean = col_double(),
+  estSD = col_double()
+)</code></pre>
+<pre class="r"><code># Set conditions levels as categorical values
+result &lt;- result %&gt;%
+  mutate(N1 = factor(N1, c(&quot;5&quot;, &quot;10&quot;, &quot;30&quot;)),
+         N2 = factor(N2, c(&quot;30&quot;, &quot;50&quot;, &quot;100&quot;, &quot;200&quot;)),
+         ICC_OV = factor(ICC_OV, c(&quot;0.1&quot;,&quot;0.3&quot;, &quot;0.5&quot;)),
+         ICC_LV = factor(ICC_LV, c(&quot;0.1&quot;, &quot;0.5&quot;)),
+         wi = nRep/500)</code></pre>
+<div id="summarizing-results" class="section level1">
+<h1>Summarizing Results</h1>
+<p>First, we will plot estimates (botxplots) to show how these estimates changed across conditions. To summarize the results we will average over the parameters that only differ y indices. Meaning we will describe the “average factor loading bias” by reporting the average bias for factor loadings. Additionally, different conditions resultedin different “sample sizes.” By this we mean the number of uses replications. The different number of cases per condition was accounted for by creating a “weight” variable for each row of the <code>result</code> object. This meant that conditions that had more usable replications counted more towards to averages reported (or count as much as if we averaged over the individual replications).</p>
+<p>*<a href="ml-cfa-parameter-bias-overview.html">Click here for more details</a></p>
+</div>
+<div id="level-1-factor-covariance" class="section level1">
+<h1>Level-1 Factor Covariance</h1>
+<pre class="r"><code>sdat &lt;- filter(result, Variable %in% c(&quot;psiW12&quot;))
+
+TRUEVALUE &lt;- unique(sdat$TrueValue)
+
+p1 &lt;- ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = TRUEVALUE, color=&quot;red&quot;)+
+  labs(y=&quot;Average Level-1 Factor Covariance&quot;)
+
+p2 &lt;- ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y=&quot;SD of Level-1 Factor Covariance&quot;)
+
+p3 &lt;- ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  geom_hline(yintercept=10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  labs(y=&quot;Relative Bias&quot;)
+
+p4 &lt;- ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y=&quot;Root Mean Square Error&quot;)
+
+p5 &lt;- ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y=&quot;Sqaured Bias&quot;)
+
+p6 &lt;- ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y=&quot;Sampling Variance of Estimates&quot;)
+
+
+p &lt;- (p1 + p2 + p3)/(p4 + p5 + p6) + 
+  plot_annotation(title=&quot;Summarizing bias indices of LEVEL-1 FACTOR COVARIANCE&quot;)
+p</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="single-condition-breakdown" class="section level2">
+<h2>Single Condition Breakdown</h2>
+<div id="estimation-method" class="section level3">
+<h3>Estimation Method</h3>
+<pre class="r"><code>ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = TRUEVALUE, color=&quot;red&quot;)+
+  labs(y=&quot;Average Level-1 Factor Covariance&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Estimation Method&quot;,
+       subtitle=&quot;Parameter Estimates&quot;)+
+  facet_wrap(.~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y=&quot;SD of Level-1 Factor Covariances&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Estimation Method&quot;,
+       subtitle=&quot;Standard Deviation of Estimates&quot;)+
+  facet_wrap(.~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  geom_hline(yintercept=10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  labs(y=&quot;Relative Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Estimation Method&quot;,
+       subtitle=&quot;Relative Bias of Estimates&quot;)+
+  facet_wrap(.~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-3-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y=&quot;Root Mean Square Error&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Estimation Method&quot;,
+       subtitle=&quot;Root Mean Square Error of Estimates&quot;)+
+  facet_wrap(.~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-3-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y=&quot;Sqaured Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Estimation Method&quot;,
+       subtitle=&quot;Squared Bias of Estiamtes&quot;)+
+  facet_wrap(.~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-3-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y=&quot;Sampling Variance&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Estimation Method&quot;,
+       subtitle=&quot;Sampling Variance of Estimates&quot;)+
+  facet_wrap(.~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-3-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(Estimator) %&gt;%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format=&#39;html&#39;, digits=3,
+      caption=&quot;Summary Indices of LEVEL-1 FACTOR COVARIANCE by Estimation Method&quot;) %&gt;%
+  kable_styling(full_width = T)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Summary Indices of LEVEL-1 FACTOR COVARIANCE by Estimation Method
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Estimator
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+SampVar
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+MLR
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.186
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ULSMV
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.246
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+WLSMV
+</td>
+<td style="text-align:right;">
+0.305
+</td>
+<td style="text-align:right;">
+1.515
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="level-2-sample-size" class="section level3">
+<h3>Level-2 Sample Size</h3>
+<pre class="r"><code>ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = TRUEVALUE, color=&quot;red&quot;)+
+  labs(y=&quot;Average Level-1 Factor Covariance&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-2 Sample Size&quot;,
+       subtitle=&quot;Parameter Estimates&quot;)+
+  facet_wrap(.~N2)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y=&quot;SD of Level-1 Factor Covariances&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-2 Sample Size&quot;,
+       subtitle=&quot;Standard Deviation of Parameter Estimates&quot;)+
+  facet_wrap(.~N2)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  geom_hline(yintercept=10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  labs(y=&quot;Relative Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-2 Sample Size&quot;,
+       subtitle=&quot;Relative Bias Parameter Estimates&quot;)+
+  facet_wrap(.~N2)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-4-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y=&quot;Root Mean Square Error&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-2 Sample Size&quot;,
+       subtitle=&quot;Root Mean Square Error&quot;)+
+  facet_wrap(.~N2)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-4-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y=&quot;Sqaured Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-2 Sample Size&quot;,
+       subtitle=&quot;Squared Bias of Parameter Estimates&quot;)+
+  facet_wrap(.~N2)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-4-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y=&quot;Sampling Variance of Estimates&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-2 Sample Size&quot;,
+       subtitle=&quot;Sampling Variance of Parameter Estimates&quot;)+
+  facet_wrap(.~N2)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-4-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(N2) %&gt;%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format=&#39;html&#39;, digits=3, 
+      caption=&quot;Summary Indices of LEVEL-1 FACTOR COVARIANCE by Level-2 Sample Size&quot;) %&gt;%
+  kable_styling(full_width = T)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Summary Indices of LEVEL-1 FACTOR COVARIANCE by Level-2 Sample Size
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+N2
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+SampVar
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.303
+</td>
+<td style="text-align:right;">
+1.032
+</td>
+<td style="text-align:right;">
+0.014
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.014
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:right;">
+0.303
+</td>
+<td style="text-align:right;">
+0.886
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.556
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.209
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="level-1-sample-size" class="section level3">
+<h3>Level-1 Sample Size</h3>
+<pre class="r"><code>ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = TRUEVALUE, color=&quot;red&quot;)+
+  labs(y=&quot;Average Level-1 Factor Covariance&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-1&quot;,
+       subtitle=&quot;Parameter Estimates&quot;)+
+  facet_wrap(.~N1)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y=&quot;SD of Level-1 Factor Covariances&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-1 Sample Size&quot;,
+       subtitle=&quot;Standard Deviation of Parameter Estimates&quot;)+
+  facet_wrap(.~N1)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  geom_hline(yintercept=10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  labs(y=&quot;Relative Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-1 Sample Size&quot;,
+       subtitle=&quot;Relative Bias of Parameter Estimates&quot;)+
+  facet_wrap(.~N1)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-5-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y=&quot;Root Mean Square Error&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-1 Sample Size&quot;,
+       subtitle=&quot;Root Mean Square Error&quot;)+
+  facet_wrap(.~N1)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-5-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y=&quot;Sqaured Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-1 Sample Size&quot;,
+       subtitle=&quot;Squared Bias of Parameter Estimates&quot;)+
+  facet_wrap(.~N1)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-5-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y=&quot;Sampling Variance of Estimates&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by Level-1 Sample Size&quot;,
+       subtitle=&quot;Sampling Variance of Parameter Estimates&quot;)+
+  facet_wrap(.~N1)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-5-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(N1) %&gt;%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format=&#39;html&#39;, digits=3,
+      caption=&quot;Summary Indices of LEVEL-1 FACTOR COVARIANCE  by Level-1 Sample Size&quot;) %&gt;%
+  kable_styling(full_width = T)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Summary Indices of LEVEL-1 FACTOR COVARIANCE by Level-1 Sample Size
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+N1
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+SampVar
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.303
+</td>
+<td style="text-align:right;">
+1.050
+</td>
+<td style="text-align:right;">
+0.013
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.682
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.247
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="icc-observed-variables" class="section level3">
+<h3>ICC <em>Observed</em> Variables</h3>
+<pre class="r"><code>ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = TRUEVALUE, color=&quot;red&quot;)+
+  labs(y=&quot;Average Level-1 Factor Covariance&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Observed Variables&quot;,
+       subtitle=&quot;Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_OV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y=&quot;SD of Level-1 Factor Covariances&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Observed Variables&quot;,
+       subtitle=&quot;Standard Deviation of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_OV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-6-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  geom_hline(yintercept=10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  labs(y=&quot;Relative Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Observed Variables&quot;,
+       subtitle=&quot;Relative Bias of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_OV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-6-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y=&quot;Root Mean Square Error&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Observed Variables&quot;,
+       subtitle=&quot;Root Mean Square Error of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_OV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-6-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y=&quot;Sqaured Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Observed Variables&quot;,
+       subtitle=&quot;Squared Bias of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_OV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-6-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y=&quot;Sampling Variance of Estimates&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Observed Variables&quot;,
+       subtitle=&quot;Sampling Variance of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_OV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-6-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(ICC_OV) %&gt;%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format=&#39;html&#39;, digits=3, caption=&quot;Summary Indices of LEVEL-1 FACTOR COVARIANCE by ICC of Observed Variables&quot;) %&gt;%
+  kable_styling(full_width = T)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Summary Indices of LEVEL-1 FACTOR COVARIANCE by ICC of Observed Variables
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+ICC_OV
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+SampVar
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.820
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.784
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.268
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="icc-latent-variables" class="section level3">
+<h3>ICC <em>Latent</em> Variables</h3>
+<pre class="r"><code>ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = TRUEVALUE, color=&quot;red&quot;)+
+  labs(y=&quot;Average Level-1 Factor Covariance&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Latent Variables&quot;,
+       subtitle=&quot;Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_LV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y=&quot;SD of Level-1 Factor Covariances&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Latent Variables&quot;,
+       subtitle=&quot;Standard Deviation of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_LV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  geom_hline(yintercept=10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  labs(y=&quot;Relative Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Latent Variables&quot;,
+       subtitle=&quot;Relative Bias of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_LV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y=&quot;Root Mean Square Error&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Latent Variables&quot;,
+       subtitle=&quot;Root Mean Square Error of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_LV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-7-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y=&quot;Sqaured Bias&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Latent Variables&quot;,
+       subtitle=&quot;Squared Bias of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_LV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-7-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y=&quot;Sampling Variance of Estimates&quot;,
+       title=&quot;LEVEL-1 FACTOR COVARIANCE by ICC of Latent Variables&quot;,
+       subtitle=&quot;Sampling Variance of Parameter Estimates&quot;)+
+  facet_wrap(.~ICC_LV)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-7-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(ICC_LV) %&gt;%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format=&#39;html&#39;, digits=3,
+      caption=&quot;Summary Indices of LEVEL-1 FACTOR COVARIANCE by ICC of Latent Variables&quot;) %&gt;%
+  kable_styling(full_width = T)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+Summary Indices of LEVEL-1 FACTOR COVARIANCE by ICC of Latent Variables
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+ICC_LV
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+Bias
+</th>
+<th style="text-align:right;">
+SampVar
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.304
+</td>
+<td style="text-align:right;">
+1.407
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+-0.023
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="loadings-by-estimation-method-and-sample-sizes" class="section level2">
+<h2>Loadings by Estimation Method and Sample Sizes</h2>
+<div id="estimation-method-level-2-sample-size" class="section level3">
+<h3>Estimation Method &amp; Level-2 Sample Size</h3>
+<pre class="r"><code>ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = TRUEVALUE, color=&quot;red&quot;)+
+  labs(y=&quot;Average Level-1 Factor Covariance&quot;)+
+  facet_grid(N2~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  geom_hline(yintercept=10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  labs(y=&quot;Relative Bias&quot;)+
+  facet_grid(N2~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y=&quot;Root Mean Square Error&quot;)+
+  facet_grid(N2~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-8-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(Estimator, N2) %&gt;%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;N2&#39;, &#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)], 
+           c[ c$Estimator == &#39;ULSMV&#39;, c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)], 
+           c[ c$Estimator == &#39;WLSMV&#39;, c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)])
+colnames(c1) &lt;- c(&#39;N2&#39;,  rep(c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;), 3))
+
+kable(c1, format=&#39;html&#39;, digits=3, row.names = F) %&gt;%
+  kable_styling(full_width = T) %&gt;%
+  add_header_above(c(&#39; &#39;=1, &#39;MLR&#39;=3, &#39;ULSMV&#39;=3, &#39;WLSMV&#39;=3))</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="border-bottom:hidden" colspan="1">
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+MLR
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+ULSMV
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+WLSMV
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+N2
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.155
+</td>
+<td style="text-align:right;">
+0.013
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.281
+</td>
+<td style="text-align:right;">
+0.016
+</td>
+<td style="text-align:right;">
+0.309
+</td>
+<td style="text-align:right;">
+3.058
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.452
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.354
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.306
+</td>
+<td style="text-align:right;">
+1.994
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.218
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.213
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0.304
+</td>
+<td style="text-align:right;">
+1.292
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+-0.040
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.173
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.504
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="estimation-method-level-1-sample-size" class="section level3">
+<h3>Estimation Method &amp; Level-1 Sample Size</h3>
+<pre class="r"><code>ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = TRUEVALUE, color=&quot;red&quot;)+
+  labs(y=&quot;Average Level-1 Factor Covariance&quot;)+
+  facet_grid(N1~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  geom_hline(yintercept=10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  labs(y=&quot;Relative Bias&quot;)+
+  facet_grid(N1~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-9-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y=&quot;Root Mean Square Error&quot;)+
+  facet_grid(N1~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-9-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(Estimator, N1) %&gt;%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;N1&#39;, &#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)], 
+           c[ c$Estimator == &#39;ULSMV&#39;, c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)], 
+           c[ c$Estimator == &#39;WLSMV&#39;, c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)])
+colnames(c1) &lt;- c(&#39;N1&#39;,  rep(c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;), 3))
+
+kable(c1, format=&#39;html&#39;, digits=3, row.names = F) %&gt;%
+  kable_styling(full_width = T) %&gt;%
+  add_header_above(c(&#39; &#39;=1, &#39;MLR&#39;=3, &#39;ULSMV&#39;=3, &#39;WLSMV&#39;=3))</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="border-bottom:hidden" colspan="1">
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+MLR
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+ULSMV
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+WLSMV
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+N1
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.326
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.366
+</td>
+<td style="text-align:right;">
+0.015
+</td>
+<td style="text-align:right;">
+0.308
+</td>
+<td style="text-align:right;">
+2.71
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.165
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.450
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.305
+</td>
+<td style="text-align:right;">
+1.52
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.092
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+-0.016
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.69
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="estimation-method-level-2-sample-size-level-1-sample-size" class="section level3">
+<h3>Estimation Method, Level-2 Sample Size &amp; Level-1 Sample Size</h3>
+<pre class="r"><code>ggplot(sdat, aes(y=estMean,x=N1, group=N1))+
+  geom_boxplot()+
+  geom_hline(yintercept = TRUEVALUE, color=&quot;red&quot;)+
+  labs(y=&quot;Average Level-1 Factor Covariance&quot;)+
+  facet_grid(N2~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RB,x=N1, group=N1))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  geom_hline(yintercept=10, color=&quot;red&quot;, linetype=&quot;dashed&quot;)+
+  labs(y=&quot;Relative Bias&quot;)+
+  facet_grid(N2~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-10-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(sdat, aes(y=RMSE,x=N1, group=N1))+
+  geom_boxplot()+
+  labs(y=&quot;Root Mean Square Error&quot;)+
+  facet_grid(N2~Estimator)</code></pre>
+<p><img src="figure/ml-cfa-parameter-bias-level1-factor-covariances.Rmd/unnamed-chunk-10-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(Estimator, N2, N1) %&gt;%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;N2&#39;,&#39;N1&#39;, &#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)], 
+           c[ c$Estimator == &#39;ULSMV&#39;, c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)], 
+           c[ c$Estimator == &#39;WLSMV&#39;, c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)])
+colnames(c1) &lt;- c(&#39;N2&#39;,&#39;N1&#39;,  rep(c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;), 3))
+
+kable(c1, format=&#39;html&#39;, digits=3, row.names = F) %&gt;%
+  kable_styling(full_width = T) %&gt;%
+  add_header_above(c(&#39; &#39;=2, &#39;MLR&#39;=3, &#39;ULSMV&#39;=3, &#39;WLSMV&#39;=3))</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="border-bottom:hidden" colspan="2">
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+MLR
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+ULSMV
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+WLSMV
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+N2
+</th>
+<th style="text-align:left;">
+N1
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.530
+</td>
+<td style="text-align:right;">
+0.028
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.355
+</td>
+<td style="text-align:right;">
+0.038
+</td>
+<td style="text-align:right;">
+0.316
+</td>
+<td style="text-align:right;">
+5.268
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.298
+</td>
+<td style="text-align:right;">
+-0.628
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.448
+</td>
+<td style="text-align:right;">
+0.015
+</td>
+<td style="text-align:right;">
+0.309
+</td>
+<td style="text-align:right;">
+2.842
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.538
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.117
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.306
+</td>
+<td style="text-align:right;">
+2.077
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.567
+</td>
+<td style="text-align:right;">
+0.015
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.047
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.311
+</td>
+<td style="text-align:right;">
+3.679
+</td>
+<td style="text-align:right;">
+0.016
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.705
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.454
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:right;">
+0.307
+</td>
+<td style="text-align:right;">
+2.381
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.142
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.459
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.716
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.096
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.140
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.307
+</td>
+<td style="text-align:right;">
+2.462
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.461
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.657
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.304
+</td>
+<td style="text-align:right;">
+1.197
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.083
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+-0.145
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.523
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.224
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.744
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.304
+</td>
+<td style="text-align:right;">
+1.283
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.260
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.483
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.299
+</td>
+<td style="text-align:right;">
+-0.331
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.299
+</td>
+<td style="text-align:right;">
+-0.426
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+-0.156
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="relative-efficiency-by-sample-sizes" class="section level2">
+<h2>Relative Efficiency by Sample Sizes</h2>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(Estimator, N2, N1) %&gt;%
+  summarise(mu = weighted.mean(muRE, wi),
+            mw = weighted.mean(mwRE, wi),
+            uw = weighted.mean(uwRE, wi))
+
+c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;N2&#39;,&#39;N1&#39;, &#39;mu&#39;, &#39;mw&#39;, &#39;uw&#39;)])
+colnames(c1) &lt;- c(&#39;N2&#39;,&#39;N1&#39;,c(&#39;MLR/ULSMV&#39;, &#39;MLR/WLSMV&#39;, &#39;ULSMV/WLSMV&#39;))
+
+kable(c1, format=&#39;html&#39;, digits=3, row.names = F) %&gt;%
+  kable_styling(full_width = T)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+N2
+</th>
+<th style="text-align:left;">
+N1
+</th>
+<th style="text-align:right;">
+MLR/ULSMV
+</th>
+<th style="text-align:right;">
+MLR/WLSMV
+</th>
+<th style="text-align:right;">
+ULSMV/WLSMV
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+1.806
+</td>
+<td style="text-align:right;">
+1.829
+</td>
+<td style="text-align:right;">
+1.13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+1.082
+</td>
+<td style="text-align:right;">
+1.281
+</td>
+<td style="text-align:right;">
+1.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.925
+</td>
+<td style="text-align:right;">
+1.161
+</td>
+<td style="text-align:right;">
+1.31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+1.149
+</td>
+<td style="text-align:right;">
+1.331
+</td>
+<td style="text-align:right;">
+1.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.975
+</td>
+<td style="text-align:right;">
+1.146
+</td>
+<td style="text-align:right;">
+1.21
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.940
+</td>
+<td style="text-align:right;">
+1.037
+</td>
+<td style="text-align:right;">
+1.13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+1.039
+</td>
+<td style="text-align:right;">
+1.153
+</td>
+<td style="text-align:right;">
+1.14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.963
+</td>
+<td style="text-align:right;">
+1.071
+</td>
+<td style="text-align:right;">
+1.14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.865
+</td>
+<td style="text-align:right;">
+1.011
+</td>
+<td style="text-align:right;">
+1.31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.974
+</td>
+<td style="text-align:right;">
+1.045
+</td>
+<td style="text-align:right;">
+1.08
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.956
+</td>
+<td style="text-align:right;">
+1.014
+</td>
+<td style="text-align:right;">
+1.07
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.893
+</td>
+<td style="text-align:right;">
+0.998
+</td>
+<td style="text-align:right;">
+1.27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="manuscript-tables" class="section level1">
+<h1>Manuscript Tables</h1>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(Estimator, N2, N1) %&gt;%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi))
+
+c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;N2&#39;,&#39;N1&#39;, &#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)], 
+           c[ c$Estimator == &#39;ULSMV&#39;, c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)], 
+           c[ c$Estimator == &#39;WLSMV&#39;, c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;)])
+colnames(c1) &lt;- c(&#39;N2&#39;,&#39;N1&#39;,  rep(c(&#39;est&#39;, &#39;RB&#39;, &#39;RMSE&#39;), 3))
+
+kable(c1, format=&#39;html&#39;, digits=3, row.names = F) %&gt;%
+  kable_styling(full_width = T) %&gt;%
+  add_header_above(c(&#39; &#39;=2, &#39;MLR&#39;=3, &#39;ULSMV&#39;=3, &#39;WLSMV&#39;=3))</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="border-bottom:hidden" colspan="2">
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+MLR
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+ULSMV
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+WLSMV
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+N2
+</th>
+<th style="text-align:left;">
+N1
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+<th style="text-align:right;">
+est
+</th>
+<th style="text-align:right;">
+RB
+</th>
+<th style="text-align:right;">
+RMSE
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.530
+</td>
+<td style="text-align:right;">
+0.028
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.355
+</td>
+<td style="text-align:right;">
+0.038
+</td>
+<td style="text-align:right;">
+0.316
+</td>
+<td style="text-align:right;">
+5.268
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.298
+</td>
+<td style="text-align:right;">
+-0.628
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.448
+</td>
+<td style="text-align:right;">
+0.015
+</td>
+<td style="text-align:right;">
+0.309
+</td>
+<td style="text-align:right;">
+2.842
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.538
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.117
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.306
+</td>
+<td style="text-align:right;">
+2.077
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.567
+</td>
+<td style="text-align:right;">
+0.015
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.047
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.311
+</td>
+<td style="text-align:right;">
+3.679
+</td>
+<td style="text-align:right;">
+0.016
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.705
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.454
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:right;">
+0.307
+</td>
+<td style="text-align:right;">
+2.381
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.142
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.459
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.716
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.096
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.140
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.307
+</td>
+<td style="text-align:right;">
+2.462
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.461
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.657
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.304
+</td>
+<td style="text-align:right;">
+1.197
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.083
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+-0.145
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.523
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.224
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.302
+</td>
+<td style="text-align:right;">
+0.744
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.304
+</td>
+<td style="text-align:right;">
+1.283
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.260
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.301
+</td>
+<td style="text-align:right;">
+0.483
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:right;">
+0.299
+</td>
+<td style="text-align:right;">
+-0.331
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.299
+</td>
+<td style="text-align:right;">
+-0.426
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.300
+</td>
+<td style="text-align:right;">
+-0.156
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>print(xtable(c1, digits = 3,align=c(&quot;l&quot;, &quot;l&quot;,&quot;l&quot;, rep(&quot;r&quot;,9)),
+             display=c(&quot;s&quot;, &quot;d&quot;,&quot;d&quot;, rep(&quot;f&quot;,9)),
+             caption=&quot;Mean Level-1 Factor Covariance, Relative Bias, and RMSE by Estimation Method&quot;,
+             label=&quot;tb:fct&quot;),
+      booktabs = T, include.rownames = F,
+      caption.placement = &quot;top&quot;)</code></pre>
+<pre><code>% latex table generated in R 3.6.1 by xtable 1.8-4 package
+% Tue Mar 31 15:43:58 2020
+\begin{table}[ht]
+\centering
+\caption{Mean Level-1 Factor Covariance, Relative Bias, and RMSE by Estimation Method} 
+\label{tb:fct}
+\begin{tabular}{llrrrrrrrrr}
+  \toprule
+N2 &amp; N1 &amp; est &amp; RB &amp; RMSE &amp; est &amp; RB &amp; RMSE &amp; est &amp; RB &amp; RMSE \\ 
+  \midrule
+30 &amp; 5 &amp; 0.302 &amp; 0.530 &amp; 0.028 &amp; 0.301 &amp; 0.355 &amp; 0.038 &amp; 0.316 &amp; 5.268 &amp; 0.030 \\ 
+  30 &amp; 10 &amp; 0.298 &amp; -0.628 &amp; 0.011 &amp; 0.301 &amp; 0.448 &amp; 0.015 &amp; 0.309 &amp; 2.842 &amp; 0.011 \\ 
+  30 &amp; 30 &amp; 0.302 &amp; 0.538 &amp; 0.003 &amp; 0.300 &amp; 0.117 &amp; 0.006 &amp; 0.306 &amp; 2.077 &amp; 0.004 \\ 
+  50 &amp; 5 &amp; 0.302 &amp; 0.567 &amp; 0.015 &amp; 0.300 &amp; 0.047 &amp; 0.021 &amp; 0.311 &amp; 3.679 &amp; 0.016 \\ 
+  50 &amp; 10 &amp; 0.302 &amp; 0.705 &amp; 0.006 &amp; 0.301 &amp; 0.454 &amp; 0.009 &amp; 0.307 &amp; 2.381 &amp; 0.006 \\ 
+  50 &amp; 30 &amp; 0.300 &amp; 0.142 &amp; 0.002 &amp; 0.301 &amp; 0.459 &amp; 0.003 &amp; 0.302 &amp; 0.716 &amp; 0.002 \\ 
+  100 &amp; 5 &amp; 0.300 &amp; 0.096 &amp; 0.007 &amp; 0.300 &amp; 0.140 &amp; 0.010 &amp; 0.307 &amp; 2.462 &amp; 0.007 \\ 
+  100 &amp; 10 &amp; 0.301 &amp; 0.461 &amp; 0.003 &amp; 0.302 &amp; 0.657 &amp; 0.004 &amp; 0.304 &amp; 1.197 &amp; 0.003 \\ 
+  100 &amp; 30 &amp; 0.300 &amp; 0.083 &amp; 0.001 &amp; 0.300 &amp; -0.145 &amp; 0.002 &amp; 0.302 &amp; 0.523 &amp; 0.001 \\ 
+  200 &amp; 5 &amp; 0.301 &amp; 0.224 &amp; 0.004 &amp; 0.302 &amp; 0.744 &amp; 0.004 &amp; 0.304 &amp; 1.283 &amp; 0.004 \\ 
+  200 &amp; 10 &amp; 0.300 &amp; 0.000 &amp; 0.002 &amp; 0.301 &amp; 0.260 &amp; 0.002 &amp; 0.301 &amp; 0.483 &amp; 0.002 \\ 
+  200 &amp; 30 &amp; 0.299 &amp; -0.331 &amp; 0.000 &amp; 0.299 &amp; -0.426 &amp; 0.001 &amp; 0.300 &amp; -0.156 &amp; 0.000 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.1 (2019-07-05)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18362)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] xtable_1.8-4          kableExtra_1.1.0      MplusAutomation_0.7-3
+ [4] data.table_1.12.6     patchwork_1.0.0       forcats_0.4.0        
+ [7] stringr_1.4.0         dplyr_0.8.3           purrr_0.3.3          
+[10] readr_1.3.1           tidyr_1.0.0           tibble_2.1.3         
+[13] ggplot2_3.2.1         tidyverse_1.3.0      
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.3        lubridate_1.7.4   lattice_0.20-38   assertthat_0.2.1 
+ [5] zeallot_0.1.0     rprojroot_1.3-2   digest_0.6.23     R6_2.4.1         
+ [9] cellranger_1.1.0  plyr_1.8.4        backports_1.1.5   reprex_0.3.0     
+[13] evaluate_0.14     coda_0.19-3       highr_0.8         httr_1.4.1       
+[17] pillar_1.4.2      rlang_0.4.2       lazyeval_0.2.2    readxl_1.3.1     
+[21] rstudioapi_0.10   texreg_1.36.23    rmarkdown_1.18    gsubfn_0.7       
+[25] labeling_0.3      proto_1.0.0       webshot_0.5.2     pander_0.6.3     
+[29] munsell_0.5.0     broom_0.5.2       compiler_3.6.1    httpuv_1.5.2     
+[33] modelr_0.1.5      xfun_0.11         pkgconfig_2.0.3   htmltools_0.4.0  
+[37] tidyselect_0.2.5  workflowr_1.5.0   viridisLite_0.3.0 crayon_1.3.4     
+[41] dbplyr_1.4.2      withr_2.1.2       later_1.0.0       grid_3.6.1       
+[45] nlme_3.1-140      jsonlite_1.6      gtable_0.3.0      lifecycle_0.1.0  
+[49] DBI_1.0.0         git2r_0.26.1      magrittr_1.5      scales_1.1.0     
+[53] cli_1.1.0         stringi_1.4.3     reshape2_1.4.3    farver_2.0.1     
+[57] fs_1.3.1          promises_1.1.0    xml2_1.2.2        generics_0.0.2   
+[61] vctrs_0.2.0       boot_1.3-22       tools_3.6.1       glue_1.3.1       
+[65] hms_0.5.2         parallel_3.6.1    yaml_2.2.0        colorspace_1.4-1 
+[69] rvest_0.3.5       knitr_1.26        haven_2.2.0      </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

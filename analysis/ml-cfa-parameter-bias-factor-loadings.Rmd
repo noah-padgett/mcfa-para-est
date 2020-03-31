@@ -1,0 +1,595 @@
+---
+title: "ML-CFA: Parameter Bias - Factor Loadings"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r init, warning=FALSE, message=FALSE}
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+#source(paste0(getwd(),"/code/get_data.R"))
+
+
+```
+
+```{r}
+sessionInfo()
+
+# general options
+theme_set(theme_bw())
+options(digits=3)
+```
+
+
+```{r read-data-in}
+
+# set up vectors of variable names
+pvec <- c(paste0('lambda1',1:6), paste0('lambda2',6:10), 'psiW12','psiB1', 'psiB2', 'psiB12', paste0('thetaB',1:10), 'icc_lv1_est', 'icc_lv2_est', paste0('icc_ov',1:10,'_est'))
+# stored "true" values of parameters by each condition
+ptvec <- c(rep('lambdaT',11), 'psiW12T', 'psiB1T', 'psiB2T', 'psiB12T', rep("thetaBT", 10), rep('icc_lv',2), rep('icc_ov',10))
+
+result <- read_csv(paste0(w.d, "/data/results_bias_est.csv"))
+
+# Set conditions levels as categorical values
+result <- result %>%
+  mutate(N1 = factor(N1, c("5", "10", "30")),
+         N2 = factor(N2, c("30", "50", "100", "200")),
+         ICC_OV = factor(ICC_OV, c("0.1","0.3", "0.5")),
+         ICC_LV = factor(ICC_LV, c("0.1", "0.5")),
+         wi = nRep/500)
+
+```
+
+# Summarizing Results
+
+First, we will plot estimates (botxplots) to show how these estimates changed across conditions.
+To summarize the results we will average over the parameters that only differ y indices.
+Meaning we will describe the "average factor loading bias" by reporting the average bias for factor loadings.
+Additionally, different conditions resultedin different "sample sizes."
+By this we mean the number of uses replications.
+The different number of cases per condition was accounted for by creating a "weight" variable for each row of the `result` object.
+This meant that conditions that had more usable replications counted more towards to averages reported (or count as much as if we averaged over the individual replications).
+
+*[Click here for more details](ml-cfa-parameter-bias-RB.html)
+
+
+# Factor loadings
+
+```{r}
+
+sdat <- filter(result, Variable %like% 'lambda')
+
+# first, plot estimates
+p1 <- ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.6, color="red")+
+  labs(y="Average Factor Loading")
+
+p2 <- ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y="SD of Factor Loadings")
+
+p3 <- ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  labs(y="Relative Bias")
+
+p4 <- ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y="Root Mean Square Error")
+
+p5 <- ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y="Sqaured Bias")
+
+p6 <- ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y="Sampling Variance of Estimates")
+
+
+p <- (p1 + p2 + p3)/(p4 + p5 + p6) + 
+  plot_annotation(title="Summarizing bias indices of FACTOR LOADINGS")
+p
+
+```
+
+## Single Condition Breakdown
+
+### Estimation Method
+
+```{r}
+
+ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.6, color="red")+
+  labs(y="Average Factor Loading",
+       title="FACTOR LOADINGS by Estimation Method",
+       subtitle="Parameter Estimates")+
+  facet_wrap(.~Estimator)
+
+ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y="SD of Factor Loadings",
+       title="FACTOR LOADINGS by Estimation Method",
+       subtitle="Standard Deviation of Estimates")+
+  facet_wrap(.~Estimator)
+
+ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  labs(y="Relative Bias",
+       title="FACTOR LOADINGS by Estimation Method",
+       subtitle="Relative Bias of Estimates")+
+  facet_wrap(.~Estimator)
+
+ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y="Root Mean Square Error",
+       title="FACTOR LOADINGS by Estimation Method",
+       subtitle="Root Mean Square Error of Estimates")+
+  facet_wrap(.~Estimator)
+
+ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y="Sqaured Bias",
+       title="FACTOR LOADINGS by Estimation Method",
+       subtitle="Squared Bias of Estiamtes")+
+  facet_wrap(.~Estimator)
+
+ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y="Sampling Variance",
+       title="FACTOR LOADINGS by Estimation Method",
+       subtitle="Sampling Variance of Estimates")+
+  facet_wrap(.~Estimator)
+
+
+c <- sdat %>%
+  group_by(Estimator) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format='html', digits=3,
+      caption="Summary Indices of FACTOR LOADINGS by Estimation Method") %>%
+  kable_styling(full_width = T)
+
+```
+
+### Level-2 Sample Size
+
+```{r}
+
+ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.6, color="red")+
+  labs(y="Average Factor Loading",
+       title="FACTOR LOADINGS by Level-2 Sample Size",
+       subtitle="Parameter Estimates")+
+  facet_wrap(.~N2)
+
+ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y="SD of Factor Loadings",
+       title="FACTOR LOADINGS by Level-2 Sample Size",
+       subtitle="Standard Deviation of Parameter Estimates")+
+  facet_wrap(.~N2)
+
+ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  labs(y="Relative Bias",
+       title="FACTOR LOADINGS by Level-2 Sample Size",
+       subtitle="Relative Bias Parameter Estimates")+
+  facet_wrap(.~N2)
+
+ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y="Root Mean Square Error",
+       title="FACTOR LOADINGS by Level-2 Sample Size",
+       subtitle="Root Mean Square Error")+
+  facet_wrap(.~N2)
+
+ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y="Sqaured Bias",
+       title="FACTOR LOADINGS by Level-2 Sample Size",
+       subtitle="Squared Bias of Parameter Estimates")+
+  facet_wrap(.~N2)
+
+ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y="Sampling Variance of Estimates",
+       title="FACTOR LOADINGS by Level-2 Sample Size",
+       subtitle="Sampling Variance of Parameter Estimates")+
+  facet_wrap(.~N2)
+
+
+c <- sdat %>%
+  group_by(N2) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format='html', digits=3, 
+      caption="Summary Indices of FACTOR LOADINGS by Level-2 Sample Size") %>%
+  kable_styling(full_width = T)
+
+```
+
+### Level-1 Sample Size
+
+```{r}
+
+ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.6, color="red")+
+  labs(y="Average Factor Loading",
+       title="FACTOR LOADINGS by Level-1",
+       subtitle="Parameter Estimates")+
+  facet_wrap(.~N1)
+
+ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y="SD of Factor Loadings",
+       title="FACTOR LOADINGS by Level-1 Sample Size",
+       subtitle="Standard Deviation of Parameter Estimates")+
+  facet_wrap(.~N1)
+
+ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  labs(y="Relative Bias",
+       title="FACTOR LOADINGS by Level-1 Sample Size",
+       subtitle="Relative Bias of Parameter Estimates")+
+  facet_wrap(.~N1)
+
+ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y="Root Mean Square Error",
+       title="FACTOR LOADINGS by Level-1 Sample Size",
+       subtitle="Root Mean Square Error")+
+  facet_wrap(.~N1)
+
+ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y="Sqaured Bias",
+       title="FACTOR LOADINGS by Level-1 Sample Size",
+       subtitle="Squared Bias of Parameter Estimates")+
+  facet_wrap(.~N1)
+
+ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y="Sampling Variance of Estimates",
+       title="FACTOR LOADINGS by Level-1 Sample Size",
+       subtitle="Sampling Variance of Parameter Estimates")+
+  facet_wrap(.~N1)
+
+
+c <- sdat %>%
+  group_by(N1) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format='html', digits=3,
+      caption="Summary Indices of FACTOR LOADINGS  by Level-1 Sample Size") %>%
+  kable_styling(full_width = T)
+
+```
+
+
+### ICC *Observed* Variables
+
+```{r}
+
+ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.6, color="red")+
+  labs(y="Average Factor Loading",
+       title="FACTOR LOADINGS by ICC of Observed Variables",
+       subtitle="Parameter Estimates")+
+  facet_wrap(.~ICC_OV)
+
+ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y="SD of Factor Loadings",
+       title="FACTOR LOADINGS by ICC of Observed Variables",
+       subtitle="Standard Deviation of Parameter Estimates")+
+  facet_wrap(.~ICC_OV)
+
+ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  labs(y="Relative Bias",
+       title="FACTOR LOADINGS by ICC of Observed Variables",
+       subtitle="Relative Bias of Parameter Estimates")+
+  facet_wrap(.~ICC_OV)
+
+ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y="Root Mean Square Error",
+       title="FACTOR LOADINGS by ICC of Observed Variables",
+       subtitle="Root Mean Square Error of Parameter Estimates")+
+  facet_wrap(.~ICC_OV)
+
+ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y="Sqaured Bias",
+       title="FACTOR LOADINGS by ICC of Observed Variables",
+       subtitle="Squared Bias of Parameter Estimates")+
+  facet_wrap(.~ICC_OV)
+
+ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y="Sampling Variance of Estimates",
+       title="FACTOR LOADINGS by ICC of Observed Variables",
+       subtitle="Sampling Variance of Parameter Estimates")+
+  facet_wrap(.~ICC_OV)
+
+
+c <- sdat %>%
+  group_by(ICC_OV) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format='html', digits=3, caption="Summary Indices of FACTOR LOADINGS by ICC of Observed Variables") %>%
+  kable_styling(full_width = T)
+
+```
+
+### ICC *Latent* Variables
+
+```{r}
+
+ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.6, color="red")+
+  labs(y="Average Factor Loading",
+       title="FACTOR LOADINGS by ICC of Latent Variables",
+       subtitle="Parameter Estimates")+
+  facet_wrap(.~ICC_LV)
+
+ggplot(sdat, aes(y=estSD))+
+  geom_boxplot()+
+  labs(y="SD of Factor Loadings",
+       title="FACTOR LOADINGS by ICC of Latent Variables",
+       subtitle="Standard Deviation of Parameter Estimates")+
+  facet_wrap(.~ICC_LV)
+
+ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  labs(y="Relative Bias",
+       title="FACTOR LOADINGS by ICC of Latent Variables",
+       subtitle="Relative Bias of Parameter Estimates")+
+  facet_wrap(.~ICC_LV)
+
+ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y="Root Mean Square Error",
+       title="FACTOR LOADINGS by ICC of Latent Variables",
+       subtitle="Root Mean Square Error of Parameter Estimates")+
+  facet_wrap(.~ICC_LV)
+
+ggplot(sdat, aes(y=Bias))+
+  geom_boxplot()+
+  labs(y="Sqaured Bias",
+       title="FACTOR LOADINGS by ICC of Latent Variables",
+       subtitle="Squared Bias of Parameter Estimates")+
+  facet_wrap(.~ICC_LV)
+
+ggplot(sdat, aes(y=SampVar))+
+  geom_boxplot()+
+  labs(y="Sampling Variance of Estimates",
+       title="FACTOR LOADINGS by ICC of Latent Variables",
+       subtitle="Sampling Variance of Parameter Estimates")+
+  facet_wrap(.~ICC_LV)
+
+
+c <- sdat %>%
+  group_by(ICC_LV) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+kable(c, format='html', digits=3,
+      caption="Summary Indices of FACTOR LOADINGS by ICC of Latent Variables") %>%
+  kable_styling(full_width = T)
+
+```
+
+## Loadings by Estimation Method and Sample Sizes
+
+### Estimation Method & Level-2 Sample Size
+
+```{r}
+
+ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.6, color="red")+
+  labs(y="Average Factor Loading")+
+  facet_grid(N2~Estimator)
+
+ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  labs(y="Relative Bias")+
+  facet_grid(N2~Estimator)
+
+ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y="Root Mean Square Error")+
+  facet_grid(N2~Estimator)
+
+c <- sdat %>%
+  group_by(Estimator, N2) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'N2', 'est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'ULSMV', c('est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'WLSMV', c('est', 'RB', 'RMSE')])
+colnames(c1) <- c('N2',  rep(c('est', 'RB', 'RMSE'), 3))
+
+kable(c1, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '=1, 'MLR'=3, 'ULSMV'=3, 'WLSMV'=3))
+
+```
+
+### Estimation Method & Level-1 Sample Size
+
+```{r}
+
+ggplot(sdat, aes(y=estMean))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.6, color="red")+
+  labs(y="Average Factor Loading")+
+  facet_grid(N1~Estimator)
+
+ggplot(sdat, aes(y=RB))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  labs(y="Relative Bias")+
+  facet_grid(N1~Estimator)
+
+ggplot(sdat, aes(y=RMSE))+
+  geom_boxplot()+
+  labs(y="Root Mean Square Error")+
+  facet_grid(N1~Estimator)
+
+c <- sdat %>%
+  group_by(Estimator, N1) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'N1', 'est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'ULSMV', c('est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'WLSMV', c('est', 'RB', 'RMSE')])
+colnames(c1) <- c('N1',  rep(c('est', 'RB', 'RMSE'), 3))
+
+kable(c1, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '=1, 'MLR'=3, 'ULSMV'=3, 'WLSMV'=3))
+```
+
+### Estimation Method, Level-2 Sample Size & Level-1 Sample Size
+
+```{r}
+
+ggplot(sdat, aes(y=estMean,x=N1, group=N1))+
+  geom_boxplot()+
+  geom_hline(yintercept = 0.6, color="red")+
+  labs(y="Average Factor Loading")+
+  facet_grid(N2~Estimator)
+
+ggplot(sdat, aes(y=RB,x=N1, group=N1))+
+  geom_boxplot()+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  labs(y="Relative Bias")+
+  facet_grid(N2~Estimator)
+
+ggplot(sdat, aes(y=RMSE,x=N1, group=N1))+
+  geom_boxplot()+
+  labs(y="Root Mean Square Error")+
+  facet_grid(N2~Estimator)
+
+c <- sdat %>%
+  group_by(Estimator, N2, N1) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi),
+            Bias = weighted.mean(Bias, wi),
+            SampVar =weighted.mean(SampVar, wi))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'N2','N1', 'est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'ULSMV', c('est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'WLSMV', c('est', 'RB', 'RMSE')])
+colnames(c1) <- c('N2','N1',  rep(c('est', 'RB', 'RMSE'), 3))
+
+kable(c1, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '=2, 'MLR'=3, 'ULSMV'=3, 'WLSMV'=3))
+
+```
+
+## Relative Efficiency by Sample Sizes
+
+```{r}
+
+c <- sdat %>%
+  group_by(Estimator, N2, N1) %>%
+  summarise(mu = weighted.mean(muRE, wi),
+            mw = weighted.mean(mwRE, wi),
+            uw = weighted.mean(uwRE, wi))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'N2','N1', 'mu', 'mw', 'uw')])
+colnames(c1) <- c('N2','N1',c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV'))
+
+kable(c1, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+# Manuscript Table
+
+```{r man-table}
+
+
+c <- sdat %>%
+  group_by(Estimator, N2, N1) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'N2','N1', 'est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'ULSMV', c('est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'WLSMV', c('est', 'RB', 'RMSE')])
+colnames(c1) <- c('N2','N1',  rep(c('est', 'RB', 'RMSE'), 3))
+
+kable(c1, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '=2, 'MLR'=3, 'ULSMV'=3, 'WLSMV'=3))
+
+
+print(xtable(c1, digits = 3,align=c("l", "l", "l", rep("r",9)),
+             display=c("s", "d","d", rep("f",9)),
+             caption="Mean Factor Loading, Relative Bias, and RMSE by Estimation Method",
+             label="tb:fct"),
+      booktabs = T, include.rownames = F,
+      caption.placement = "top")
+
+```
+
