@@ -24,7 +24,7 @@ This project extends that work by using the a subset of the output files to repo
 
 *[Admissible Replications and Convergence](ml-cfa-convergence-summary.html)
 
-## Parameter Recovery Results
+## Parameter Bias Investigation
 
 *[Overview of Methods](ml-cfa-parameter-bias-overview.html)
 
@@ -36,10 +36,25 @@ This project extends that work by using the a subset of the output files to repo
 
 *[Results - Level-2 Factor Variance](ml-cfa-parameter-bias-level2-factor-variances.html)
 
-## Convergence of Estimates Results
+## Confidence Interval Coverage
 
-*[Parameter convergence](ml-cfa-parameter-convergence.html)
+See notes on simulation for figure idea
 
+*[CI Coverage - Factor Loadings](ml-cfa-ci-coverage.html)
+
+## Convergence of Estimates among Estimation Methods
+
+*[Parameter Convergence - Trace Plots](ml-cfa-parameter-convergence.html)
+
+*[Correlation of Estimates - Factor Loadings](ml-cfa-parameter-convergence-correlation-factor-loadings.html)
+
+*[Correlation of Estimates - Level-1 Factor Covariance](ml-cfa-parameter-convergence-correlation-L1-factor-covariance.html)
+
+*[Correlation of Estimates - Level-2 Factor Covariance](ml-cfa-parameter-convergence-correlation-L2-factor-covariance.html)
+
+*[Correlation of Estimates - Level-2 Factor Variances](ml-cfa-parameter-convergence-correlation-L2-factor-variances.html)
+
+*[Correlation of Estimates - Level-2 Residual Variances](ml-cfa-parameter-convergence-correlation-L2-residual-variances.html)
 
 ## Data Cleaning
 

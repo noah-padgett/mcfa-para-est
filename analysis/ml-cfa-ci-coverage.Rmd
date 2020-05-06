@@ -1,0 +1,181 @@
+---
+title: "CI Coverage"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r init, warning=FALSE, message=FALSE}
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+source(paste0(getwd(),"/code/get_data.R"))
+
+theme_set(theme_bw())
+
+```
+
+```{r}
+sessionInfo()
+```
+
+
+```{r}
+
+# take out unconverged/inadmissible cases
+sim_results <- filter(sim_results, Converge==1, Admissible==1)
+
+ids <- c("Condition", "Replication", "Estimator", "ss_l1", "ss_l2", "icc_ov", "icc_lv")
+# set up vectors of variable names
+pvec <- c(paste0('lambda1',1:6), paste0('lambda2',6:10), 'psiW12','psiB1', 'psiB2', 'psiB12', paste0('thetaB',1:10))
+# now get standard errors
+sevec <- c(paste0('selambda1',1:6), paste0('selambda2',6:10), 'sepsiW12','sepsiB1', 'sepsiB2', 'sepsiB12', paste0('sethetaB',1:10))
+# stored "true" values of parameters by each condition
+ptvec <- c(paste0('lambdaT1',1:6), paste0('lambdaT2',6:10), 'psiW12T', 'psiB1T', 'psiB2T', 'psiB12T', paste0("thetaBT", 1:10))
+
+# need to reshape into "long" format and compute CIs
+
+sim_results0 <- sim_results[,c(ids, pvec)] %>%
+  pivot_longer(
+    cols =all_of(pvec),
+    names_to= "parameter",
+    values_to = c("theta"))
+sim_results1 <- sim_results[,c(ids, sevec)] %>%
+  pivot_longer(
+    cols =all_of(sevec),
+    names_to= "parameterSE",
+    values_to = c("se"))
+# add new columns for lambda truth
+# paste0('lambda1',1:6), paste0('lambda2',6:10)
+sim_results2 <- sim_results %>%
+  mutate(lambdaT11=lambdaT, lambdaT26=lambdaT,
+         lambdaT12=lambdaT, lambdaT27=lambdaT,
+         lambdaT13=lambdaT, lambdaT28=lambdaT,
+         lambdaT14=lambdaT, lambdaT29=lambdaT,
+         lambdaT15=lambdaT, lambdaT210=lambdaT,
+         lambdaT16=lambdaT,
+         thetaBT1=thetaBT, thetaBT6=thetaBT,
+         thetaBT2=thetaBT, thetaBT7=thetaBT,
+         thetaBT3=thetaBT, thetaBT8=thetaBT,
+         thetaBT4=thetaBT, thetaBT9=thetaBT,
+         thetaBT5=thetaBT, thetaBT10=thetaBT)
+sim_results2 <- sim_results2[,c(ids, ptvec)] %>%
+  pivot_longer(
+    cols =all_of(ptvec),
+    names_to= "paraTruth",
+    values_to = c("truth"))
+
+sim_results0$se <- sim_results1$se
+sim_results0$truth <- sim_results2$truth
+
+zcrit <- 1.96
+theta <- sim_results0$theta
+se <- sim_results0$se
+truth <- sim_results0$truth
+ll <- theta - zcrit*se
+ul <- theta + zcrit*se
+contain <- data.table::fifelse(truth > ll & truth < ul, 1, 0)
+sim_results0$ll <- ll
+sim_results0$ul <- ul
+sim_results0$contain <- contain
+
+
+# recode parameter names
+sim_results0$parameter <- recode(
+  sim_results0$parameter,
+  `lambda11`="lambda[1,1]", `lambda26`="lambda[2,6]",
+  `lambda12`="lambda[1,2]", `lambda27`="lambda[2,7]",
+  `lambda13`="lambda[1,3]", `lambda28`="lambda[2,8]",
+  `lambda14`="lambda[1,4]", `lambda29`="lambda[2,9]",
+  `lambda15`="lambda[1,5]", `lambda210`="lambda[2,10]",
+  `lambda16`="lambda[1,6]",
+  `thetaB1`="thetaB[1,1]", `thetaB6`="thetaB[6,6]",
+  `thetaB2`="thetaB[2,2]", `thetaB7`="thetaB[7,7]",
+  `thetaB3`="thetaB[3,3]", `thetaB8`="thetaB[8,8]",
+  `thetaB4`="thetaB[4,4]", `thetaB9`="thetaB[9,9]",
+  `thetaB5`="thetaB[5,5]", `thetaB10`="thetaB[10,10]",
+  `psiW12`="psiW[1,2]",`psiB12`="psiB[1,2]",
+  `psiB1`="psiB[1,1]", `psiB2`="psiB[2,2]"
+  )
+
+level_ord <- c("lambda[1,1]", "lambda[1,2]", "lambda[1,3]",   "lambda[1,4]", "lambda[1,5]", "lambda[1,6]", "lambda[2,6]", "lambda[2,7]", "lambda[2,8]", "lambda[2,9]", "lambda[2,10]", "psiW[1,2]", "psiB[1,2]", "psiB[1,1]", "psiB[2,2]",  "thetaB[1,1]", "thetaB[2,2]", "thetaB[3,3]", "thetaB[4,4]", "thetaB[5,5]", "thetaB[6,6]", "thetaB[7,7]", "thetaB[8,8]", "thetaB[9,9]", "thetaB[10,10]")
+sim_results0$parameter <- factor(
+  sim_results0$parameter,
+  levels=level_ord,
+  ordered=T)
+sim_results0$parameterRev <- factor(
+  sim_results0$parameter,
+  levels=rev(level_ord),
+  ordered=T)
+
+# ggplot(sim_results0, aes(y=theta,x=parameter, group=parameter))+
+#   geom_boxplot()+
+#   theme(axis.text.x = element_text(size=7, angle=60,hjust=1))
+# 
+# 
+# ggplot(sim_results0, aes(y=theta,x=parameter, group=parameter))+
+#   geom_boxplot()+
+#   lims(y=c(-1,2))+
+#   theme(axis.text.x = element_text(size=7, angle=60,hjust=1))
+
+# so clearly we need to remove some replications with impossible values...
+
+sim_results0 <- sim_results0 %>%
+  group_by(Condition, parameter) %>%
+  mutate(
+    ni = n(),
+    q0.001 = quantile(theta, 0.001),
+    q0.01 = quantile(theta, 0.01),
+    q0.025 = quantile(theta, 0.025),
+    q0.975 = quantile(theta, 0.975),
+    q0.99 = quantile(theta, 0.99),
+    q0.999 = quantile(theta, 0.999),
+    flag0.975 = ifelse(theta >= q0.975 | theta <= q0.025, 1, 0),
+    flag0.99 = ifelse(theta >= q0.99 | theta <= q0.01, 1, 0),
+    flag0.999 = ifelse(theta >= q0.999 | theta <= q0.001, 1, 0)
+  ) 
+
+sim_results1 <- filter(sim_results0, flag0.99 != 1)
+
+
+```
+
+
+# Plots
+
+```{r}
+
+cols <- c("Upper Limit"="#56B4E9", "Estimate"="#CC79A7","Lower Limit"="#E69F00")
+
+p <- ggplot(sim_results1)+
+  geom_boxplot(aes(y=ul,x=parameter, 
+                   group=parameter,
+                   color="Upper Limit", fill="Upper Limit"),
+               outlier.shape = NA, coef = 0, alpha=0.5)+
+  geom_boxplot(aes(y=theta,x=parameter, 
+                   group=parameter,
+                   color="Estimate",fill="Estimate"),
+               outlier.shape = NA, coef = 0, alpha=0.5)+
+  geom_boxplot(aes(y=ll,x=parameter,
+                   group=parameter,
+                   color="Lower Limit", fill="Lower Limit"),
+               outlier.shape = NA, coef = 0, alpha=0.5)+
+  geom_point(aes(y=truth,x=parameter, group= parameter),
+             color="red")+
+  facet_grid(icc_ov + icc_lv ~.) +
+  scale_color_manual(name=" ", values=cols)+
+  scale_fill_manual(name=" ", values=cols)+
+  lims(y=c(-0.25, 2))+
+  labs(y="Parameter Estimate",
+       title="Interquartile range plots for Estimates and CI Limits",
+       subtitle="Conditional on ICCs (latent and observed)")+
+  theme(axis.text.x = element_text(size=7, angle=60,hjust=1),
+        axis.title.x = element_blank(),
+        legend.position = "bottom")
+p
+
+
+
+```

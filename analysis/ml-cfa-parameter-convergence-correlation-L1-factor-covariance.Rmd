@@ -1,0 +1,187 @@
+---
+title: "Correlation among Parameter Estimates: Level-1 Factor Covariance"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r init, warning=FALSE, message=FALSE}
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+source(paste0(getwd(),"/code/get_data.R"))
+
+# subset to data with admissible replications
+sim_results <- filter(sim_results, Converge==1 & Admissible==1)
+
+```
+
+```{r}
+sessionInfo()
+```
+
+# General Descrition
+
+On this page, we are investigating the correlation among parameter estimates between estimation methods.
+We do this by
+
+1. Subsetting the data to the parameter of interest
+2. Reshaping the data to wide
+3. Compute the correlation
+4. Compute the proportion of admissible cases by comparison (i.e., proportion of replications that were used to compute correlation). This gives us an indication of how convergence varied across estimation methods
+5. Reshape to long data for plotting
+6. Plot correlation estimates in boxplots with points overlayed
+
+# Factor Covariance: Level-1
+
+## Data Manipulation
+
+```{r}
+
+# keep variables
+keepVar <- c("Condition", "Replication", "ss_l1", "ss_l2", "icc_ov", "icc_lv", "Estimator", "psiW12")
+
+sim_res1 <- sim_results[, keepVar]
+
+sim_res1 <- sim_res1%>%
+  pivot_wider(id_cols=c("Condition","Replication", "ss_l1", "ss_l2", "icc_ov", "icc_lv"),
+              names_from = "Estimator",
+              values_from = "psiW12")
+
+cor.est <- sim_res1 %>%
+  group_by(ss_l1, ss_l2, icc_ov, icc_lv) %>%
+  summarise(
+    r_mlr_ulsmv = cor(MLR, ULSMV,use = "pairwise.complete"),
+    cprop_mlr_ulsmv = (1-(sum(is.na(MLR + ULSMV))/500)) ,
+    r_mlr_wlsmv = cor(MLR, WLSMV,use = "pairwise.complete"),
+    cprop_mlr_wlsmv = (1-(sum(is.na(MLR + WLSMV))/500)),
+    r_ulsmv_wlsmv = cor(ULSMV, WLSMV,use = "pairwise.complete"),
+    cprop_ulsmv_wlsmv = (1-(sum(is.na(ULSMV + WLSMV))/500))
+  )
+
+a1 <- cor.est %>%
+  pivot_longer(cols= starts_with("r_"),
+               names_to= "Cor",
+               values_to = "Est") %>%
+  mutate(Cor = substring(Cor, 3))
+
+a2 <- cor.est %>%
+  pivot_longer(cols= starts_with("cprop_"),
+               names_to= "Cor",
+               values_to = "Cprop")%>%
+  mutate(Cor = substring(Cor, 7))
+
+cor.est <- left_join(a1[,c(1:4,8:9)], a2[,c(1:4,8:9)])
+
+cor.est$Cor <- factor(cor.est$Cor,
+                      levels=c("mlr_ulsmv", "mlr_wlsmv", "ulsmv_wlsmv"),
+                      labels=c("cor(MLR, ULSMV)",
+                               "cor(MLR, WLSMV)",
+                               "cor(ULSMV, WLSMV)"),
+                      ordered=T)
+
+cor.est$C90 <- as.factor(ifelse(cor.est$Cprop >= 0.9, ">= 90%", "< 90%"))
+cor.est$C95 <- as.factor(ifelse(cor.est$Cprop >= 0.95, ">= 95%", "< 95%"))
+
+```
+
+## Plots Between Conditions
+
+```{r}
+
+cols=c("< 90%"="#56B4E9", ">= 90%"="#CC79A7")
+p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(data=filter(cor.est, C90=="< 90%"),
+              width=0.3, aes(x=Cor, y=Est, color="< 90%")) +
+  geom_jitter(data=filter(cor.est, C90==">= 90%"),
+              width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
+  lims(y=c(0,1))+
+  labs(y="Correlation between Estimates",
+       x=NULL,
+       title="Correlation amoung Estimates: Level-1 Factor Covariance")+
+  scale_color_manual(name="% Admissible", values=cols)+
+  theme_bw()+
+  theme(panel.grid = element_blank())
+p
+
+
+p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(data=filter(cor.est, C90=="< 90%"),
+              width=0.3, aes(x=Cor, y=Est, color="< 90%")) +
+  geom_jitter(data=filter(cor.est, C90==">= 90%"),
+              width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
+  lims(y=c(0,1))+
+  labs(y="Correlation between Estimates",
+       x=NULL,
+       title="Correlation amoung Estimates: Level-1 Factor Covariance",
+       subtitle = "Conditional on Level-1 Sample Size")+
+  scale_color_manual(name="% Admissible", values=cols)+
+  facet_wrap(.~ss_l1)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_text(angle=90))
+p
+
+
+p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(data=filter(cor.est, C90=="< 90%"),
+              width=0.3, aes(x=Cor, y=Est, color="< 90%")) +
+  geom_jitter(data=filter(cor.est, C90==">= 90%"),
+              width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
+  lims(y=c(0,1))+
+  labs(y="Correlation between Estimates",
+       x=NULL,
+       title="Correlation amoung Estimates: Level-1 Factor Covariance",
+       subtitle = "Conditional on Level-2 Sample Size")+
+  scale_color_manual(name="% Admissible", values=cols)+
+  facet_wrap(.~ss_l2, nrow=1)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_text(angle=90))
+p
+
+p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(data=filter(cor.est, C90=="< 90%"),
+              width=0.3, aes(x=Cor, y=Est, color="< 90%")) +
+  geom_jitter(data=filter(cor.est, C90==">= 90%"),
+              width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
+  lims(y=c(0,1))+
+  labs(y="Correlation between Estimates",
+       x=NULL,
+       title="Correlation amoung Estimates: Level-1 Factor Covariance",
+       subtitle = "Conditional on Observed Variable ICC")+
+  scale_color_manual(name="% Admissible", values=cols)+
+  facet_wrap(.~icc_ov)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_text(angle=90))
+p
+
+p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(data=filter(cor.est, C90=="< 90%"),
+              width=0.3, aes(x=Cor, y=Est, color="< 90%")) +
+  geom_jitter(data=filter(cor.est, C90==">= 90%"),
+              width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
+  lims(y=c(0,1))+
+  labs(y="Correlation between Estimates",
+       x=NULL,
+       title="Correlation amoung Estimates: Level-1 Factor Covariance",
+       subtitle = "Conditional on Latent Variable ICC")+
+  scale_color_manual(name="% Admissible", values=cols)+
+  facet_wrap(.~icc_lv)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_text(angle=90))
+p
+
+```
+
+
+
