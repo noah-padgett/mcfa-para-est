@@ -27,6 +27,14 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -365,13 +373,6 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<!-- Add a small amount of space between sections. -->
-<style type="text/css">
-div.section {
-  padding-top: 12px;
-}
-</style>
-
 <div class="fluid-row" id="header">
 
 
@@ -383,7 +384,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -392,7 +393,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -401,17 +402,17 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-03-31
+<strong>Last updated:</strong> 2020-06-05
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>mcfa-para-est/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.5.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
@@ -420,12 +421,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -492,13 +493,19 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttree47117a0a2386f6a7db6cf54680cdd074912f4a93targetblank47117a0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/mcfa-para-est/tree/47117a0a2386f6a7db6cf54680cdd074912f4a93" target="_blank">47117a0</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeeecb366e3b200a573540eab3625c5939657d53cftargetblankeecb366a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/mcfa-para-est/tree/eecb366e3b200a573540eab3625c5939657d53cf" target="_blank">eecb366</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttree47117a0a2386f6a7db6cf54680cdd074912f4a93targetblank47117a0a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeeecb366e3b200a573540eab3625c5939657d53cftargetblankeecb366a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
-Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/noah-padgett/mcfa-para-est/tree/eecb366e3b200a573540eab3625c5939657d53cf" target="_blank">eecb366</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
@@ -506,6 +513,8 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    data/compiled_para_results.txt
     Ignored:    data/results_bias_est.csv
+    Ignored:    data/results_bias_se.csv
+    Ignored:    fig/
     Ignored:    manuscript/
     Ignored:    output/fact-cov-converge-largeN.pdf
     Ignored:    output/fact-cov-converge-medN.pdf
@@ -513,14 +522,32 @@ Ignored files:
     Ignored:    output/loading-converge-largeN.pdf
     Ignored:    output/loading-converge-medN.pdf
     Ignored:    output/loading-converge-smallN.pdf
+    Ignored:    references/
     Ignored:    sera-presentation/
 
 Untracked files:
-    Untracked:  analysis/ml-cfa-parameter-bias-factor-loadings.Rmd
-    Untracked:  analysis/ml-cfa-parameter-bias-level1-factor-covariances.Rmd
-    Untracked:  analysis/ml-cfa-parameter-bias-level2-factor-covariances.Rmd
-    Untracked:  analysis/ml-cfa-parameter-bias-level2-factor-variances.Rmd
-    Untracked:  analysis/ml-cfa-parameter-bias-overview.Rmd
+    Untracked:  analysis/ml-cfa-parameter-anova-estimates.Rmd
+    Untracked:  analysis/ml-cfa-parameter-anova-relative-bias.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-latent-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-observed-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-correlation-pubfigure.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-trace-plots-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-anova-logSE.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-anova-relative-bias.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-overview.Rmd
+    Untracked:  code/r_functions.R
+    Untracked:  renv.lock
+    Untracked:  renv/
+
+Unstaged changes:
+    Modified:   .Rprofile
+    Modified:   .gitignore
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/ml-cfa-convergence-summary.Rmd
+    Modified:   analysis/ml-cfa-parameter-convergence-correlation-factor-loadings.Rmd
+    Modified:   code/get_data.R
+    Modified:   code/load_packages.R
 
 </code></pre>
 <p>
@@ -533,9 +560,86 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/ml-cfa-convergence-summary.Rmd</code>) and HTML (<code>docs/ml-cfa-convergence-summary.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/noah-padgett/mcfa-para-est/e17f2b3c5d83c640e030dcb969f97bf6a5ae66c9/docs/ml-cfa-convergence-summary.html" target="_blank">e17f2b3</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-03-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/noah-padgett/mcfa-para-est/blob/35a72f49a38da4ca3081083c907bf22ebf2f6b99/analysis/ml-cfa-convergence-summary.Rmd" target="_blank">35a72f4</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-03-30
+</td>
+<td>
+initial commit
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/noah-padgett/mcfa-para-est/35a72f49a38da4ca3081083c907bf22ebf2f6b99/docs/ml-cfa-convergence-summary.html" target="_blank">35a72f4</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-03-30
+</td>
+<td>
+initial commit
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -544,7 +648,7 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 source(paste0(getwd(),&quot;/code/load_packages.R&quot;))
 source(paste0(getwd(),&quot;/code/get_data.R&quot;))</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.1 (2019-07-05)
+<pre><code>R version 4.0.0 (2020-04-24)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 18362)
 
@@ -558,33 +662,35 @@ locale:
 [5] LC_TIME=English_United States.1252    
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] stats     graphics  grDevices datasets  utils     methods   base     
 
 other attached packages:
- [1] xtable_1.8-4          kableExtra_1.1.0      MplusAutomation_0.7-3
- [4] data.table_1.12.6     patchwork_1.0.0       forcats_0.4.0        
- [7] stringr_1.4.0         dplyr_0.8.3           purrr_0.3.3          
-[10] readr_1.3.1           tidyr_1.0.0           tibble_2.1.3         
-[13] ggplot2_3.2.1         tidyverse_1.3.0      
+ [1] xtable_1.8-4          kableExtra_1.1.0      cowplot_1.0.0        
+ [4] MplusAutomation_0.7-3 data.table_1.12.8     patchwork_1.0.0      
+ [7] forcats_0.5.0         stringr_1.4.0         dplyr_1.0.0          
+[10] purrr_0.3.4           readr_1.3.1           tidyr_1.1.0          
+[13] tibble_3.0.1          ggplot2_3.3.1         tidyverse_1.3.0      
+[16] workflowr_1.6.2      
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.3        lubridate_1.7.4   lattice_0.20-38   assertthat_0.2.1 
- [5] zeallot_0.1.0     rprojroot_1.3-2   digest_0.6.23     R6_2.4.1         
- [9] cellranger_1.1.0  plyr_1.8.4        backports_1.1.5   reprex_0.3.0     
-[13] evaluate_0.14     coda_0.19-3       httr_1.4.1        pillar_1.4.2     
-[17] rlang_0.4.2       lazyeval_0.2.2    readxl_1.3.1      rstudioapi_0.10  
-[21] texreg_1.36.23    rmarkdown_1.18    gsubfn_0.7        proto_1.0.0      
-[25] webshot_0.5.2     pander_0.6.3      munsell_0.5.0     broom_0.5.2      
-[29] compiler_3.6.1    httpuv_1.5.2      modelr_0.1.5      xfun_0.11        
-[33] pkgconfig_2.0.3   htmltools_0.4.0   tidyselect_0.2.5  workflowr_1.5.0  
-[37] viridisLite_0.3.0 crayon_1.3.4      dbplyr_1.4.2      withr_2.1.2      
-[41] later_1.0.0       grid_3.6.1        nlme_3.1-140      jsonlite_1.6     
-[45] gtable_0.3.0      lifecycle_0.1.0   DBI_1.0.0         git2r_0.26.1     
-[49] magrittr_1.5      scales_1.1.0      cli_1.1.0         stringi_1.4.3    
-[53] fs_1.3.1          promises_1.1.0    xml2_1.2.2        generics_0.0.2   
-[57] vctrs_0.2.0       boot_1.3-22       tools_3.6.1       glue_1.3.1       
-[61] hms_0.5.2         parallel_3.6.1    yaml_2.2.0        colorspace_1.4-1 
-[65] rvest_0.3.5       knitr_1.26        haven_2.2.0      </code></pre>
+ [1] httr_1.4.1        jsonlite_1.6.1    viridisLite_0.3.0 gsubfn_0.7       
+ [5] modelr_0.1.8      assertthat_0.2.1  pander_0.6.3      blob_1.2.1       
+ [9] renv_0.10.0       cellranger_1.1.0  yaml_2.2.1        pillar_1.4.4     
+[13] backports_1.1.7   lattice_0.20-41   glue_1.4.1        digest_0.6.25    
+[17] promises_1.1.0    rvest_0.3.5       colorspace_1.4-1  htmltools_0.4.0  
+[21] httpuv_1.5.3.1    plyr_1.8.6        pkgconfig_2.0.3   broom_0.5.6      
+[25] haven_2.3.1       scales_1.1.1      webshot_0.5.2     whisker_0.4      
+[29] later_1.0.0       git2r_0.27.1      generics_0.0.2    ellipsis_0.3.1   
+[33] withr_2.2.0       cli_2.0.2         proto_1.0.0       magrittr_1.5     
+[37] crayon_1.3.4      readxl_1.3.1      evaluate_0.14     fs_1.4.1         
+[41] fansi_0.4.1       nlme_3.1-147      xml2_1.3.2        tools_4.0.0      
+[45] hms_0.5.3         lifecycle_0.2.0   munsell_0.5.0     reprex_0.3.0     
+[49] compiler_4.0.0    rlang_0.4.6       grid_4.0.0        rstudioapi_0.11  
+[53] texreg_1.37.1     rmarkdown_2.2     boot_1.3-24       gtable_0.3.0     
+[57] DBI_1.1.0         R6_2.4.1          lubridate_1.7.8   knitr_1.28       
+[61] rprojroot_1.3-2   stringi_1.4.6     parallel_4.0.0    Rcpp_1.0.4.6     
+[65] vctrs_0.3.0       dbplyr_1.4.4      tidyselect_1.1.0  xfun_0.14        
+[69] coda_0.19-3      </code></pre>
 <div id="convergence" class="section level1">
 <h1>Convergence</h1>
 <p>Model converge is when …</p>
@@ -594,8 +700,9 @@ loaded via a namespace (and not attached):
 <h3>Estimation Method</h3>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(Estimator) %&gt;%
-  summarise(Converge=mean(Converge))
-colnames(c)&lt;- c(&quot;Estimation Method&quot;, &quot;Convergence&quot;)
+  summarise(Converge=mean(Converge))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;Estimation Method&quot;, &quot;Convergence&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -642,8 +749,9 @@ WLSMV
 <h3>Level-2 Sample Size</h3>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(ss_l2) %&gt;%
-  summarise(Converge=mean(Converge))
-colnames(c)&lt;- c(&quot;Level-2 N&quot;, &quot;Convergence&quot;)
+  summarise(Converge=mean(Converge))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;Level-2 N&quot;, &quot;Convergence&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -698,8 +806,9 @@ Convergence
 <h3>Level-1 Sample Size</h3>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(ss_l1) %&gt;%
-  summarise(Converge=mean(Converge))
-colnames(c)&lt;- c(&quot;Level-1 N&quot;, &quot;Convergence&quot;)
+  summarise(Converge=mean(Converge))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;Level-1 N&quot;, &quot;Convergence&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -746,8 +855,9 @@ Convergence
 <h3>ICC <em>Observed</em> Variables</h3>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(icc_ov) %&gt;%
-  summarise(Converge=mean(Converge))
-colnames(c)&lt;- c(&quot;ICC Observed Variable&quot;, &quot;Convergence&quot;)
+  summarise(Converge=mean(Converge))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;ICC Observed Variable&quot;, &quot;Convergence&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -794,8 +904,9 @@ Convergence
 <h3>ICC <em>Latent</em> Variables</h3>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(icc_lv) %&gt;%
-  summarise(Converge=mean(Converge))
-colnames(c)&lt;- c(&quot;ICC Latent Variable&quot;, &quot;Convergence&quot;)
+  summarise(Converge=mean(Converge))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;ICC Latent Variable&quot;, &quot;Convergence&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -837,9 +948,9 @@ Convergence
 <h3>Estimation Method &amp; Level-2 Sample Size</h3>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(Estimator, ss_l2) %&gt;%
-  summarise(Converge=mean(Converge))
-
-c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l2&#39;, &#39;Converge&#39;)], 
+  summarise(Converge=mean(Converge))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l2&#39;, &#39;Converge&#39;)], 
            c[ c$Estimator == &#39;ULSMV&#39;, &#39;Converge&#39;], 
            c[ c$Estimator == &#39;WLSMV&#39;, &#39;Converge&#39;])
 colnames(c1) &lt;- c(&#39;Level-2 N&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
@@ -938,9 +1049,9 @@ WLSMV
 <h3>Estimation Method &amp; Level-1 Sample Size</h3>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(Estimator, ss_l1) %&gt;%
-  summarise(Converge=mean(Converge))
-
-c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l1&#39;, &#39;Converge&#39;)], 
+  summarise(Converge=mean(Converge))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l1&#39;, &#39;Converge&#39;)], 
            c[ c$Estimator == &#39;ULSMV&#39;, &#39;Converge&#39;], 
            c[ c$Estimator == &#39;WLSMV&#39;, &#39;Converge&#39;])
 colnames(c1) &lt;- c(&#39;Level-1 N&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
@@ -1025,12 +1136,16 @@ WLSMV
 <h3>Estimation Method, Level-2 Sample Size &amp; Level-1 Sample Size</h3>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(Estimator, ss_l1, ss_l2) %&gt;%
-  summarise(Converge=mean(Converge))
-
-c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l1&#39;, &#39;ss_l2&#39;, &#39;Converge&#39;)], 
+  summarise(Converge=mean(Converge))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39;, &#39;ss_l1&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l1&#39;, &#39;ss_l2&#39;, &#39;Converge&#39;)], 
            c[ c$Estimator == &#39;ULSMV&#39;, &#39;Converge&#39;], 
-           c[ c$Estimator == &#39;WLSMV&#39;, &#39;Converge&#39;])
-colnames(c1) &lt;- c(&#39;Level-1 N&#39;, &#39;Level-2 N&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
+           c[ c$Estimator == &#39;WLSMV&#39;, &#39;Converge&#39;])</code></pre>
+<pre><code>New names:
+* Converge -&gt; Converge...3
+* Converge -&gt; Converge...4
+* Converge -&gt; Converge...5</code></pre>
+<pre class="r"><code>colnames(c1) &lt;- c(&#39;Level-1 N&#39;, &#39;Level-2 N&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
 
 
 kable(c1, format=&#39;html&#39;, digits=4) %&gt;%
@@ -1278,12 +1393,16 @@ WLSMV
 <h2>Across all conditions</h2>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(Estimator, ss_l1, ss_l2, icc_ov, icc_lv) %&gt;%
-  summarise(Converge=mean(Converge))
-
-c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c(&#39;ss_l2&#39;, &#39;ss_l1&#39;, &#39;icc_ov&#39;, &#39;icc_lv&#39;, &#39;Converge&#39;)],
+  summarise(Converge=mean(Converge))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39;, &#39;ss_l1&#39;, &#39;ss_l2&#39;, &#39;icc_ov&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c(&#39;ss_l2&#39;, &#39;ss_l1&#39;, &#39;icc_ov&#39;, &#39;icc_lv&#39;, &#39;Converge&#39;)],
             c[ c$Estimator == &#39;ULSMV&#39;, &#39;Converge&#39;],
-            c[ c$Estimator == &#39;WLSMV&#39;, &#39;Converge&#39;])
-colnames(c1) &lt;- c(&#39;Level-2 N&#39;, &#39;Level-1 N&#39;, &#39;ICC-OV&#39;, &#39;ICC-LV&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
+            c[ c$Estimator == &#39;WLSMV&#39;, &#39;Converge&#39;])</code></pre>
+<pre><code>New names:
+* Converge -&gt; Converge...5
+* Converge -&gt; Converge...6
+* Converge -&gt; Converge...7</code></pre>
+<pre class="r"><code>colnames(c1) &lt;- c(&#39;Level-2 N&#39;, &#39;Level-1 N&#39;, &#39;ICC-OV&#39;, &#39;ICC-LV&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
 
 
 kable(c1, format=&#39;html&#39;, digits=4) %&gt;%
@@ -2995,8 +3114,9 @@ WLSMV
 <h3>Estimation Method</h3>
 <pre class="r"><code>c &lt;- c.sim_results %&gt;%
   group_by(Estimator) %&gt;%
-  summarise(Admissible=mean(Admissible))
-colnames(c)&lt;- c(&quot;Estimation Method&quot;, &quot;Admissible&quot;)
+  summarise(Admissible=mean(Admissible))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;Estimation Method&quot;, &quot;Admissible&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -3043,8 +3163,9 @@ WLSMV
 <h3>Level-2 Sample Size</h3>
 <pre class="r"><code>c &lt;- c.sim_results %&gt;%
   group_by(ss_l2) %&gt;%
-  summarise(Admissible=mean(Admissible))
-colnames(c)&lt;- c(&quot;Level-2 N&quot;, &quot;Admissible&quot;)
+  summarise(Admissible=mean(Admissible))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;Level-2 N&quot;, &quot;Admissible&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -3099,8 +3220,9 @@ Admissible
 <h3>Level-1 Sample Size</h3>
 <pre class="r"><code>c &lt;- c.sim_results %&gt;%
   group_by(ss_l1) %&gt;%
-  summarise(Admissible=mean(Admissible))
-colnames(c)&lt;- c(&quot;Level-1 N&quot;, &quot;Admissible&quot;)
+  summarise(Admissible=mean(Admissible))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;Level-1 N&quot;, &quot;Admissible&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -3147,8 +3269,9 @@ Admissible
 <h3>ICC <em>Observed</em> Variables</h3>
 <pre class="r"><code>c &lt;- c.sim_results %&gt;%
   group_by(icc_ov) %&gt;%
-  summarise(Admissible=mean(Admissible))
-colnames(c)&lt;- c(&quot;ICC Observed Variable&quot;, &quot;Admissible&quot;)
+  summarise(Admissible=mean(Admissible))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;ICC Observed Variable&quot;, &quot;Admissible&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -3195,8 +3318,9 @@ Admissible
 <h3>ICC <em>Latent</em> Variables</h3>
 <pre class="r"><code>c &lt;- c.sim_results %&gt;%
   group_by(icc_lv) %&gt;%
-  summarise(Admissible=mean(Admissible))
-colnames(c)&lt;- c(&quot;ICC Latent Variable&quot;, &quot;Admissible&quot;)
+  summarise(Admissible=mean(Admissible))</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>colnames(c)&lt;- c(&quot;ICC Latent Variable&quot;, &quot;Admissible&quot;)
 
 kable(c, format=&#39;html&#39;, digits=4) %&gt;%
     kable_styling(full_width = T)</code></pre>
@@ -3238,9 +3362,9 @@ Admissible
 <h3>Estimation Method &amp; Level-2 Sample Size</h3>
 <pre class="r"><code>c &lt;- c.sim_results %&gt;%
   group_by(Estimator, ss_l2) %&gt;%
-  summarise(Admissible=mean(Admissible))
-
-c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l2&#39;, &#39;Admissible&#39;)], 
+  summarise(Admissible=mean(Admissible))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l2&#39;, &#39;Admissible&#39;)], 
            c[ c$Estimator == &#39;ULSMV&#39;, &#39;Admissible&#39;], 
            c[ c$Estimator == &#39;WLSMV&#39;, &#39;Admissible&#39;])
 colnames(c1) &lt;- c(&#39;Level-2 N&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
@@ -3338,9 +3462,9 @@ WLSMV
 <h3>Estimation Method &amp; Level-1 Sample Size</h3>
 <pre class="r"><code>c &lt;- c.sim_results %&gt;%
   group_by(Estimator, ss_l1) %&gt;%
-  summarise(Admissible=mean(Admissible))
-
-c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l1&#39;, &#39;Admissible&#39;)], 
+  summarise(Admissible=mean(Admissible))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l1&#39;, &#39;Admissible&#39;)], 
            c[ c$Estimator == &#39;ULSMV&#39;, &#39;Admissible&#39;], 
            c[ c$Estimator == &#39;WLSMV&#39;, &#39;Admissible&#39;])
 colnames(c1) &lt;- c(&#39;Level-1 N&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
@@ -3424,12 +3548,16 @@ WLSMV
 <h3>Estimation Method, Level-2 Sample Size &amp; Level-1 Sample Size</h3>
 <pre class="r"><code>c &lt;- c.sim_results %&gt;%
   group_by(Estimator, ss_l1, ss_l2) %&gt;%
-  summarise(Admissible=mean(Admissible))
-
-c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l1&#39;, &#39;ss_l2&#39;, &#39;Admissible&#39;)], 
+  summarise(Admissible=mean(Admissible))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39;, &#39;ss_l1&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l1&#39;, &#39;ss_l2&#39;, &#39;Admissible&#39;)], 
            c[ c$Estimator == &#39;ULSMV&#39;, &#39;Admissible&#39;], 
-           c[ c$Estimator == &#39;WLSMV&#39;, &#39;Admissible&#39;])
-colnames(c1) &lt;- c(&#39;Level-1 N&#39;, &#39;Level-2 N&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
+           c[ c$Estimator == &#39;WLSMV&#39;, &#39;Admissible&#39;])</code></pre>
+<pre><code>New names:
+* Admissible -&gt; Admissible...3
+* Admissible -&gt; Admissible...4
+* Admissible -&gt; Admissible...5</code></pre>
+<pre class="r"><code>colnames(c1) &lt;- c(&#39;Level-1 N&#39;, &#39;Level-2 N&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
 
 kable(c1, format=&#39;html&#39;, digits=4) %&gt;%
   kable_styling(full_width = T) %&gt;%
@@ -3676,12 +3804,16 @@ WLSMV
 <h2>Admissible Replications for individual conditions</h2>
 <pre class="r"><code>c &lt;- c.sim_results %&gt;%
   group_by(Estimator, ss_l1, ss_l2, icc_ov, icc_lv) %&gt;%
-  summarise(Admissible=mean(Admissible))
-
-c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c(&#39;ss_l2&#39;, &#39;ss_l1&#39;, &#39;icc_ov&#39;, &#39;icc_lv&#39;, &#39;Admissible&#39;)],
+  summarise(Admissible=mean(Admissible))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39;, &#39;ss_l1&#39;, &#39;ss_l2&#39;, &#39;icc_ov&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c(&#39;ss_l2&#39;, &#39;ss_l1&#39;, &#39;icc_ov&#39;, &#39;icc_lv&#39;, &#39;Admissible&#39;)],
             c[ c$Estimator == &#39;ULSMV&#39;, &#39;Admissible&#39;],
-            c[ c$Estimator == &#39;WLSMV&#39;, &#39;Admissible&#39;])
-colnames(c1) &lt;- c(&#39;Level-2 N&#39;, &#39;Level-1 N&#39;, &#39;ICC-OV&#39;, &#39;ICC-LV&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
+            c[ c$Estimator == &#39;WLSMV&#39;, &#39;Admissible&#39;])</code></pre>
+<pre><code>New names:
+* Admissible -&gt; Admissible...5
+* Admissible -&gt; Admissible...6
+* Admissible -&gt; Admissible...7</code></pre>
+<pre class="r"><code>colnames(c1) &lt;- c(&#39;Level-2 N&#39;, &#39;Level-1 N&#39;, &#39;ICC-OV&#39;, &#39;ICC-LV&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
 
 
 kable(c1, format=&#39;html&#39;, digits=4) %&gt;%
@@ -5383,14 +5515,14 @@ WLSMV
 </table>
 </div>
 </div>
-<div id="manuscript-table" class="section level1">
-<h1>Manuscript Table</h1>
+<div id="manuscript-tables" class="section level1">
+<h1>Manuscript Table(s)</h1>
 <pre class="r"><code>c &lt;- sim_results %&gt;%
   group_by(Estimator, ss_l2) %&gt;%
   mutate(A = ifelse(is.na(Admissible), 0, Admissible)) %&gt;%
-  summarise(Admissible=mean(A, na.rm = T))
-
-c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l2&#39;,&#39;Admissible&#39;)], 
+  summarise(Admissible=mean(A, na.rm = T))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;ss_l2&#39;,&#39;Admissible&#39;)], 
            c[ c$Estimator == &#39;ULSMV&#39;, &#39;Admissible&#39;], 
            c[ c$Estimator == &#39;WLSMV&#39;, &#39;Admissible&#39;])
 colnames(c1) &lt;- c(&#39;Level-2 N_2&#39;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
@@ -5480,8 +5612,8 @@ WLSMV
              label=&quot;tb:admiss&quot;),
       booktabs = T, include.rownames = F,
       caption.placement = &quot;top&quot;)</code></pre>
-<pre><code>% latex table generated in R 3.6.1 by xtable 1.8-4 package
-% Tue Mar 31 15:55:49 2020
+<pre><code>% latex table generated in R 4.0.0 by xtable 1.8-4 package
+% Fri Jun 05 10:47:52 2020
 \begin{table}[ht]
 \centering
 \caption{Rates of admissible replications} 
@@ -5497,6 +5629,284 @@ Level-2 N\_2 &amp; MLR &amp; ULSMV &amp; WLSMV \\
    \bottomrule
 \end{tabular}
 \end{table}</code></pre>
+<pre class="r"><code># Version 2
+c &lt;- sim_results %&gt;%
+  group_by(Estimator, ss_l2, ss_l1) %&gt;%
+  mutate(A = ifelse(is.na(Admissible), 0, Admissible)) %&gt;%
+  summarise(Admissible=mean(A, na.rm = T))</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Estimator&#39;, &#39;ss_l2&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c(&#39;ss_l2&#39;, &#39;ss_l1&#39;, &#39;Admissible&#39;)], 
+           c[ c$Estimator == &#39;ULSMV&#39;, &#39;Admissible&#39;], 
+           c[ c$Estimator == &#39;WLSMV&#39;, &#39;Admissible&#39;])</code></pre>
+<pre><code>New names:
+* Admissible -&gt; Admissible...3
+* Admissible -&gt; Admissible...4
+* Admissible -&gt; Admissible...5</code></pre>
+<pre class="r"><code>colnames(c1) &lt;- c(&#39;Level-2 N_2&#39;, &quot;Level-1 N_1&quot;, &#39;MLR&#39;, &#39;ULSMV&#39;, &#39;WLSMV&#39;)
+
+
+kable(c1, format=&#39;html&#39;, digits=3) %&gt;%
+  kable_styling(full_width = T)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Level-2 N_2
+</th>
+<th style="text-align:right;">
+Level-1 N_1
+</th>
+<th style="text-align:right;">
+MLR
+</th>
+<th style="text-align:right;">
+ULSMV
+</th>
+<th style="text-align:right;">
+WLSMV
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0.575
+</td>
+<td style="text-align:right;">
+0.401
+</td>
+<td style="text-align:right;">
+0.355
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0.685
+</td>
+<td style="text-align:right;">
+0.573
+</td>
+<td style="text-align:right;">
+0.508
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0.838
+</td>
+<td style="text-align:right;">
+0.762
+</td>
+<td style="text-align:right;">
+0.688
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0.677
+</td>
+<td style="text-align:right;">
+0.532
+</td>
+<td style="text-align:right;">
+0.470
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0.796
+</td>
+<td style="text-align:right;">
+0.707
+</td>
+<td style="text-align:right;">
+0.660
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0.902
+</td>
+<td style="text-align:right;">
+0.880
+</td>
+<td style="text-align:right;">
+0.820
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0.806
+</td>
+<td style="text-align:right;">
+0.692
+</td>
+<td style="text-align:right;">
+0.665
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0.920
+</td>
+<td style="text-align:right;">
+0.873
+</td>
+<td style="text-align:right;">
+0.824
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0.946
+</td>
+<td style="text-align:right;">
+0.945
+</td>
+<td style="text-align:right;">
+0.911
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+200
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0.923
+</td>
+<td style="text-align:right;">
+0.875
+</td>
+<td style="text-align:right;">
+0.849
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+200
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0.963
+</td>
+<td style="text-align:right;">
+0.958
+</td>
+<td style="text-align:right;">
+0.936
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+200
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0.975
+</td>
+<td style="text-align:right;">
+0.974
+</td>
+<td style="text-align:right;">
+0.973
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>print(xtable(c1, digits = 3,align=c(&quot;l&quot;, &quot;l&quot;,&quot;l&quot;, &quot;r&quot;, &quot;r&quot;, &quot;r&quot;),
+             display=c(&quot;s&quot;,&quot;s&quot;, &quot;d&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;),
+             caption=&quot;Convergence rates indicate problems for all estimation methods&quot;,
+             label=&quot;tb:admiss&quot;),
+      booktabs = T, include.rownames = F,
+      caption.placement = &quot;top&quot;)</code></pre>
+<pre><code>Warning in formatC(x = c(30, 30, 30, 50, 50, 50, 100, 100, 100, 200, 200, :
+coercing argument to &quot;character&quot; for format=&quot;s&quot;</code></pre>
+<pre><code>% latex table generated in R 4.0.0 by xtable 1.8-4 package
+% Fri Jun 05 10:47:52 2020
+\begin{table}[ht]
+\centering
+\caption{Convergence rates indicate problems for all estimation methods} 
+\label{tb:admiss}
+\begin{tabular}{llrrr}
+  \toprule
+Level-2 N\_2 &amp; Level-1 N\_1 &amp; MLR &amp; ULSMV &amp; WLSMV \\ 
+  \midrule
+ 30 &amp;    5 &amp; 0.575 &amp; 0.401 &amp; 0.355 \\ 
+   30 &amp;   10 &amp; 0.685 &amp; 0.573 &amp; 0.508 \\ 
+   30 &amp;   30 &amp; 0.838 &amp; 0.762 &amp; 0.688 \\ 
+   50 &amp;    5 &amp; 0.677 &amp; 0.532 &amp; 0.470 \\ 
+   50 &amp;   10 &amp; 0.796 &amp; 0.707 &amp; 0.660 \\ 
+   50 &amp;   30 &amp; 0.902 &amp; 0.880 &amp; 0.820 \\ 
+  100 &amp;    5 &amp; 0.806 &amp; 0.692 &amp; 0.665 \\ 
+  100 &amp;   10 &amp; 0.920 &amp; 0.873 &amp; 0.824 \\ 
+  100 &amp;   30 &amp; 0.946 &amp; 0.945 &amp; 0.911 \\ 
+  200 &amp;    5 &amp; 0.923 &amp; 0.875 &amp; 0.849 \\ 
+  200 &amp;   10 &amp; 0.963 &amp; 0.958 &amp; 0.936 \\ 
+  200 &amp;   30 &amp; 0.975 &amp; 0.974 &amp; 0.973 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -5505,7 +5915,7 @@ Level-2 N\_2 &amp; MLR &amp; ULSMV &amp; WLSMV \\
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.1 (2019-07-05)
+<pre><code>R version 4.0.0 (2020-04-24)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 18362)
 
@@ -5519,33 +5929,35 @@ locale:
 [5] LC_TIME=English_United States.1252    
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] stats     graphics  grDevices datasets  utils     methods   base     
 
 other attached packages:
- [1] xtable_1.8-4          kableExtra_1.1.0      MplusAutomation_0.7-3
- [4] data.table_1.12.6     patchwork_1.0.0       forcats_0.4.0        
- [7] stringr_1.4.0         dplyr_0.8.3           purrr_0.3.3          
-[10] readr_1.3.1           tidyr_1.0.0           tibble_2.1.3         
-[13] ggplot2_3.2.1         tidyverse_1.3.0      
+ [1] xtable_1.8-4          kableExtra_1.1.0      cowplot_1.0.0        
+ [4] MplusAutomation_0.7-3 data.table_1.12.8     patchwork_1.0.0      
+ [7] forcats_0.5.0         stringr_1.4.0         dplyr_1.0.0          
+[10] purrr_0.3.4           readr_1.3.1           tidyr_1.1.0          
+[13] tibble_3.0.1          ggplot2_3.3.1         tidyverse_1.3.0      
+[16] workflowr_1.6.2      
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.3        lubridate_1.7.4   lattice_0.20-38   assertthat_0.2.1 
- [5] zeallot_0.1.0     rprojroot_1.3-2   digest_0.6.23     R6_2.4.1         
- [9] cellranger_1.1.0  plyr_1.8.4        backports_1.1.5   reprex_0.3.0     
-[13] evaluate_0.14     coda_0.19-3       highr_0.8         httr_1.4.1       
-[17] pillar_1.4.2      rlang_0.4.2       lazyeval_0.2.2    readxl_1.3.1     
-[21] rstudioapi_0.10   texreg_1.36.23    rmarkdown_1.18    gsubfn_0.7       
-[25] proto_1.0.0       webshot_0.5.2     pander_0.6.3      munsell_0.5.0    
-[29] broom_0.5.2       compiler_3.6.1    httpuv_1.5.2      modelr_0.1.5     
-[33] xfun_0.11         pkgconfig_2.0.3   htmltools_0.4.0   tidyselect_0.2.5 
-[37] workflowr_1.5.0   viridisLite_0.3.0 crayon_1.3.4      dbplyr_1.4.2     
-[41] withr_2.1.2       later_1.0.0       grid_3.6.1        nlme_3.1-140     
-[45] jsonlite_1.6      gtable_0.3.0      lifecycle_0.1.0   DBI_1.0.0        
-[49] git2r_0.26.1      magrittr_1.5      scales_1.1.0      cli_1.1.0        
-[53] stringi_1.4.3     fs_1.3.1          promises_1.1.0    xml2_1.2.2       
-[57] generics_0.0.2    vctrs_0.2.0       boot_1.3-22       tools_3.6.1      
-[61] glue_1.3.1        hms_0.5.2         parallel_3.6.1    yaml_2.2.0       
-[65] colorspace_1.4-1  rvest_0.3.5       knitr_1.26        haven_2.2.0      </code></pre>
+ [1] httr_1.4.1        jsonlite_1.6.1    viridisLite_0.3.0 gsubfn_0.7       
+ [5] modelr_0.1.8      assertthat_0.2.1  highr_0.8         pander_0.6.3     
+ [9] blob_1.2.1        renv_0.10.0       cellranger_1.1.0  yaml_2.2.1       
+[13] pillar_1.4.4      backports_1.1.7   lattice_0.20-41   glue_1.4.1       
+[17] digest_0.6.25     promises_1.1.0    rvest_0.3.5       colorspace_1.4-1 
+[21] htmltools_0.4.0   httpuv_1.5.3.1    plyr_1.8.6        pkgconfig_2.0.3  
+[25] broom_0.5.6       haven_2.3.1       scales_1.1.1      webshot_0.5.2    
+[29] whisker_0.4       later_1.0.0       git2r_0.27.1      generics_0.0.2   
+[33] ellipsis_0.3.1    withr_2.2.0       cli_2.0.2         proto_1.0.0      
+[37] magrittr_1.5      crayon_1.3.4      readxl_1.3.1      evaluate_0.14    
+[41] fs_1.4.1          fansi_0.4.1       nlme_3.1-147      xml2_1.3.2       
+[45] tools_4.0.0       hms_0.5.3         lifecycle_0.2.0   munsell_0.5.0    
+[49] reprex_0.3.0      compiler_4.0.0    rlang_0.4.6       grid_4.0.0       
+[53] rstudioapi_0.11   texreg_1.37.1     rmarkdown_2.2     boot_1.3-24      
+[57] gtable_0.3.0      DBI_1.1.0         R6_2.4.1          lubridate_1.7.8  
+[61] knitr_1.28        rprojroot_1.3-2   stringi_1.4.6     parallel_4.0.0   
+[65] Rcpp_1.0.4.6      vctrs_0.3.0       dbplyr_1.4.4      tidyselect_1.1.0 
+[69] xfun_0.14         coda_0.19-3      </code></pre>
 </div>
 </div>
 
@@ -5611,7 +6023,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

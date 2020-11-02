@@ -21,7 +21,7 @@ rm(list=ls())
 # list of packages
 packages <- c("tidyverse", "readr", "patchwork",
               "tidyr","data.table", "dplyr","ggplot2",
-              "MplusAutomation",
+              "MplusAutomation", "cowplot",
               "kableExtra", "xtable")   
 new.packages <- packages[!(packages %in% installed.packages()[,"Package"])] 
 if(length(new.packages)) install.packages(new.packages) 

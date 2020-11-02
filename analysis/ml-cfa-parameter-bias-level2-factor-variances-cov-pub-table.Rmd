@@ -1,0 +1,115 @@
+---
+title: "ML-CFA: Parameter Bias - Factor (co)Variances"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r init, warning=FALSE, message=FALSE}
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+#source(paste0(getwd(),"/code/get_data.R"))
+
+
+```
+
+```{r}
+sessionInfo()
+
+# general options
+theme_set(theme_bw())
+options(digits=3)
+```
+
+
+```{r read-data-in}
+
+# Parameter Estimates
+result <- read_csv(paste0(w.d, "/data/results_bias_est.csv"))
+
+# Set conditions levels as categorical values
+result.para <- result %>%
+  mutate(N1 = factor(N1, c("5", "10", "30")),
+         N2 = factor(N2, c("30", "50", "100", "200")),
+         ICC_OV = factor(ICC_OV, c("0.1","0.3", "0.5")),
+         ICC_LV = factor(ICC_LV, c("0.1", "0.5")),
+         wi = nRep/500)
+
+
+# Standard Errors
+result <- read_csv(paste0(w.d, "/data/results_bias_se.csv"))
+
+# Set conditions levels as categorical values
+result <- result %>%
+  mutate(N1 = factor(N1, c("5", "10", "30")),
+         N2 = factor(N2, c("30", "50", "100", "200")),
+         ICC_OV = factor(ICC_OV, c("0.1","0.3", "0.5")),
+         ICC_LV = factor(ICC_LV, c("0.1", "0.5")))
+
+# Group variables more concisely
+result$VarGrp <- factor(
+  result$Variable,
+  levels = unique(result$Variable),
+  labels = c(rep("Factor Loadings",11), "L1 Factor Covariance",
+             rep("L2 Factor (co)Variance", 3), rep("L2 Residual Variance",10)),
+  ordered = T
+)
+result.se <- result
+
+```
+
+# Manuscript Table
+
+Combined bias estimates of level-2 factor covariance matrix.
+
+```{r}
+
+
+## PArameter estimates
+sdat <- filter(result.para, Variable %like% "psiB")
+
+c <- sdat %>%
+  group_by(Estimator, N2, N1) %>%
+  summarise(RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'N2','N1', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'ULSMV', c( 'RB', 'RMSE')], 
+           c[ c$Estimator == 'WLSMV', c('RB', 'RMSE')])
+
+## Standard errors
+sdat <- filter(result.se, Variable %like% "psiB")
+
+c <- sdat %>%
+  group_by(Estimator, N2, N1) %>%
+  summarise(RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi))
+
+c2 <- cbind(c[ c$Estimator == 'MLR', c('RB', 'RMSE')], 
+           c[ c$Estimator == 'ULSMV', c( 'RB', 'RMSE')], 
+           c[ c$Estimator == 'WLSMV', c('RB', 'RMSE')])
+
+
+c <- cbind(c1[, 1:4], c2[,1:2], c1[, 5:6], c2[,3:4], c1[, 7:8], c2[,5:6])
+colnames(c) <- c('N2','N1',  rep(c( 'RB', 'RMSE'), 6))
+
+kable(c, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '=2, 'Parameter' = 2, 'SE'=2, 'Parameter' = 2, 'SE'=2, 'Parameter' = 2, 'SE'=2)) %>%
+  add_header_above(c(' '=2, 'MLR'=4, 'ULSMV'=4, 'WLSMV'=4))
+
+
+print(xtable(c, digits = 2,align=c("l", "l", "l", rep("r",12)),
+             display=c("s", "d", "d", rep("f",12)),
+             caption="Relative bias of level-2 factor covariance matrix shows improved estimation with more level-1 observations",
+             label="tb:fct"),
+      booktabs = T, include.rownames = F,
+      caption.placement = "top")
+
+
+
+```
+

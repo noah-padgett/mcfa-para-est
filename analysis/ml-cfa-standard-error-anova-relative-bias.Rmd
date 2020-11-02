@@ -1,0 +1,409 @@
+---
+title: "Design Effects on Standard Error Relative Bias Estimates"
+date: "2020-06-01"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+The purpose of this page is to identify the impact of design factors on standard error estimates.
+This is done using analysis of variance (factorial) on the estimates of relative bias (RB) for the standard Error.
+
+# Packages and Set-Up
+
+
+```{r init, warning=FALSE, message=FALSE}
+
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+source(paste0(getwd(),"/code/get_data.R"))
+source(paste0(getwd(),"/code/r_functions.R"))
+
+# general options
+theme_set(theme_bw())
+options(digits=3)
+
+##Chunk iptions
+knitr::opts_chunk$set(out.width="225%")
+
+```
+
+
+# Data Management
+
+```{r data, tidy=T}
+
+pvec <- c(paste0('selambda1',1:6), paste0('selambda2',6:10), 'sepsiW12','sepsiB1', 'sepsiB2', 'sepsiB12', paste0('sethetaB',1:10))
+
+# stored "true" values of parameters by each condition
+ptvec <- c(paste0('EmpSElambda1',1:6), paste0('EmpSElambda2',6:10), 'EmpSEpsiW12','EmpSEpsiB1', 'EmpSEpsiB2', 'EmpSEpsiB12', paste0('EmpSEthetaB',1:10))
+
+# take out non-converged/inadmissible cases
+sim_results <- filter(sim_results, Converge==1, Admissible==1)
+
+# Set conditions levels as categorical values
+sim_results <- sim_results %>%
+  mutate(N1 = factor(N1, c("5", "10", "30")),
+         N2 = factor(N2, c("30", "50", "100", "200")),
+         ICC_OV = factor(ICC_OV, c("0.1","0.3", "0.5")),
+         ICC_LV = factor(ICC_LV, c("0.1", "0.5")))
+
+# Compute empirical standard errors
+sim_results <- sim_results %>%
+  group_by(Condition, Estimator) %>%
+  mutate(EmpSElambda11 = sd(lambda11), EmpSElambda12 = sd(lambda12),
+         EmpSElambda13 = sd(lambda13), EmpSElambda14 = sd(lambda14),
+         EmpSElambda15 = sd(lambda15), EmpSElambda16 = sd(lambda16),
+         EmpSElambda26 = sd(lambda26), EmpSElambda27 = sd(lambda27),
+         EmpSElambda28 = sd(lambda28), EmpSElambda29 = sd(lambda29),
+         EmpSElambda210 = sd(lambda210),
+         EmpSEpsiW12 = sd(psiW12), EmpSEpsiB1 = sd(psiB1),
+         EmpSEpsiB2 = sd(psiB2), EmpSEpsiB12 = sd(psiB12),
+         EmpSEthetaB1 = sd(thetaB1), EmpSEthetaB2 = sd(thetaB2),
+         EmpSEthetaB3 = sd(thetaB3), EmpSEthetaB4 = sd(thetaB4),
+         EmpSEthetaB5 = sd(thetaB5), EmpSEthetaB6 = sd(thetaB6),
+         EmpSEthetaB7 = sd(thetaB7), EmpSEthetaB8 = sd(thetaB8),
+         EmpSEthetaB9 = sd(thetaB9), EmpSEthetaB10 = sd(thetaB10))
+
+# convert to long format
+long_res1 <- sim_results[,c("Condition", "Replication", "N1", "N2", "ICC_OV", "ICC_LV", "Estimator", pvec)] %>%
+  pivot_longer(
+    cols = all_of(pvec),
+    names_to = "Parameter",
+    values_to = "EstimateSE"
+  )
+
+long_res2 <- sim_results[,c("Condition", "Replication", "N1", "N2", "ICC_OV", "ICC_LV", "Estimator", ptvec)] %>%
+  pivot_longer(
+    cols = all_of(ptvec),
+    names_to = "ParameterT",
+    values_to = "EmpiricalSE"
+  )
+
+long_results <- long_res1
+long_results$ParameterT <- long_res2$ParameterT
+long_results$EmpiricalSE <- long_res2$EmpiricalSE
+
+```
+
+Now, we are only going to do ANOVA on the relative bias estimates (RB).
+
+
+```{r}
+
+long_results <- long_results %>%
+  mutate(RB = ((EstimateSE - EmpiricalSE))/EmpiricalSE*100)
+
+
+# Object to Story Results
+resultsList <- list()
+
+
+```
+
+
+# ANOVA and effect sizes for distributional differences
+
+For this simulation experiment, there were 5 factors systematically varied.
+Of these 5 factors, 4 were factors influencing the observed data and 1 were factors pertaining to estimation and model fitting.
+The factors were
+
+  1. Level-1 sample size (5, 10, 30)
+  2. Level-2 sample size (30, 50, 100, 200)
+  3. Observed indicator ICC (.1, .3, .5)
+  4. Latent variable ICC (.1, .5)
+  5. Model estimator (MLR, ULSMV, WLSMV)
+  
+For each parameter SE, an analysis of variance (ANOVA) was conducted in order to test how much influence each of these design factors.
+
+General Linear Model investigated for estimated SE was: 
+\[
+Y_{ijklmn} = \mu + \alpha_{j} + \beta_{k} + \gamma_{l} + \delta_m + \theta_n +\\
+(\alpha\beta)_{jk} + (\alpha\gamma)_{jl}+ (\alpha\delta)_{jm}  + (\alpha\theta)_{jn}+ \\
+(\beta\gamma)_{kl}+ (\beta\delta)_{km} +  (\beta\theta)_{kn}+ (\gamma\delta)_{lm} + + (\gamma\theta)_{ln} + (\delta\theta)_{mn} + \varepsilon_{ijklmn}
+\]
+where 
+
+  1. $\mu$ is the grand mean,
+  2. $\alpha_{j}$ is the effect of Level-1 sample size,  
+  3. $\beta_{k}$ is the effect of Level-2 sample size, 
+  4. $\gamma_{l}$ is the effect of Observed indicator ICC, 
+  5. $\delta_m$ is the effect of Latent variable ICC, 
+  6. $\theta_n$ is the effect of Model estimator , 
+  7. $(\alpha\beta)_{jk}$ is the interaction between  Level-1 sample size and Level-2 sample size,
+  8. $(\alpha\gamma)_{jl}$ is the interaction between Level-1 sample size and Observed indicator ICC,
+  9. $(\alpha\delta)_{jm}$ is the interaction between  Level-1 sample size and Latent variable ICC,
+  10. $(\alpha\theta)_{jn}$ is the interaction between  Level-1 sample size and Model estimator ,
+  11. $(\beta\gamma)_{kl}$ is the interaction between  Level-2 sample size and Observed indicator ICC,
+  12. $(\beta\delta)_{km}$ is the interaction between  Level-2 sample size and Latent variable ICC,
+  13. $(\beta\theta)_{kn}$ is the interaction between  Level-2 sample size and Model estimator ,
+  14. $(\gamma\delta)_{lm}$ is the interaction between Observed indicator ICC and Latent variable ICC,
+  15. $(\gamma\theta)_{ln}$ is the interaction between  Observed indicator ICC and Model estimator ,
+  16. $(\delta\theta)_{mn}$ is the interaction between  Latent variable ICC and Model estimator , and
+  17. $\varepsilon_{ijklmn}$ is the residual error for the $i^{th}$ observed SE estimate.
+  
+  
+Note that for most of these terms there are actually 2 or 3 terms actually estimated.
+These additional terms are because of the categorical nature of each effect so we have to create "reference" groups and calculate the effect of being in a group other than the reference group. 
+Higher order interactions were omitted for clarity of interpretation of the model.
+If interested in higher-order interactions, please see Maxwell and Delaney (2004).
+
+The real reason the higher order interaction was omitted:
+Because I have no clue how to interpret a 5-way interaction (whatever the heck that is), I am limiting the ANOVA to all bivariate interactions.
+
+
+Diagnostics for factorial ANOVA:
+
+1. Independence of Observations
+2. Normality of residuals across cells for the design
+3. Homogeneity of variance across cells
+
+Independence of observations is by design, where these data were randomly generated from a known population and observations are across replications and are independent.
+The normality assumptions is that the residuals of the models are normally distributed across the design cells. 
+The normality assumption is tested by investigation by Shapiro-Wilks Test, the K-S test, and visual inspection of  QQ-plots and histograms. 
+The equality of variance is checked through Levene's test across all the different conditions/groupings. 
+Furthermore, the plots of the residuals are also indicative of the equality of variance across groups as there should be no apparent pattern to the residual plots. 
+
+## Factor Loadings Standard Error
+
+### Assumption Checking
+
+```{r ac-anova-fl}
+
+sdat <- filter(long_results, Parameter %like% "lambda")
+
+sdat <- sdat %>%
+  group_by(Replication, N1, N2, ICC_OV, ICC_LV, Estimator) %>%
+  summarise(RB = mean(RB))
+
+# first, look at summary of RB Estimates
+boxplot(sdat$RB)
+
+## model factors...
+flist <- c('N1', 'N2', 'ICC_OV', 'ICC_LV', 'Estimator')
+## Check assumptions
+anova_assumptions_check(
+  sdat, 'RB', factors = flist,
+  model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator'))
+
+# was bad... Remove extreme outliers
+quantile(sdat$RB, c(0.001, 0.01, 0.99, 0.999))
+
+# remove RB>100
+sdat <- filter(sdat, RB <= 100)
+boxplot(sdat$RB)
+
+# rerun
+## Check assumptions
+anova_assumptions_check(
+  sdat, 'RB', factors = flist,
+  model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator'))
+
+```
+
+### ANOVA Results
+
+```{r anova-fl}
+
+model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator')
+
+fit <- aov(model, data = sdat)
+fit.out <- summary(fit)
+fit.out
+resultsList[["FactorLoadings"]] <- cbind(omega2(fit.out), p_omega2(fit.out))
+resultsList[["FactorLoadings"]]
+
+```
+
+
+## Level-1 factor Covariance Standard Error
+
+### Assumption Checking
+
+```{r ac-anova-l1cv}
+
+sdat <- filter(long_results, Parameter %like% "psiW")
+
+sdat <- sdat %>%
+  group_by(Replication, N1, N2, ICC_OV, ICC_LV, Estimator) %>%
+  summarise(RB = mean(RB))
+
+# first, look at summary of RB Estimates
+boxplot(sdat$RB)
+
+## model factors...
+flist <- c('N1', 'N2', 'ICC_OV', 'ICC_LV', 'Estimator')
+## Check assumptions
+anova_assumptions_check(
+  sdat, 'RB', factors = flist,
+  model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator'))
+
+# was bad... Remove extreme outliers
+quantile(sdat$RB, c(0.001, 0.01, 0.99, 0.999))
+
+# remove RB>100
+sdat <- filter(sdat, RB <= 100)
+boxplot(sdat$RB)
+
+# rerun
+## Check assumptions
+anova_assumptions_check(
+  sdat, 'RB', factors = flist,
+  model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator'))
+
+```
+
+### ANOVA Results
+
+```{r anova-l1cv}
+
+model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator')
+
+fit <- aov(model, data = sdat)
+fit.out <- summary(fit)
+fit.out
+resultsList[["Level1-FactorCovariance"]] <- cbind(omega2(fit.out), p_omega2(fit.out))
+resultsList[["Level1-FactorCovariance"]]
+
+```
+
+##  Level-2 factor (co)variances  Standard Error
+
+### Assumption Checking
+
+```{r ac-anova-l2cv}
+
+sdat <- filter(long_results, Parameter %like% "psiB")
+
+sdat <- sdat %>%
+  group_by(Replication, N1, N2, ICC_OV, ICC_LV, Estimator) %>%
+  summarise(RB = mean(RB))
+
+# first, look at summary of RB Estimates
+boxplot(sdat$RB)
+
+## model factors...
+flist <- c('N1', 'N2', 'ICC_OV', 'ICC_LV', 'Estimator')
+## Check assumptions
+anova_assumptions_check(
+  sdat, 'RB', factors = flist,
+  model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator'))
+
+# was bad... Remove extreme outliers
+quantile(sdat$RB, c(0.001, 0.01, 0.99, 0.999))
+
+# remove RB>100
+sdat <- filter(sdat, RB <= 100)
+boxplot(sdat$RB)
+
+# rerun
+## Check assumptions
+anova_assumptions_check(
+  sdat, 'RB', factors = flist,
+  model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator'))
+
+```
+
+### ANOVA Results
+
+```{r anova-l2cv}
+
+model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator')
+
+fit <- aov(model, data = sdat)
+fit.out <- summary(fit)
+fit.out
+resultsList[["Level2-FactorCovariance"]] <- cbind(omega2(fit.out), p_omega2(fit.out))
+resultsList[["Level2-FactorCovariance"]]
+
+```
+
+
+## Level-2 item residual variances Standard Error
+
+### Assumption Checking
+
+```{r ac-anova-l2r}
+
+sdat <- filter(long_results, Parameter %like% "thetaB")
+
+sdat <- sdat %>%
+  group_by(Replication, N1, N2, ICC_OV, ICC_LV, Estimator) %>%
+  summarise(RB = mean(RB))
+
+# first, look at summary of RB Estimates
+boxplot(sdat$RB)
+
+## model factors...
+flist <- c('N1', 'N2', 'ICC_OV', 'ICC_LV', 'Estimator')
+## Check assumptions
+anova_assumptions_check(
+  sdat, 'RB', factors = flist,
+  model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator'))
+
+# was bad... Remove extreme outliers
+quantile(sdat$RB, c(0.001, 0.01, 0.99, 0.999))
+
+# remove RB>100
+sdat <- filter(sdat, RB <= 100)
+boxplot(sdat$RB)
+
+# rerun
+## Check assumptions
+anova_assumptions_check(
+  sdat, 'RB', factors = flist,
+  model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator'))
+
+```
+
+### ANOVA Results
+
+```{r anova-l2r}
+
+model = as.formula('RB ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator')
+
+fit <- aov(model, data = sdat)
+fit.out <- summary(fit)
+fit.out
+resultsList[["Level2-ResidualCovariance"]] <- cbind(omega2(fit.out), p_omega2(fit.out))
+resultsList[["Level2-ResidualCovariance"]]
+
+```
+
+# Summary Table of Effect Sizes
+
+```{r sum-tab-eff}
+
+tb <- cbind(resultsList[[1]], resultsList[[2]], resultsList[[3]], resultsList[[4]])
+
+kable(tb, format='html') %>%
+    kable_styling(full_width = T) %>%
+    add_header_above(c('Effect'=1,'Factor Loadings'=2,'Level-1 Factor Covariance'=2,'Level-2 Factor (co)variance'=2,'Level-2 Item Residual Variance'=2))
+
+## Print out in tex
+# print(xtable(tb, digits = 3), booktabs = T, include.rownames = T)
+
+
+## Table of partial-omega2
+tb <- cbind(resultsList[[1]][,2, drop=F], resultsList[[2]][,2, drop=F], resultsList[[3]][,2, drop=F], resultsList[[4]][,2, drop=F])
+
+kable(tb, format='html') %>%
+   kable_styling(full_width = T) %>%
+   add_header_above(c('Effect'=1,'Factor Loadings'=1,'Level-1 Factor Covariance'=1,'Level-2 Factor (co)variance'=1,'Level-2 Item Residual Variance'=1))
+
+## Print out in tex
+print(xtable(tb, digits = 2), booktabs = T, include.rownames = T)
+# 
+# 
+# ## Table of omega-2
+# tb <- cbind(resultsList[[1]][,1, drop=F], resultsList[[2]][,1, drop=F], resultsList[[3]][,1, drop=F], resultsList[[4]][,1, drop=F])
+# 
+# kable(tb, format='html') %>%
+#     kable_styling(full_width = T) %>%
+#     add_header_above(c('Effect'=1,'Factor Loadings'=2,'Level-1 Factor Covariance'=2,'Level-2 Factor (co)variance'=2,'Level-2 Item Residual Variance'=2))
+# 
+# ## Print out in tex
+# print(xtable(tb, digits = 3), booktabs = T, include.rownames = T)
+
+```
+

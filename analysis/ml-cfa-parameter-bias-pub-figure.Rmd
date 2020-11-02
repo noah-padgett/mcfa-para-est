@@ -1,0 +1,98 @@
+---
+title: "ML-CFA: Parameter Bias - publication figure"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r init, warning=FALSE, message=FALSE}
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+#source(paste0(getwd(),"/code/get_data.R"))
+
+# general options
+theme_set(theme_bw())
+options(digits=3)
+```
+
+
+```{r read-data-in}
+
+# set up vectors of variable names
+pvec <- c(paste0('lambda1',1:6), paste0('lambda2',6:10), 'psiW12','psiB1', 'psiB2', 'psiB12', paste0('thetaB',1:10), 'icc_lv1_est', 'icc_lv2_est', paste0('icc_ov',1:10,'_est'))
+# stored "true" values of parameters by each condition
+ptvec <- c(rep('lambdaT',11), 'psiW12T', 'psiB1T', 'psiB2T', 'psiB12T', rep("thetaBT", 10), rep('icc_lv',2), rep('icc_ov',10))
+
+result <- read_csv(paste0(w.d, "/data/results_bias_est.csv"))
+
+# Set conditions levels as categorical values
+result <- result %>%
+  mutate(N1 = factor(N1, c("5", "10", "30")),
+         N2 = factor(N2, c("30", "50", "100", "200")),
+         ICC_OV = factor(ICC_OV, c("0.1","0.3", "0.5")),
+         ICC_LV = factor(ICC_LV, c("0.1", "0.5")),
+         wi = nRep/500)
+
+# Group variables more concisely
+result$VarGrp <- factor(
+  result$Variable,
+  levels = unique(result$Variable),
+  labels = c(rep("Factor Loadings",11), "L1 Factor Covariance",
+             rep("L2 Factor (co)Variance", 3), rep("L2 Residual Variance",10),
+             rep("ICC LV",2), rep("ICC OV", 10)),
+  ordered = T
+)
+
+result <- result %>%
+  group_by(N1, N2, ICC_OV, ICC_LV, Estimator, VarGrp) %>%
+  summarise(RB = weighted.mean(RB, wi)) %>%
+  mutate(RB = ifelse(RB > 79, 79, ifelse(RB < -79, -79, RB)))
+
+```
+
+# Publication Plot
+
+```{r}
+
+shps <- c(0, 1, 2, 4)
+cols <- c("grey75", "grey50", "grey25",  "grey0") 
+p <- ggplot(result, aes(Estimator, RB)) +
+  geom_boxplot(outlier.shape = NA)+
+  geom_jitter(width=0.25, size=2, aes(shape=N2,color=N2))+
+  geom_hline(yintercept=-10, color="red", linetype="dashed")+
+  geom_hline(yintercept=10, color="red", linetype="dashed")+
+  scale_y_continuous(limits = c(-80,80), breaks=c(-80, -50, -30, -10, 0, 10, 30, 50, 80))+
+  scale_shape_manual(values=shps, breaks=c(30, 50, 100, 200))+
+  scale_color_manual(values=cols, breaks=c(30, 50, 100, 200))+
+  facet_wrap(.~ VarGrp,nrow = 1)+
+  labs(y="Average Relative Bias",
+       shape = "Level-2 N",
+       color = "Level-2 N") +
+  theme(panel.grid = element_blank(),
+        strip.background = element_blank(),
+        strip.text = element_text(size=13),
+        axis.text = element_text(size=12),
+        axis.title.y = element_text(size=13),
+        axis.title.x = element_blank(),
+        legend.title = element_text(size=12),
+        legend.text = element_text(size=11),
+        legend.position = c(0.95, 0.2))
+p
+
+ggsave("fig/relative_bias_overview.pdf", p, units="in", width=14, height = 4.5)
+ggsave("manuscript/fig/relative_bias_overview.pdf", p, units="in", width=14, height = 4.5)
+
+```
+
+
+
+```{r}
+
+sessionInfo()
+
+```
+
+

@@ -1,0 +1,87 @@
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[h]
+ \centering
+ \begin{threeparttable}
+ \caption{Design effects on relative bias of parameter and standard error estimation (partial-$\omega^2$ estimates)}
+ \label{tb:anova-pomega}
+ \begin{tabular}{l *{8}{r}} %C{.75in} C{.75in} C{.75in} C{.75in} C{.75in}}
+   \toprule
+   & \multicolumn{2}{c}{Loadings} & \multicolumn{2}{c}{L1 Factor Cov.} & \multicolumn{2}{c}{L2 Factor Cov.} & \multicolumn{2}{c}{L2 Residual Var.}\\
+   \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+   Effect & Est. & SE & Est. & SE & Est. & SE & Est. & SE\\
+   \midrule
+  $\rm N_1$            & .00 & .11 & .00 & .03 & .00 & .00 & .00 &  .00 \\
+  $\rm N_2$             & .01 & .01 & .00 & .06 & .02 & .00 & .02 &  .08 \\
+  $\rm ICC_O$   & .03 & .09 & .00 & .03 & .00 & .01 & .04 &  .03 \\
+  $\rm ICC_L$   & .02 & .02 & .00 & .02 & .02 & .06 & .02 &  .00 \\
+  Estimation        & {\bf .73} & {\bf .21} & .00 & {\bf .20} & .02 & .02 & {\bf .91} &  {\bf .23} \\
+  $\rm N_1$:$\rm N_2$       & .00 & .05 & .00 & .05 & .00 & .01 & .01 &  .01 \\
+  $\rm N_1$:$\rm ICC_O$       & .00 & .04 & .00 & .02 & .00 & .02 & .01 &  .04 \\
+  $\rm N_1$:$\rm ICC_L$    & .00 & .01 & .00 & .00 & .00 & .01 & .00 &  .00 \\
+  $\rm N_1$:Estimation  & .00 & .09 & .00 & .03 & .00 & .02 & .02 &  .02 \\
+  $\rm N_2$:$\rm ICC_O$      & .00 & .03 & .00 & .01 & .00 & .00 & .01 &  .03 \\
+  $\rm N_2$:$\rm ICC_L$      & .00 & .04 & .00 & .02 & .02 & .01 & .01 &  .00 \\
+  $\rm N_2$:Estimation   & .00 & .01 & .00 & .05 & .00 & .00 & .03 &  .11 \\
+  $\rm ICC_O$:$\rm ICC_L$ & .00 & .10 & .00 & .04 & .01 & .03 & .01 &  .01 \\
+  $\rm ICC_O$:Estimation  & .05 & {\bf .30} & .00 & .09 & .00 & .00 & .11 &  .01 \\
+  $\rm ICC_L$:Estimation  & .02 & .07 & .00 & .03 & .00 & .01 & .06 &  .01 \\
+  \bottomrule
+ \end{tabular}
+ \vspace*{1mm}
+  \begin{tablenotes}[para,flushleft]
+    {\small
+        \textit{Note.} Est = estimate of parameter; SE = standard error of parameter estimate. The effects greater than .14 (large effect) are in bold. The meaning of each value can be interpreted as follows. For example, for the effect of the level-1 sample size ($\rm N_1$), 11\% of the variability in estimates of relative bias in the standard errors of factor loadings can be attributed to the number of level-1 units were sampled per group after controlling for all other design factors (i.e., $\rm N_2$, $\rm ICC_O$, $\rm ICC_L$, estimation method, and bivariate interactions).
+    }
+  \end{tablenotes}
+ \end{threeparttable}
+\end{table*}
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[!htp]
+ \centering
+ \small
+ \begin{threeparttable}
+\caption{Relative efficiency indicates WLSMV is better under most sample size conditions}
+\label{tb:re}
+\begin{tabular}{llrrrrrrrrrrrr}
+  \toprule
+  &     & \multicolumn{3}{c}{Loadings} & \multicolumn{3}{c}{L1 Factor Cov.} & \multicolumn{3}{c}{L2 Factor Cov.} & \multicolumn{3}{c}{L2 Residual Var.}\\  \cmidrule(lr){3-5} \cmidrule(lr){6-8} \cmidrule(lr){9-11} \cmidrule(lr){12-14}
+$\rm N_2$ & $\rm N_1$ & MU & MW & UW & MU & MW & UW & MU & MW & UW & MU & MW & UW \\
+  \midrule
+\multicolumn{14}{l}{Parameter Estimates}\\
+30 & 5 & 1.84 & 2.18 & 1.57 & 1.81 & 1.83 & 1.13 & 1.83 & 2.22 & 1.50 & 1.41 & 1.42 & 1.50 \\
+  30 & 10 & 1.68 & 2.33 & 1.54 & 1.08 & 1.28 & 1.19 & 1.10 & 1.42 & 1.30 & 1.43 & 1.52 & 1.05 \\
+  30 & 30 & 2.27 & 3.75 & 2.04 & 0.92 & 1.16 & 1.31 & 1.03 & 1.25 & 1.20 & 1.56 & 1.64 & 1.06 \\
+  50 & 5 & 1.81 & 2.37 & 1.44 & 1.15 & 1.33 & 1.20 & 1.31 & 1.64 & 1.26 & 1.50 & 1.58 & 1.05 \\
+  50 & 10 & 1.78 & 2.81 & 1.79 & 0.97 & 1.15 & 1.21 & 1.05 & 1.25 & 1.18 & 1.64 & 1.66 & 1.00 \\
+  50 & 30 & 2.84 & 4.27 & 1.95 & 0.94 & 1.04 & 1.13 & 0.99 & 1.10 & 1.10 & 1.88 & 1.89 & 1.03 \\
+  100 & 5 & 2.02 & 2.71 & 1.45 & 1.04 & 1.15 & 1.14 & 1.10 & 1.20 & 1.09 & 1.82 & 1.85 & 1.01 \\
+  100 & 10 & 2.79 & 3.64 & 1.63 & 0.96 & 1.07 & 1.14 & 1.01 & 1.11 & 1.09 & 2.18 & 2.17 & 0.99 \\
+  100 & 30 & 4.03 & 5.90 & 2.17 & 0.86 & 1.01 & 1.31 & 0.99 & 1.03 & 1.05 & 2.63 & 2.55 & 0.95 \\
+  200 & 5 & 2.91 & 3.53 & 1.40 & 0.97 & 1.05 & 1.08 & 1.01 & 1.07 & 1.05 & 2.40 & 2.37 & 0.98 \\
+  200 & 10 & 3.86 & 4.86 & 1.54 & 0.96 & 1.01 & 1.07 & 0.99 & 1.03 & 1.04 & 3.02 & 2.95 & 0.96 \\
+  200 & 30 & 5.92 & 8.24 & 2.39 & 0.89 & 1.00 & 1.27 & 0.99 & 1.01 & 1.02 & 3.77 & 3.60 & 0.94 \\
+\multicolumn{14}{l}{Standard Errors}\\
+30 & 5 & 0.78 & 0.89 & 41.2 & 1.34 & 1.26 & 1.00 & 2.55 & 3.17 & 1.83 & 0.34 & 0.34 & 106.7 \\
+  30 & 10 & 0.29 & 0.45 & 2.76 & 0.60 & 0.73 & 1.42 & 1.06 & 1.47 & 1.41 & 0.22 & 0.24 & 1.39 \\
+  30 & 30 & 0.20 & 0.39 & 3.33 & 0.63 & 0.81 & 1.54 & 0.84 & 1.21 & 1.55 & 0.23 & 0.24 & 1.78 \\
+  50 & 5 & 0.34 & 0.52 & 2.50 & 0.80 & 0.84 & 1.39 & 1.35 & 1.78 & 1.32 & 0.23 & 0.26 & 1.41 \\
+  50 & 10 & 0.25 & 0.48 & 4.43 & 0.69 & 0.82 & 1.70 & 1.09 & 1.32 & 1.20 & 0.25 & 0.26 & 1.14 \\
+  50 & 30 & 0.23 & 0.37 & 4.24 & 0.80 & 0.86 & 1.23 & 0.92 & 1.12 & 1.25 & 0.27 & 0.26 & 4.20 \\
+  100 & 5 & 0.28 & 0.44 & 3.58 & 1.04 & 1.14 & 1.59 & 1.21 & 1.29 & 1.08 & 0.23 & 0.24 & 1.55 \\
+  100 & 10 & 0.32 & 0.47 & 5.01 & 0.84 & 0.90 & 1.75 & 1.07 & 1.19 & 1.11 & 0.29 & 0.28 & 1.00 \\
+  100 & 30 & 0.27 & 0.40 & 4.56 & 0.62 & 0.82 & 3.29 & 0.96 & 1.05 & 1.10 & 0.31 & 0.29 & 0.98 \\
+  200 & 5 & 0.33 & 0.42 & 4.23 & 0.71 & 0.86 & 1.76 & 1.08 & 1.13 & 1.06 & 0.25 & 0.25 & 1.02 \\
+  200 & 10 & 0.35 & 0.48 & 6.13 & 1.01 & 1.14 & 1.87 & 1.03 & 1.08 & 1.05 & 0.29 & 0.28 & 1.00 \\
+  200 & 30 & 0.31 & 0.45 & 8.76 & 0.75 & 0.90 & 4.39 & 0.97 & 1.02 & 1.06 & 0.32 & 0.30 & 0.96 \\
+   \bottomrule
+\end{tabular}
+ \vspace*{1mm}
+  \begin{tablenotes}[para, flushleft]
+    {\small
+        \textit{Note.} MU = relative efficiency of MLR compared to ULSMV; MW = relative efficiency of MLR compared to MLSMV; and UW = relative efficiency of ULSMV compared to MLSMV.
+    }
+  \end{tablenotes}
+ \end{threeparttable}
+\end{table*}

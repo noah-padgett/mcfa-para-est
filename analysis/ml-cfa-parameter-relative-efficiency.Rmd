@@ -1,0 +1,249 @@
+---
+title: "ML-CFA: Parameter Bias - Factor Loadings"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+```{r init, warning=FALSE, message=FALSE}
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+#source(paste0(getwd(),"/code/get_data.R"))
+
+
+```
+
+```{r}
+sessionInfo()
+
+# general options
+theme_set(theme_bw())
+options(digits=3)
+```
+
+
+```{r read-data-in}
+
+# Parameter Estimates
+result <- read_csv(paste0(w.d, "/data/results_bias_est.csv"))
+
+# Set conditions levels as categorical values
+result <- result %>%
+  mutate(N1 = factor(N1, c("5", "10", "30")),
+         N2 = factor(N2, c("30", "50", "100", "200")),
+         ICC_OV = factor(ICC_OV, c("0.1","0.3", "0.5")),
+         ICC_LV = factor(ICC_LV, c("0.1", "0.5")),
+         wi = nRep/500)
+
+result$VarGrp <- factor(
+  result$Variable,
+  levels = unique(result$Variable),
+  labels = c(rep("Factor Loadings",11), "L1 Factor Covariance",
+             rep("L2 Factor (co)Variance", 3), rep("L2 Residual Variance",10), rep("Latent ICC", 2), rep("Observed ICC", 10)),
+  ordered = T
+)
+
+result.para <- result
+
+# Standard Errors
+result <- read_csv(paste0(w.d, "/data/results_bias_se.csv"))
+
+# Set conditions levels as categorical values
+result <- result %>%
+  mutate(N1 = factor(N1, c("5", "10", "30")),
+         N2 = factor(N2, c("30", "50", "100", "200")),
+         ICC_OV = factor(ICC_OV, c("0.1","0.3", "0.5")),
+         ICC_LV = factor(ICC_LV, c("0.1", "0.5")))
+
+# Group variables more concisely
+result$VarGrp <- factor(
+  result$Variable,
+  levels = unique(result$Variable),
+  labels = c(rep("Factor Loadings",11), "L1 Factor Covariance",
+             rep("L2 Factor (co)Variance", 3), rep("L2 Residual Variance",10)),
+  ordered = T
+)
+result.se <- result
+
+```
+
+
+# Parameter Estimate Relative Efficiency by Sample Sizes
+
+```{r}
+
+c <- result.para %>%
+  group_by(VarGrp, Estimator, N2, N1) %>%
+  summarise(mu = weighted.mean(muRE, wi),
+            mw = weighted.mean(mwRE, wi),
+            uw = weighted.mean(uwRE, wi))
+
+# factor loadings
+c1 <- cbind(c[ c$Estimator == 'MLR' & c$VarGrp == "Factor Loadings",
+               c( 'N2','N1', 'mu', 'mw', 'uw')])
+colnames(c1) <- c('N2','N1',c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV'))
+#L1 factor covariance
+c2 <- cbind(c[ c$Estimator == 'MLR' & c$VarGrp == "L1 Factor Covariance",
+               c('mu', 'mw', 'uw')])
+colnames(c2) <- c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV')
+
+#L2 factor co-variance
+c3 <- cbind(c[ c$Estimator == 'MLR' & c$VarGrp == "L2 Factor (co)Variance",
+               c('mu', 'mw', 'uw')])
+colnames(c3) <- c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV')
+
+#Level-2 residual variance
+c4 <- cbind(c[ c$Estimator == 'MLR' & c$VarGrp == "L2 Residual Variance",
+               c('mu', 'mw', 'uw')])
+colnames(c4) <- c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV')
+
+c <- cbind(c1, c2, c3, c4)
+
+kable(c, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '=2, 'Factor Loadings'=3, 'L1 factor covariance'=3, 'L-2 factor coVariance'=3, 'L-2 Residual Variance'=3))
+
+print(xtable(c, digits = 2,align=c("l", "l", "l", rep("r",12)),
+             display=c("s", "d", "d", rep("f",12)),
+             caption="Relative efficiency of parameter estimates",
+             label="tb:re"),
+      booktabs = T, include.rownames = F,
+      caption.placement = "top")
+
+```
+
+
+# Standard Errors 
+
+```{r}
+
+c <- result.se %>%
+  group_by(VarGrp, Estimator, N2, N1) %>%
+  summarise(mu = weighted.mean(muRE, wi),
+            mw = weighted.mean(mwRE, wi),
+            uw = weighted.mean(uwRE, wi))
+
+# factor loadings
+c1 <- cbind(c[ c$Estimator == 'MLR' & c$VarGrp == "Factor Loadings",
+               c( 'N2','N1', 'mu', 'mw', 'uw')])
+colnames(c1) <- c('N2','N1',c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV'))
+#L1 factor covariance
+c2 <- cbind(c[ c$Estimator == 'MLR' & c$VarGrp == "L1 Factor Covariance",
+               c('mu', 'mw', 'uw')])
+colnames(c2) <- c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV')
+
+#L2 factor co-variance
+c3 <- cbind(c[ c$Estimator == 'MLR' & c$VarGrp == "L2 Factor (co)Variance",
+               c('mu', 'mw', 'uw')])
+colnames(c3) <- c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV')
+
+#Level-2 residual variance
+c4 <- cbind(c[ c$Estimator == 'MLR' & c$VarGrp == "L2 Residual Variance",
+               c('mu', 'mw', 'uw')])
+colnames(c4) <- c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV')
+
+c <- cbind(c1, c2, c3, c4)
+
+kable(c, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '=2, 'Factor Loadings'=3, 'L1 factor covariance'=3, 'L-2 factor coVariance'=3, 'L-2 Residual Variance'=3))
+
+print(xtable(c, digits = 2,align=c("l", "l", "l", rep("r",12)),
+             display=c("s", "d", "d", rep("f",12)),
+             caption="Relative efficiency of standard errors estimates",
+             label="tb:re"),
+      booktabs = T, include.rownames = F,
+      caption.placement = "top")
+
+```
+
+## Relative Efficiency by All Conditions
+
+```{r}
+
+c <- sdat %>%
+  group_by(Estimator, N2, N1, ICC_OV, ICC_LV) %>%
+  summarise(mu = weighted.mean(muRE, wi),
+            mw = weighted.mean(mwRE, wi),
+            uw = weighted.mean(uwRE, wi))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'N2','N1','ICC_OV', 'ICC_LV',  'mu', 'mw', 'uw')])
+colnames(c1) <- c('N2','N1', 'ICC_OV', 'ICC_LV',c('MLR/ULSMV', 'MLR/WLSMV', 'ULSMV/WLSMV'))
+
+kable(c1, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T)
+
+
+```
+
+# Manuscript Table
+
+```{r man-table}
+
+
+c <- sdat %>%
+  group_by(Estimator, N2, N1) %>%
+  summarise(est = weighted.mean(estMean, wi),
+            RB = weighted.mean(RB, wi),
+            RMSE = weighted.mean(RMSE, wi))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c( 'N2','N1', 'est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'ULSMV', c('est', 'RB', 'RMSE')], 
+           c[ c$Estimator == 'WLSMV', c('est', 'RB', 'RMSE')])
+colnames(c1) <- c('N2','N1',  rep(c('est', 'RB', 'RMSE'), 3))
+
+kable(c1, format='html', digits=3, row.names = F) %>%
+  kable_styling(full_width = T) %>%
+  add_header_above(c(' '=2, 'MLR'=3, 'ULSMV'=3, 'WLSMV'=3))
+
+
+print(xtable(c1, digits = 3,align=c("l", "l", "l", rep("r",9)),
+             display=c("s", "d","d", rep("f",9)),
+             caption="Mean Factor Loading, Relative Bias, and RMSE by Estimation Method",
+             label="tb:fct"),
+      booktabs = T, include.rownames = F,
+      caption.placement = "top")
+
+```
+
+# Relative Efficiency Plots
+
+```{r}
+
+
+cols <- c("o" = "#E69F00", "b"="#E56B4E9", "g"="#009E73", "y"="#70E442", "n"="#0072B2", "r"="#D55E00", "p"="#CC79A7")
+cols <- c("Factor Loadings"="#0072B2",
+          "L1 Factor Covariance"="#CC79A7",
+          "L2 Factor (co)Variance"="#009E73",
+          "L2 Residual Variance"="#D55E00")
+dat <- filter(result.para, Estimator=="MLR", VarGrp %in% c("Factor Loadings", "L1 Factor Covariance", "L2 Factor (co)Variance", "L2 Residual Variance"))
+
+dat$ICC_OV <- factor(paste0("(", dat$ICC_OV, ")"), levels=c("(0.1)", "(0.3)", "(0.5)"), ordered=T)
+#dat$N2 <- paste0("(", dat$N2, ")")
+
+ggplot(dat, aes(x=interaction(N1, ICC_OV), y=uwRE, color=VarGrp))+
+  geom_boxplot()+
+  facet_wrap(N2~.)+
+  labs(x="Level-1 N (ICC OV)", y="Relative Efficiency")+
+  scale_color_manual(values = cols)+
+  scale_y_continuous(breaks=0:10)+
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        panel.grid = element_blank())
+
+dat <- filter(result.se, Estimator=="MLR")
+dat$ICC_OV <- factor(paste0("(", dat$ICC_OV, ")"), levels=c("(0.1)", "(0.3)", "(0.5)"), ordered=T)
+
+ggplot(dat, aes(x=interaction(N1, ICC_OV), y=uwRE, color=VarGrp))+
+  geom_boxplot()+
+  labs(x="Level-1 N (ICC OV)", y="Relative Efficiency (log10 scale)", )+
+  scale_color_manual(values = cols)+
+  scale_y_log10()+
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        panel.grid = element_blank())
+
+```

@@ -1,0 +1,532 @@
+\documentclass[man, noextraspace, 12pt]{apa7}
+%\documentclass[12pt, noextraspace, floatsintext]{apa6}
+%\documentclass[man, 12pt, noextraspace, floatsintext]{apa6}
+%\documentclass[11pt]{article}
+
+% ADD REVIEWING PACKAGE
+\usepackage{easyReview}
+% Show reviews/edits or not?
+\setreviewson
+%\setreviewsoff
+% Line numbers for ease of pointing to lines
+\usepackage{lineno} %[pagewise]
+%\linenumbers
+
+\usepackage{pdflscape}
+%Math typesetting packages
+\usepackage{amsfonts, amssymb, amsmath, latexsym, amsthm, mathabx, bm}
+%for URLs in-text 
+\usepackage{url}
+% ====================
+% = Math definitions =
+% ====================
+\renewcommand{\leq}{\varleq}
+\renewcommand{\geq}{\vargeq}
+
+% ================
+% = Bibliography =
+% ================
+%APA style citations and references
+%\usepackage[utf8]{inputenc}
+%\usepackage{babel,csquotes,xpatch}
+\usepackage[backend=biber, style=apa, natbib]{biblatex}
+\addbibresource{references.bib}
+
+%\usepackage[natbibapa]{apacite} 
+% for hanging-indentation style using apacite
+%\setlength{\bibindent}{2.5em}
+%\setlength{\bibleftmargin}{0em}
+% ==========
+% = Floats =
+% ==========
+\usepackage{float}
+% include external pictures
+\usepackage{graphicx} %Graphics/figures
+% rotate figures/tables
+\usepackage{rotating} 
+% For professional tables
+\usepackage{booktabs,threeparttable, multirow} 
+\usepackage{tabularx}
+% For fixing the column widths
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% ===================
+% ==== Tikz Diagrams	==
+% ===================
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows,positioning,shapes,shapes.gates.logic.US,trees, intersections}
+% =======================
+% === Other useful packages ==
+% =======================
+\usepackage[T1]{fontenc} 
+\usepackage{placeins}
+\usepackage{hyperref}
+% subcaptions/subfigures %,justification=centered
+\usepackage[hypcap=true,width=\textwidth]{subcaption}
+% =============
+%  == formatting ==
+% =============
+% \usepackage[margin=1in]{geometry}
+% \setlength{\parindent}{0.5in}
+\usepackage{setspace}
+% \doublespacing
+
+% ==========
+% = Syntax =
+% ==========
+% For Computer Code in Appendix. I set the language for R, so will need to be changed for different languages
+\usepackage{listings}
+\lstset{
+    language=R,
+    basicstyle=\small \ttfamily,
+    commentstyle=\ttfamily ,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=none,
+    tabsize=2,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    title=\lstname,
+    aboveskip=10pt,
+    belowskip=-10pt,
+    %escapeinside={},
+    %keywordstyle={},
+   % morekeywords={}
+    }%
+%~~
+\title{Bias and Efficiency of Estimation in Multilevel Confirmatory Factor Models}
+\shorttitle{ML-CFA Efficiency} % For APA package
+\author{REMOVED FOR PEER REVIEW}
+%\author{R. Noah Padgett \& Grant B. Morgan}
+\affiliation{REMOVED FOR PEER REVIEW}
+%\affiliation{Baylor University}
+
+\abstract{ 
+Multilevel measurement models are frequently applied to help answer questions when data arise from hierarchically structured multivariate data. We evaluated the efficiency of estimating model parameter among three estimation methods (MLR, ULSMV, WLSMV) for multilevel factor models. For nearly all sample size conditions, WLSMV resulted in more efficient parameter estimates, but MLR resulted in more efficient standard errors. Additionally, we found that all three estimation methods may overestimate the level-2 factor covariance matrix, but, on average, WLSMV resulted in the least amount of bias in parameter estimates. Our talk will include additional nuances of how parameters and standard errors are influenced by sample size and ICC conditions.
+} %% End abstract
+
+\keywords{ML-CFA, multilevel, categorical, efficiency, WLSMV}
+
+\authornote{REMOVED FOR PEER REVIEW}
+%\authornote{
+%R. Noah Padgett, Department of Educational Psychology, Baylor University;
+%Grant B. Morgan, Department of Educational Psychology, Baylor University.
+%
+%Correspondence concerning this article should be addressed to R. Noah Padgett, Department of Educational Psychology, One Bear Place \# 97304, Baylor University, Waco, TX 76798.
+%Contact: \href{mailto:noah\_padgett1@baylor.edu}	{\tt noah\_padgett1@baylor.edu} 
+%}
+
+\begin{document}
+
+\maketitle
+
+%% Spacing for Eqations Can't be in preamble...
+\setlength{\abovedisplayskip}{3pt}
+\setlength{\belowdisplayskip}{3pt}
+
+\section{Objections and Purposes}
+
+Social science research sometimes leads researchers to utilize complex data structures.
+The complex dependencies among participants can be incorporated into statistical models to help answer research questions.
+One such model utilized in social science that can directly account for some types of complex dependencies fall under multilevel confirmatory factor analysis \citep[ML-CFA,][]{Goldstein1988, Muthen1994}.
+ML-CFA allows researchers to model hypotheses of why groups of participants vary on constructs of interest.
+For example, some hypotheses can be tested as to why teachers' perceived school safety climate vary across schools and what school and teacher characteristics relate to these perceptions.
+In construct validation with cross-cultural instruments, ML-CFA can provides researchers with a unique lens to investigate their data with respect to how constructs potentially are influenced by group membership.
+The association of group membership and the latent construct can be investigating with ML-CFA when the factor structure is hypothesized to be invariant across levels \citep[][Models 4-5, pg. 488]{Stapleton2016}.
+The models are hypothesized such that group level constructs are aggregates of individual level construct.
+However, the hierarchical organization and coarse measurements associated with data collected to answer such questions may be challenging in the model estimation.
+
+However, few studies have examined the estimation performance of ML-CFA models when the factor structures are invariant, especially under conditions when convergence may be an issue (i.e., low sample size).
+One of the recommendations for single level factor analysis with categorical data is to fit the model with multiple estimation methods as a check for similar parameter estimates \citep{Finney2013}.
+Given that data from educational settings typically arise from hierarchically structured contexts and use ordered categorical response formats, understanding how these models can be recovered in a variety of settings.
+Specifically, our research questions are
+\begin{enumerate}
+\item Which estimation method (WLSMV, ULSMV, MLR) provides the least biased estimates of model parameters and standard errors (factor loadings, factor variances, factor covariances)?
+\item Which estimation method is more efficient, especially when the sample size is relatively low?
+\end{enumerate} 
+We expect that WLSMV will yield the least biased and most efficient estimates across all parameters \citep{Hox2010, DiStefano2014, Asparouhov2007}.
+But, when the number of level-2 units is below 100, some evidence points to sever bias in WLSMV estimates \citep{Navruz2016}.
+However, some evidence suggests that unweighted least squares (ULS) may be as efficient as WLSMV for categorical data for single-level models \citep{Forero2009}.
+We are hopeful that ULS parameter estimates for ML-CFA will be comparable to that of WLSMV.
+
+\section{Perspective, Theoretical Framework, and Background}
+
+ML-CFA is a decomposition of the observed covariance matrix into a level-1 (pooled within group) and level-2 (between group) specific covariance matrix. 
+Because essentially two covariance matrices are being analyzed, two possibly unique models can be specified for each level of analysis.
+The two levels of analysis correspond to the individual and group level.
+With categorical observed data, these two effects directly influence the underlying response value for each item, as shown in Equation \ref{eq:ur-mcfa}.
+The underlying response value for an individual ($y^{*}_{pig}$) is the composition of the individual component ($y_{wpig}$) and a random effect of group ($y_{bpg}$). 
+As with \cite{Muthen1984}, the latent response is assumed normally distributed.
+\begin{equation}\label{eq:ur-mcfa}
+y^{*}_{pig} = y_{bpg} + y_{wpig}
+\end{equation}
+where $y^{*}_{pig}$ is the latent response underlying the observed categorical value $y_p$ for the $p^{th}$ item, $i$ indexes across individuals within group $g$.
+Across $p$ items, this general framework is easily incorporated into factor analysis by replacing the latent components $y_{wpig}$ and $y_{bpg}$ by the level specific factor loading matrices and latent variable vectors.
+
+In models where the observed scores are categorical, as in this case, the item thresholds are used to relate the underlying response values ($\mathbf{y^{*}_{ig}}$) to the observed vector of categorical responses ($\mathbf{y}_{ig}$).
+These thresholds ($\tau_{pk}$) are specific to each item ($p$) and are constant across groups. 
+The total number of categories in the observed variable is defined as $k = 2, 3, \cdots, K$; 
+$y_{pig} = k \Leftrightarrow \tau_{pk} < y^{*}_{pig} < \tau_{p(k+1)}$ where $\tau_{p0} = -\infty$ and $\tau_{pk+1} = \infty$.
+The relationship between the observed categories and underlying response vector allows for the categorical nature of the observed data to be controlled for when estimating the between-group variability.
+
+The relative amount of between-group variability is expressed in two components of the model.
+First, amount of variability in each item that attributed to group differences.
+And second, the amount of variability in the latent variable that is attributed to group differences.
+Both quantities can be estimated using an intraclass correlation (ICC).
+In ML-CFA with invariant factor structure and constrained loadings across levels, the ICC now represents the proportion of variability in the latent construct between groups \citep[][, p. 155-171]{Heck2015}.
+This may provide key inferential outputs in applications of ML-CFA.
+%%~~
+\section{Methods, techniques, or modes of inquiry}
+
+\subsection{Model Estimation Methods}
+	
+All models were estimated using M\textit{plus} \citep[version 8.2]{Muthen2017}. 
+In this project, we focused on ordered categorical responses.
+We compared across three robust estimation methods: maximum likelihood with robust standard errors (MLR), unweighted least squares mean and variance adjusted (ULSMV), and weighted least squares mean and variance adjusted (WLSMV).
+
+\subsection{Analysis of Monte Carlo Simulation}
+In Monte Carlo simulation studies the rates of admissible or usable replications should be checked prior to examination of results \citep{Bandalos2012}.
+Our working definition of usable replications is as follows.
+First, we identified converged solutions, where model estimation terminated.
+Secondly, we checked for usable solutions by whether the solution included all non-negative variances.
+This method of checking for usable replications is similar to previous simulation studies \citep{Yang2010, DiStefano2014}.
+The non-converged and inadmissible replications were removed from further analyses because they do not provide useful information \citep{Bandalos2013}.
+
+Parameter and standard error estimates were evaluated using relative bias and relative efficiency. 
+We evaluated the difference between $\hat{\theta}$ and $\theta$ using the average relative bias (RB),
+\begin{equation}
+\mathrm{RB}(\hat{\theta}) = \sum_{j=1}^{n_r}\left(\frac{\hat{\theta}_j- \theta}{\theta}\right)/n_r\times 100
+\end{equation}
+where, $n_r$ is the number of usable replications.
+RB was computed for parameter and standard error estimates of factor loadings, factor covariances, level-2 factor (co)variances, level-2 residual variances, and ICC estimates.
+We evaluated RB as negligible for RB $< | 5\% |$, as mild for $\mid 5\%\mid \leq {\rm RB} < \mid 10\%\mid$, and unacceptable for RB $\geq \mid 10\%\mid$ \citep{Hoogland1998}.
+
+The RE of the estimates from different estimation methods was estimated using Equation \ref{eq:re}.
+\begin{equation}\label{eq:re}
+RE = \sqrt{\left( \frac{\sum_{\forall j}\left(\hat{\theta}_j^{MLR} -\theta\right)^2 }{\sum_{\forall j}\left(\hat{\theta}_j^{WLSMV} -\theta\right)^2 }\right)}
+\end{equation}
+The RE was broken down across sample size conditions (level-1 and level-2 $N$) to describe which estimation method yielded more efficient estimates as sample size decreased.
+
+\section{Data sources, evidence, objects, or materials}
+
+\subsection{Data Generating Process}
+
+Data Generating Process: Data for this project were generated using M\textit{plus} v.8.2 \citep{Muthen2017} along with the MplusAutomation \citep{Hallquist2018} package in R. %\citep{R2018}
+
+\subsubsection{Fixed Design Factors}
+
+Data were generated from a factor model with 10 items and two correlated (0.3) factors at both levels.
+Across levels, the structure and factor loadings were specified to be invariant so that the construct is equivalent across levels.
+The factor loadings were set to 0.60.
+The observed indicators were generated to be ordinal with five categories.
+For this study, the indicators were set to be approximately normally distributed which is the best case possible for using ordered categorical data.
+
+\subsubsection{Manipulated Design Factors}
+Factors that varied across simulation conditions are indicator ICC ($\mathrm{ICC}_O$ = 0.1, 0.3, and 0.5), latent variable ICC ($\mathrm{ICC}_L$ = 0.1, 0.5), number of groups ($\rm N_2$ = 30, 50, 100, 200), and number of level-1 units ($\rm N_1$ = 5, 10, 30).
+
+\section{Results}
+
+Convergence was a problem in this study under all estimation methods when the sample size was low.
+We found convergence rates as low are 35.5\% under WLSMV under low sample sizes, and that MLR and ULSMV had better convergence rate in all conditions.
+However, as sample size increased to at least 100 groups, differences among estimation methods become negligible.
+
+\subsection{Parameter and Standard Error Bias}
+
+The average relative bias of parameters and intraclass correlation coefficients (latent and observed variable) across simulation conditions are shown in Figure \ref{fig:rb-para}.
+The average relative bias of standard errors across simulation conditions are shown in Figure \ref{fig:rb-se}.
+The effects of design factors on relative bias estimates are reported in the appendix in Table \ref{tb:anova-pomega}.
+The results were mostly as expected in that estimation method was the most influential factor in relative bias estimates for all parameters and standard errors with partial-$\omega^2$ estimates ranging from 0.02 to 0.91. 
+The only exception was under the estimation of factor loadings where we identified a  partial-$\omega^2 = 0.30$ for the interaction between estimation method and observed variable ICC ($\rm ICC_{O}$).
+All other effects were below 0.14. 
+Next, we described the patterns of bias in the different parameters in turn.
+
+{
+  \centering
+  <<FIGURE \ref{fig:rb} ABOUT HERE>>
+}
+\begin{figure}[!htp]
+\centering
+\begin{subfigure}[b]{1\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{fig/relative_bias_overview}
+\caption{Relative bias of parameter estimates showed distinct differences among estimation methods}
+\label{fig:rb-para}
+\end{subfigure}
+
+\begin{subfigure}[b]{1\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{fig/relative_se_bias_overview}
+\caption{Standard errors were biased under most low sample size conditions}
+\label{fig:rb-se}
+\end{subfigure}
+\caption{Bias associated with parameter and standard error estimates. {(a) Parameter estimates including intraclass correlation estimates; (b) Standard error estimates. Each point represents the estimated relative bias in a single condition. We have highlighted the effect of the level-2 sample size which is an important consideration for ML-CFA.}}
+\label{fig:rb}
+\end{figure}
+
+\begin{table}[h]
+ \centering
+ \begin{threeparttable}
+ \caption{Design effects on relative bias of parameter and standard error estimation (partial-$\omega^2$ estimates)}
+ \label{tb:anova-pomega}
+ \begin{tabular}{l *{8}{r}} %C{.75in} C{.75in} C{.75in} C{.75in} C{.75in}}
+   \toprule
+   & \multicolumn{2}{c}{Loadings} & \multicolumn{2}{c}{L1 Factor Cov.} & \multicolumn{2}{c}{L2 Factor Cov.} & \multicolumn{2}{c}{L2 Residual Var.}\\ 
+   \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+   Effect & Est. & SE & Est. & SE & Est. & SE & Est. & SE\\
+   \midrule
+  $\rm N_1$           				& .00 & .11 & .00 & .03 & .00 & .00 & .00 &  .00 \\
+  $\rm N_2$            				& .01 & .01 & .00 & .06 & .02 & .00 & .02 &  .08 \\
+  $\rm ICC_O$  				& .03 & .09 & .00 & .03 & .00 & .01 & .04 &  .03 \\ 
+  $\rm ICC_L$  				& .02 & .02 & .00 & .02 & .02 & .06 & .02 &  .00 \\ 
+  Estimation       					& {\bf .73} & {\bf .21} & .00 & {\bf .20} & .02 & .02 & {\bf .91} &  {\bf .23} \\
+  $\rm N_1$:$\rm N_2$      			& .00 & .05 & .00 & .05 & .00 & .01 & .01 &  .01 \\ 
+  $\rm N_1$:$\rm ICC_O$      	& .00 & .04 & .00 & .02 & .00 & .02 & .01 &  .04 \\  
+  $\rm N_1$:$\rm ICC_L$   		& .00 & .01 & .00 & .00 & .00 & .01 & .00 &  .00 \\
+  $\rm N_1$:Estimation 				& .00 & .09 & .00 & .03 & .00 & .02 & .02 &  .02 \\ 
+  $\rm N_2$:$\rm ICC_O$     	& .00 & .03 & .00 & .01 & .00 & .00 & .01 &  .03 \\
+  $\rm N_2$:$\rm ICC_L$     	& .00 & .04 & .00 & .02 & .02 & .01 & .01 &  .00 \\ 
+  $\rm N_2$:Estimation  			& .00 & .01 & .00 & .05 & .00 & .00 & .03 &  .11 \\ 
+  $\rm ICC_O$:$\rm ICC_L$ & .00 & .10 & .00 & .04 & .01 & .03 & .01 &  .01 \\ 
+  $\rm ICC_O$:Estimation 		& .05 & {\bf .30} & .00 & .09 & .00 & .00 & .11 &  .01 \\ 
+  $\rm ICC_L$:Estimation 		& .02 & .07 & .00 & .03 & .00 & .01 & .06 &  .01 \\
+  \bottomrule
+ \end{tabular}
+ \vspace*{1mm}
+ 	\begin{tablenotes}[para,flushleft]
+    {\small
+        \textit{Note.} Est = estimate of parameter; SE = standard error of parameter estimate. The effects greater than .14 (large effect) are in bold. The meaning of each value can be interpreted as follows. For example, for the effect of the level-1 sample size ($\rm N_1$), 11\% of the variability in estimates of relative bias in the standard errors of factor loadings can be attributed to the number of level-1 units were sampled per group after controlling for all other design factors (i.e., $\rm N_2$, $\rm ICC_O$, $\rm ICC_L$, estimation method, and bivariate interactions).
+    }
+ 	\end{tablenotes}
+ \end{threeparttable}
+\end{table}
+%\subsubsection{Factor loadings} 
+%For parameter estimates, we found that factors loadings were negligible to mild under all conditions when using ULSMV and WLSMV.
+%ULSMV was more prone to slightly underestimate factor loadings while WLSMV tended to slightly overestimate factor loadings.
+%When assuming indicators are continuous and using MLR, the loadings were severely underestimated in all conditions \ref{tb:bias-fct}.
+%Underestimating factor loadings when ignoring the categorical nature of these data has been previously observed \citep{DiStefano2002, Li2016}.
+%
+%For standard error estimates, the differences among estimate methods was not as clean.
+%We identified a practically significant interaction between observed variable ICC and estimation method (partial-$\omega^2 = 0.30$).
+%The estimated RB, RMSE and sampling variance of standard error bias are reported in Table \ref{tb:bias-fct}.
+%We include the breakdown by level-1 sample size since $\rm N_1$ was the next most influential factor (partial-$\omega^2 = 0.11$) and we identified practically important differences in bias across levels of $\rm N_1$ for discussion.
+%The standard errors under MLR was not problematic under any conditions.
+%The standard error bias between ULSMV and WLSMV we distinctly different, though.
+%USLMV tended to underestimate standard errors at lower sample sizes and estimates were severely biased when the$\rm ICC_O$ was high.
+%The underestimated loadings using ULSMV was even more severe in conditions where the observed and latent variable ICC were both high.
+%The extreme RMSE estimate found for ULSMV when the level-1 sample size was 5 occur solely to the extreme bias present in the condition when level-2 sample size was only 30.
+%This gives evidence to some potential issues of using ULSMV in sample sample sizes with ML-CFA models.
+%
+%
+%However, the bias under WLSMV was not observed as long as the number of groups was at least 100.
+%So, researchers with at least 100 groups are likely to avoid these bias issues surrounding the number units within group.
+%The level-2 sample size did not practically affect these results by our definition (partial-$\omega^2 = 0.01$), but we have included the breakdown by level-1 and level-2 sample size in the appendix for completeness (see Table \ref{tb:bias-fct2}.
+%
+%
+%
+%{
+%  \centering
+%  <<TABLE \ref{tb:bias-fct} ABOUT HERE>>
+%}
+%
+%%\begin{landscape}
+%% latex table generated in R 3.6.3 by xtable 1.8-4 package
+%% Thu Jun 11 12:18:29 2020
+%\begin{table}[!htp]
+%\centering
+%\begin{threeparttable}
+%\caption{Relative bias of factor loadings show distinct differences among estimation methods and cluster effect magnitude} 
+%\label{tb:bias-fct}
+%\begin{tabular}{llrrrrrrrrr}
+%  \toprule
+%  &   & \multicolumn{3}{c}{MLR} & \multicolumn{3}{c}{ULSMV} & \multicolumn{3}{c}{WLSMV}\\ \cmidrule(lr){3-5} \cmidrule(lr){6-8} \cmidrule(lr){9-11}
+%$\rm ICC_{O}$ & $\rm N_1$ & RB & RMSE & SV & RB & RMSE & SV & RB & RMSE & SV \\ 
+%  \midrule
+%\multicolumn{11}{l}{Parameter Estimates}\\
+%  0.1 & 5 & {\bf $-$28.22} & 0.03 & 0.00 & 0.32 & 0.01 & 0.01 & 0.82 & 0.01 & 0.01 \\ 
+%   & 10 & {\bf $-$28.28} & 0.03 & 0.00 & 0.26 & 0.01 & 0.00 & 0.62 & 0.00 & 0.00 \\ 
+%   & 30 & {\bf $-$28.24} & 0.03 & 0.00 & 0.14 & 0.00 & 0.00 & 0.23 & 0.00 & 0.00 \\ 
+%  0.3 & 5 & {\bf $-$34.72} & 0.05 & 0.00 & 0.64 & 0.02 & 0.02 & 1.69 & 0.01 & 0.01 \\ 
+%   & 10 & {\bf $-$34.50} & 0.05 & 0.00 & 0.20 & 0.01 & 0.01 & 0.75 & 0.01 & 0.01 \\ 
+%   & 30 & {\bf $-$34.28} & 0.04 & 0.00 & $-$0.04 & 0.00 & 0.00 & 0.25 & 0.00 & 0.00 \\ 
+%  0.5 & 5 & {\bf $-$42.43} & {\bf 0.07} & 0.00 & $-$3.92 & {\bf 0.09} & 0.08 & 2.00 & 0.02 & 0.02 \\ 
+%   & 10 & {\bf $-$42.15} & {\bf 0.07} & 0.00 & $-$4.26 & 0.05 & 0.05 & 0.94 & 0.01 & 0.01 \\ 
+%   & 30 & {\bf $-$42.06} & {\bf 0.06} & 0.00 & $-$4.48 & 0.04 & 0.04 & 0.26 & 0.00 & 0.00 \\ 
+% \multicolumn{11}{l}{Standard Error Estimates}\\
+%  0.1 & 5 & 1.93 & 0.00 & 0.00 & $-$5.99 & 0.00 & 0.00 & $-$4.31 & 0.00 & 0.00 \\ 
+%   & 10 & $-$0.26 & 0.00 & 0.00 & $-$4.70 & 0.00 & 0.00 & $-$5.32 & 0.00 & 0.00 \\ 
+%   & 30 & $-$1.21 & 0.00 & 0.00 & 1.96 & 0.00 & 0.00 & $-$4.95 & 0.00 & 0.00 \\ 
+%  0.3 & 5 & 0.26 & 0.00 & 0.00 & $-$7.94 & 0.01 & 0.01 & $-$8.69 & 0.00 & 0.00 \\ 
+%   & 10 & $-$0.56 & 0.00 & 0.00 & $-$5.34 & 0.00 & 0.00 & $-$7.38 & 0.00 & 0.00 \\ 
+%   & 30 & $-$0.25 & 0.00 & 0.00 & 2.34 & 0.00 & 0.00 & 1.36 & 0.00 & 0.00 \\ 
+%  0.5 & 5 & 1.15 & 0.00 & 0.00 & {\bf $-$26.87} & {\bf 58.03} & 57.95 & {\bf $-$10.14} & 0.00 & 0.00 \\ 
+%   & 10 & 0.27 & 0.00 & 0.00 & {\bf $-$35.31} & 0.02 & 0.01 & $-$5.63 & 0.00 & 0.00 \\ 
+%   & 30 & $-$0.51 & 0.00 & 0.00 & {\bf $-$17.13} & {\bf 0.10} & 0.09 & {\bf 15.43} & 0.00 & 0.00 \\   
+%   \bottomrule
+%\end{tabular}
+% \vspace*{1mm}
+% 	\begin{tablenotes}[para, flushleft]
+%    {\small
+%        \textit{Note.} RB  $> |10\%|$ and RMSE $> 0.05$ are in bold and considered practically significance bias and variance, respectively. If the SV $\approx$ RMSE then RMSE estimate reflects variance of estimates, if SV $\not\approx$ RMSEA then RMSE does not reflect variance. MLR = maximum likelihood with robust standard errors; ULSMV = unweighted least squares mean and variance adjusted; WLSMV = weighted least squares mean and variance adjusted; RB = relative bias; RMSE = root mean square error; and SV = sampling variance of estimate.
+%    }
+% 	\end{tablenotes}
+% \end{threeparttable}
+%\end{table}
+%%\end{landscape}
+%
+%
+%
+%\subsubsection{Level-1 factor covariance} 
+%estimates showed acceptable degrees of bias across all estimation methods for most conditions.
+%Exceptions were when the level-2 sample size (N) was 30 or 50 and level-1 sample size was only 5.
+%
+%Parameters
+%
+%acceptable levels of bias in nearly all conditions. 
+%Under ULSMV the one condition (N2=50, N1=5, ICC ov = 0.1, ICC LV = 0.5, ULSMV) that resulted in severe negative bias ($-$21.9\%) we identified one replication that resulted in an estimated correlation of $-$0.11 and multiple of the residual variances were near 0 (< .01) which is likely the cause of this strange result. The next lowest estimate was 0.01 for the correlation.
+%Otherwise, the only other conditions where large bias was present was when the level-2 sample size was only 30.
+%
+%standard errors
+%
+%standard errors under WLSMV and ULSMV were negatively biased under most conditions.
+%Bias of standard errors under WLSMV was acceptable once the number of groups was at least 100.
+%Though sample size typically resolved negative bias except under estimation with ULSMV when the observed and latent variable ICC were both high.
+%MLR SE estimates were acceptably biased under most conditions except a few when the sample size was low (e.g., N1 = 5, N2 = 30 or 50).
+%
+%\subsubsection{Level-2 factor (co)variance} 
+%The estimation of the level-2 factor covariance matrix was a bit all over the place.
+%WLSMV tended to underestimate parameters on average while ULSMV and MLR tended overestimate parameters.
+%We found that using WLSMV with at least 100 groups was sufficient for negligible to mild bias in the level-2 factor covariance matrix.
+%Higher levels of bias were identified when the number of level-1 observations per groups decreased.
+%Differences is the bias occurred largely in the lower sample size conditions (e.g., N2 < 100). 
+%However, multiple conditions when N2 = 100 using MLR and ULSMV were also positively biased.
+%
+%
+%matrix was not as precisely estimated across conditions and estimation methods.
+%Unacceptable levels 
+%
+%%
+%%\begin{figure}
+%%	\centering
+%%    \begin{subfigure}[t]{0.69\textwidth}
+%%        \centering
+%%        \includegraphics[width=1\textwidth]{fig/loading-converge-smallN}
+%%        \caption{Small sample size ($N_2=30, N_1= 10$)}
+%%    \end{subfigure}%
+%%    
+%%    \begin{subfigure}[t]{0.69\textwidth}
+%%        \centering
+%%        \includegraphics[width=1\textwidth]{fig/loading-converge-medN}
+%%        \caption{Medium sample size ($N_2=100, N_1=10$)}
+%%    \end{subfigure}%
+%%    
+%%    \begin{subfigure}[t]{0.69\textwidth}
+%%        \centering
+%%        \includegraphics[width=1\textwidth]{fig/loading-converge-largeN}
+%%        \caption{Large sample size ($N_2=200, N_1=10$)}
+%%    \end{subfigure}%
+%%    \caption{Comparison of factor loading (Item 1) estimates across estimation methods}
+%%    \label{fig:comp-load}
+%%\end{figure}
+
+\subsection{Relative Efficiency}
+
+
+The relative efficiency of parameter and standard error estimates among estimation methods are reported in Table \ref{tb:re}. 
+
+For parameter estimates, we found that WLSMV was generally the most efficient for all parameters among estimation methods included in this study.
+The only exception was for the level-2 residual variances in which ULSMV was slightly more efficient when the sample size was very large ($\rm N_2 \geq 100$ and $\rm N_1 \geq 10$).
+However, for estimation of the level-2 factor covariance matrix, ULSMV was only marginally less efficient across all sample sizes.
+IN generally, these results for the efficiency among estimation methods points to utilizing WLSMV as a first option and utilizing ULSMV as a potential alternative.
+
+For standard error estimates, the story about the relationship among bias, sample size, and estimation method is a bit more complicated.
+We found that the maximum likelihood method, while treating five ordered categories as continuous, resulted in the most efficient standard errors in most conditions for all parameters.
+The standard errors for the elements of the level-2 factor covariance matrix were approximately equally efficient across all estimation methods.
+Exceptions were under the smallest sample size condition.
+Estimation of standard errors appears to be highly variable among estimation methods at lower sample sizes.
+% latex table generated in R 3.6.3 by xtable 1.8-4 package
+% Sun Jun 21 22:54:43 2020
+\begin{table}[!htp]
+ \centering
+ \small
+ \begin{threeparttable}
+\caption{Relative efficiency indicates WLSMV is better under most sample size conditions} 
+\label{tb:re}
+\begin{tabular}{llrrrrrrrrrrrr}
+  \toprule
+  &     & \multicolumn{3}{c}{Loadings} & \multicolumn{3}{c}{L1 Factor Cov.} & \multicolumn{3}{c}{L2 Factor Cov.} & \multicolumn{3}{c}{L2 Residual Var.}\\  \cmidrule(lr){3-5} \cmidrule(lr){6-8} \cmidrule(lr){9-11} \cmidrule(lr){12-14}
+$\rm N_2$ & $\rm N_1$ & MU & MW & UW & MU & MW & UW & MU & MW & UW & MU & MW & UW \\ 
+  \midrule
+\multicolumn{14}{l}{Parameter Estimates}\\
+30 & 5 & 1.84 & 2.18 & 1.57 & 1.81 & 1.83 & 1.13 & 1.83 & 2.22 & 1.50 & 1.41 & 1.42 & 1.50 \\ 
+  30 & 10 & 1.68 & 2.33 & 1.54 & 1.08 & 1.28 & 1.19 & 1.10 & 1.42 & 1.30 & 1.43 & 1.52 & 1.05 \\ 
+  30 & 30 & 2.27 & 3.75 & 2.04 & 0.92 & 1.16 & 1.31 & 1.03 & 1.25 & 1.20 & 1.56 & 1.64 & 1.06 \\ 
+  50 & 5 & 1.81 & 2.37 & 1.44 & 1.15 & 1.33 & 1.20 & 1.31 & 1.64 & 1.26 & 1.50 & 1.58 & 1.05 \\ 
+  50 & 10 & 1.78 & 2.81 & 1.79 & 0.97 & 1.15 & 1.21 & 1.05 & 1.25 & 1.18 & 1.64 & 1.66 & 1.00 \\ 
+  50 & 30 & 2.84 & 4.27 & 1.95 & 0.94 & 1.04 & 1.13 & 0.99 & 1.10 & 1.10 & 1.88 & 1.89 & 1.03 \\ 
+  100 & 5 & 2.02 & 2.71 & 1.45 & 1.04 & 1.15 & 1.14 & 1.10 & 1.20 & 1.09 & 1.82 & 1.85 & 1.01 \\ 
+  100 & 10 & 2.79 & 3.64 & 1.63 & 0.96 & 1.07 & 1.14 & 1.01 & 1.11 & 1.09 & 2.18 & 2.17 & 0.99 \\ 
+  100 & 30 & 4.03 & 5.90 & 2.17 & 0.86 & 1.01 & 1.31 & 0.99 & 1.03 & 1.05 & 2.63 & 2.55 & 0.95 \\ 
+  200 & 5 & 2.91 & 3.53 & 1.40 & 0.97 & 1.05 & 1.08 & 1.01 & 1.07 & 1.05 & 2.40 & 2.37 & 0.98 \\ 
+  200 & 10 & 3.86 & 4.86 & 1.54 & 0.96 & 1.01 & 1.07 & 0.99 & 1.03 & 1.04 & 3.02 & 2.95 & 0.96 \\ 
+  200 & 30 & 5.92 & 8.24 & 2.39 & 0.89 & 1.00 & 1.27 & 0.99 & 1.01 & 1.02 & 3.77 & 3.60 & 0.94 \\ 
+\multicolumn{14}{l}{Standard Errors}\\
+30 & 5 & 0.78 & 0.89 & 41.2 & 1.34 & 1.26 & 1.00 & 2.55 & 3.17 & 1.83 & 0.34 & 0.34 & 106.7 \\ 
+  30 & 10 & 0.29 & 0.45 & 2.76 & 0.60 & 0.73 & 1.42 & 1.06 & 1.47 & 1.41 & 0.22 & 0.24 & 1.39 \\ 
+  30 & 30 & 0.20 & 0.39 & 3.33 & 0.63 & 0.81 & 1.54 & 0.84 & 1.21 & 1.55 & 0.23 & 0.24 & 1.78 \\ 
+  50 & 5 & 0.34 & 0.52 & 2.50 & 0.80 & 0.84 & 1.39 & 1.35 & 1.78 & 1.32 & 0.23 & 0.26 & 1.41 \\ 
+  50 & 10 & 0.25 & 0.48 & 4.43 & 0.69 & 0.82 & 1.70 & 1.09 & 1.32 & 1.20 & 0.25 & 0.26 & 1.14 \\ 
+  50 & 30 & 0.23 & 0.37 & 4.24 & 0.80 & 0.86 & 1.23 & 0.92 & 1.12 & 1.25 & 0.27 & 0.26 & 4.20 \\ 
+  100 & 5 & 0.28 & 0.44 & 3.58 & 1.04 & 1.14 & 1.59 & 1.21 & 1.29 & 1.08 & 0.23 & 0.24 & 1.55 \\ 
+  100 & 10 & 0.32 & 0.47 & 5.01 & 0.84 & 0.90 & 1.75 & 1.07 & 1.19 & 1.11 & 0.29 & 0.28 & 1.00 \\ 
+  100 & 30 & 0.27 & 0.40 & 4.56 & 0.62 & 0.82 & 3.29 & 0.96 & 1.05 & 1.10 & 0.31 & 0.29 & 0.98 \\ 
+  200 & 5 & 0.33 & 0.42 & 4.23 & 0.71 & 0.86 & 1.76 & 1.08 & 1.13 & 1.06 & 0.25 & 0.25 & 1.02 \\ 
+  200 & 10 & 0.35 & 0.48 & 6.13 & 1.01 & 1.14 & 1.87 & 1.03 & 1.08 & 1.05 & 0.29 & 0.28 & 1.00 \\ 
+  200 & 30 & 0.31 & 0.45 & 8.76 & 0.75 & 0.90 & 4.39 & 0.97 & 1.02 & 1.06 & 0.32 & 0.30 & 0.96 \\ 
+   \bottomrule
+\end{tabular}
+ \vspace*{1mm}
+ 	\begin{tablenotes}[para, flushleft]
+    {\small
+        \textit{Note.} MU = relative efficiency of MLR compared to ULSMV; MW = relative efficiency of MLR compared to MLSMV; and UW = relative efficiency of ULSMV compared to MLSMV.
+    }
+ 	\end{tablenotes}
+ \end{threeparttable}
+\end{table}
+
+\section{Scientific or Scholarly Significance}
+
+Nested data structures are abundant in educational research, and current software makes performing investigations of multilevel structures more widespread than ever before.
+Due to the growing use of these analyses, the burden lies on researchers to make decisions about how to connect theory and data.
+The benefits of these methods to a variety of disciplines in education, social sciences, and many other fields only come when these methods are used appropriately alongside a guiding theoretical framework. 
+We investigated how well multilevel confirmatory factor analyses recover a known ``true model'' under a variety of potentially realistic conditions.
+
+Our results indicated that the performance of the three estimation methods considered (MLR, ULSMV, and WLSMV) depended on which parameter was of interest and sample size.
+The model parameters were biased in different ways for different estimation methods, similar to the results of \citep{DiStefano2014} for single level CFA models.
+An unexpected finding was that MLR, where the 5 ordered categorical data were treated as continuous, resulted in the most efficient standard error estimates across all sample sizes and parameters.
+In general, the parameter estimated under MLR were negatively biased except when ICCs were low.
+
+When researchers are planning studies that utilize ML-CFA models, one consideration for data collection that will be to carefully consider the sample size in terms of number of groups and number of participants within groups.
+We found that there is a small trade-off between number of groups versus within group  sample size. 
+Which means that researcher may be able to successfully recover model parameters, even level-2 parameters, when the number of participants within group is increased.
+Meaning that for inferences about variances and covariances, if researchers are constrained by the number of groups they have access to (e.g., less than 50) increasing the within group sample size to as many as possible ($30+$) may help to more accurately estimates model parameters.
+However, gaining access to more groups would result in more gains in accuracy.
+
+
+%~~
+% ============================= 
+\newpage
+\raggedright
+%\bibliographystyle{apacite} 
+% You may have to select another style. Remember: LaTeX, BibTeX, LaTeX, LaTex to get the citations to appear
+%\raggedright
+%\urlstyle{same}
+%\bibliography{references}
+\printbibliography
+
+
+\end{document}

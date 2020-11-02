@@ -22,7 +22,6 @@ sim_results <- as_tibble(read.table('data/compiled_para_results.txt', header=T,s
 ## Next, turn condition into a factor for plotting
 sim_results$Condition <- as.factor(sim_results$Condition)
 
-## level-1 Sample size
 ss_l1 <- c(5, 10, 30) ## 6 conditions each
 ss_l2 <- c(30, 50, 100, 200) ## 18 condition each
 icc_ov <- c(.1, .3, .5) ## 2 conditions each
@@ -44,6 +43,10 @@ icc_lv <- matrix(icc_lv, ncol=1)
 ## Add the labels to the results data frame
 sim_results <- sim_results[order(sim_results$Condition),]
 sim_results <- cbind(sim_results, ss_l1, ss_l2, icc_ov, icc_lv)
+sim_results$N1 <- sim_results$ss_l1 
+sim_results$N2 <- sim_results$ss_l2 
+sim_results$ICC_OV <- sim_results$icc_ov
+sim_results$ICC_LV <- sim_results$icc_lv
 
 ## Set up iterators for remainder of script
 ests <- c('MLR', 'ULSMV', 'WLSMV')
@@ -82,4 +85,4 @@ for(i in 1:10){
 }
 
 # remove unnecessary items
-remove(lv_var, lv_cov, ob_var, icc_lv, icc_ov, ss_l1,ss_l2, nCon, nMod, nRep, new.packages, packages)
+remove(lv_var, lv_cov, ob_var, icc_lv, icc_ov, ss_l1,ss_l2, nCon, nMod, nRep, new.packages, packages, varb, varw, icc_est, i, ests)

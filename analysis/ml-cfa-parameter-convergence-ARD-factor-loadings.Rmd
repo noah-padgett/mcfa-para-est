@@ -1,0 +1,264 @@
+---
+title: "Average Relative Difference Among Parameter Estimates: Factor Loadings"
+date: "2020-06-10"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+The purpose of this page is the identify the degree of separation between estimates of parameters between estimation methods.
+
+# Packages and Set-Up
+
+
+```{r init, warning=FALSE, message=FALSE}
+
+rm(list=ls())
+source(paste0(getwd(),"/code/load_packages.R"))
+source(paste0(getwd(),"/code/get_data.R"))
+source(paste0(getwd(),"/code/r_functions.R"))
+
+# general options
+theme_set(theme_bw())
+options(digits=3)
+
+##Chunk iptions
+knitr::opts_chunk$set(out.width="225%")
+
+```
+
+
+# Data Management
+
+```{r data, tidy=T}
+
+# set up vectors of variable names
+pvec <- c(paste0('lambda1',1:6), paste0('lambda2',6:10), 'psiW12','psiB1', 'psiB2', 'psiB12', paste0('thetaB',1:10), 'icc_lv1_est', 'icc_lv2_est', paste0('icc_ov',1:10,'_est'))
+# stored "true" values of parameters by each condition
+ptvec <- c(rep('lambdaT',11), 'psiW12T', 'psiB1T', 'psiB2T', 'psiB12T', rep("thetaBT", 10), rep('icc_lv',2), rep('icc_ov',10))
+
+
+# take out non-converged/inadmissible cases
+sim_results <- filter(sim_results, Converge==1, Admissible==1)
+
+# Set conditions levels as categorical values
+sim_results <- sim_results %>%
+  mutate(N1 = factor(N1, c("5", "10", "30")),
+         N2 = factor(N2, c("30", "50", "100", "200")),
+         ICC_OV = factor(ICC_OV, c("0.1","0.3", "0.5")),
+         ICC_LV = factor(ICC_LV, c("0.1", "0.5")))
+
+# convert to long format
+long_res1 <- sim_results[,c("Condition", "Replication", "N1", "N2", "ICC_OV", "ICC_LV", "Estimator", pvec)] %>%
+  pivot_longer(
+    cols = all_of(pvec),
+    names_to = "Parameter",
+    values_to = "Estimate"
+  )
+
+long_res2 <- tibble(sim_results[,c("Condition", "Replication", "N1", "N2", "ICC_OV", "ICC_LV", "Estimator", ptvec)], .name_repair="universal")
+ptvec <- colnames(long_res2)[8:44]
+long_res2 <- long_res2 %>%
+  pivot_longer(
+    cols = all_of(ptvec),
+    names_to = "ParameterT",
+    values_to = "Truth"
+  )
+
+long_results <- long_res1
+long_results$ParameterT <- long_res2$ParameterT
+long_results$Truth <- long_res2$Truth
+
+# Now, make "wider"
+wide_res <- long_results %>%
+  pivot_wider(
+    names_from = "Estimator",
+    values_from = "Estimate"
+  )
+
+
+# Subset to just factor loadings
+
+wide_res <- filter(wide_res, Parameter %like% "lambda")
+
+```
+
+
+
+# Estimate Relative Difference
+
+```{r}
+
+
+wide_res <- wide_res %>%
+  mutate(
+    MLR_ULSMV = ((MLR - ULSMV))/Truth*100,
+    MLR_WLSMV = ((MLR - WLSMV))/Truth*100,
+    ULSMV_WLSMV = ((ULSMV - WLSMV))/Truth*100
+  )
+long_results <- wide_res %>%
+  pivot_longer(
+    cols= all_of(c("MLR_ULSMV", "MLR_WLSMV", "ULSMV_WLSMV")),
+    names_to = "Comparison",
+    values_to = "ARD"
+  )
+
+ard.est <- long_results %>%
+  group_by(Condition, N1, N2, ICC_OV, ICC_LV, Comparison) %>%
+  summarise(
+    ARD = mean(ARD, na.rm=T)
+  )
+
+
+ard.est$Comparison <- factor(ard.est$Comparison,
+                      levels=c("MLR_ULSMV", "MLR_WLSMV", "ULSMV_WLSMV"),
+                      labels=c("MLR/ULSMV)",
+                               "MLR/WLSMV)",
+                               "ULSMV/WLSMV)"),
+                      ordered=T)
+
+```
+
+
+## Single Conditions
+
+### All Conditions
+
+```{r all-c}
+
+p <- ggplot(ard.est, aes(x=Comparison, y=ARD)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width=0.3) +
+  geom_hline(yintercept = 10, color="red")+
+  geom_hline(yintercept = -10, color="red")+
+  scale_y_continuous(limits=c(-100, 100), breaks=c(-100, -60, -30, -10, 0, 10, 30, 60, 100))+
+  labs(y="Average Relative Difference",
+       x=NULL,
+       title="ARD: Factor Loadings")+
+  theme_bw()+
+  theme(panel.grid = element_blank())
+p
+
+```
+
+### By Level-1 Sample Size
+
+```{r l1}
+
+p <- ggplot(ard.est, aes(x=Comparison, y=ARD)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width=0.3) +
+  geom_hline(yintercept = 10, color="red")+
+  geom_hline(yintercept = -10, color="red")+
+  scale_y_continuous(limits=c(-100, 100), breaks=c(-100, -60, -30, -10, 0, 10, 30, 60, 100))+
+  labs(y="Average Relative Difference",
+       x=NULL,
+       title="ARD: Factor Loadings",
+       subtitle = "Conditional on Level-1 Sample Size")+
+  #scale_color_manual(name="% Admissible", values=cols)+
+  facet_wrap(.~N1)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_text(angle=90))
+p
+
+```
+
+### By Level-2 Sample Size
+
+```{r l2}
+
+p <- ggplot(ard.est, aes(x=Comparison, y=ARD)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width=0.3) +
+  geom_hline(yintercept = 10, color="red")+
+  geom_hline(yintercept = -10, color="red")+
+  scale_y_continuous(limits=c(-100, 100), breaks=c(-100, -60, -30, -10, 0, 10, 30, 60, 100))+
+  labs(y="Average Relative Difference",
+       x=NULL,
+       title="ARD: Factor Loadings",
+       subtitle = "Conditional on Level-2 Sample Size")+
+  #scale_color_manual(name="% Admissible", values=cols)+
+  facet_wrap(.~N2, nrow=1)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_text(angle=90))
+p
+```
+
+### By Observed Variable ICC
+
+```{r ovicc}
+
+p <- ggplot(ard.est, aes(x=Comparison, y=ARD)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width=0.3) +
+  geom_hline(yintercept = 10, color="red")+
+  geom_hline(yintercept = -10, color="red")+
+  scale_y_continuous(limits=c(-100, 100), breaks=c(-100, -60, -30, -10, 0, 10, 30, 60, 100))+
+  labs(y="Average Relative Difference",
+       x=NULL,
+       title="ARD: Factor Loadings",
+       subtitle = "Conditional on Observed Variable ICC")+
+  #scale_color_manual(name="% Admissible", values=cols)+
+  facet_wrap(.~ICC_OV)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_text(angle=90))
+p
+
+```
+
+### By Latent Variable ICC
+
+```{r lvicc}
+
+p <- ggplot(ard.est, aes(x=Comparison, y=ARD)) +
+geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width=0.3) +
+  geom_hline(yintercept = 10, color="red")+
+  geom_hline(yintercept = -10, color="red")+
+  scale_y_continuous(limits=c(-100, 100), breaks=c(-100, -60, -30, -10, 0, 10, 30, 60, 100))+
+  labs(y="Average Relative Difference",
+       x=NULL,
+       title="ARD: Factor Loadings",
+       subtitle = "Conditional on Latent Variable ICC")+
+  #scale_color_manual(name="% Admissible", values=cols)+
+  facet_wrap(.~ICC_LV)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_text(angle=90))
+p
+
+```
+
+# Publication Figure
+
+```{r}
+
+p <- ggplot(ard.est, aes(x=Comparison, y=ARD)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width=0.3, size=2, alpha=0.7) +
+  geom_hline(yintercept = 10, color="red")+
+  geom_hline(yintercept = -10, color="red")+
+  scale_y_continuous(limits=c(-100, 100), breaks=c(-100, -60, -30, -10, 0, 10, 30, 60, 100))+
+  labs(y="Average Relative Difference",
+       x=NULL)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        legend.position = c(0.5,0.25),
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=12),
+        axis.title.y = element_text(size=12),
+        axis.text.y = element_text(size=10),
+        axis.text.x = element_text(angle=20, hjust=1,
+                                   vjust = 1, size=12))
+p
+
+#ggsave("fig/estimate_correlation_factor_loading.pdf",p, units="in", height=3.5, width=5)
+
+```
+
+```{r session-info}
+sessionInfo()
+```

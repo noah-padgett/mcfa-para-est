@@ -401,7 +401,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-05-06
+<strong>Last updated:</strong> 2020-06-10
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -411,7 +411,7 @@ div.tocify {
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.1). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
@@ -432,16 +432,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttree95dd5a60d9fe4536a49e6500b25260e0d4a35c03targetblank95dd5a6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/mcfa-para-est/tree/95dd5a60d9fe4536a49e6500b25260e0d4a35c03" target="_blank">95dd5a6</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeeecb366e3b200a573540eab3625c5939657d53cftargetblankeecb366a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/mcfa-para-est/tree/eecb366e3b200a573540eab3625c5939657d53cf" target="_blank">eecb366</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttree95dd5a60d9fe4536a49e6500b25260e0d4a35c03targetblank95dd5a6a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeeecb366e3b200a573540eab3625c5939657d53cftargetblankeecb366a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/noah-padgett/mcfa-para-est/tree/95dd5a60d9fe4536a49e6500b25260e0d4a35c03" target="_blank">95dd5a6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/noah-padgett/mcfa-para-est/tree/eecb366e3b200a573540eab3625c5939657d53cf" target="_blank">eecb366</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -452,6 +452,8 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    data/compiled_para_results.txt
     Ignored:    data/results_bias_est.csv
+    Ignored:    data/results_bias_se.csv
+    Ignored:    fig/
     Ignored:    manuscript/
     Ignored:    output/fact-cov-converge-largeN.pdf
     Ignored:    output/fact-cov-converge-medN.pdf
@@ -463,19 +465,38 @@ Ignored files:
     Ignored:    sera-presentation/
 
 Untracked files:
-    Untracked:  LICENSE.txt
-    Untracked:  analysis/ml-cfa-ci-coverage.Rmd
-    Untracked:  analysis/ml-cfa-parameter-bias-level2-residual-variances.Rmd
-    Untracked:  analysis/ml-cfa-parameter-convergence-correlation-L1-factor-covariance.Rmd
-    Untracked:  analysis/ml-cfa-parameter-convergence-correlation-L2-factor-covariance.Rmd
-    Untracked:  analysis/ml-cfa-parameter-convergence-correlation-L2-factor-variances.Rmd
-    Untracked:  analysis/ml-cfa-parameter-convergence-correlation-L2-residual-variances.Rmd
-    Untracked:  analysis/ml-cfa-parameter-convergence-correlation-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-parameter-anova-estimates.Rmd
+    Untracked:  analysis/ml-cfa-parameter-anova-relative-bias.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-latent-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-observed-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L1-factor-covariance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L2-factor-covariance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L2-factor-variance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L2-residual-variance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-latent-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-observed-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-correlation-pubfigure.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-trace-plots-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-anova-logSE.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-anova-relative-bias.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level1-factor-covariances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level2-factor-covariances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level2-factor-variances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level2-residual-variances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-overview.Rmd
+    Untracked:  code/r_functions.R
+    Untracked:  renv.lock
+    Untracked:  renv/
 
 Unstaged changes:
     Modified:   .gitignore
     Modified:   analysis/index.Rmd
-    Modified:   analysis/license.Rmd
+    Modified:   analysis/ml-cfa-convergence-summary.Rmd
+    Modified:   analysis/ml-cfa-parameter-convergence-correlation-factor-loadings.Rmd
+    Modified:   code/get_data.R
+    Modified:   code/load_packages.R
 
 </code></pre>
 <p>
@@ -514,6 +535,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/noah-padgett/mcfa-para-est/blob/eecb366e3b200a573540eab3625c5939657d53cf/analysis/index.Rmd" target="_blank">eecb366</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-05-06
+</td>
+<td>
+updated para recovery
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/noah-padgett/mcfa-para-est/eecb366e3b200a573540eab3625c5939657d53cf/docs/index.html" target="_blank">eecb366</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-05-06
+</td>
+<td>
+updated para recovery
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -701,31 +756,73 @@ Start workflowr project.
 <div id="admissible-replications" class="section level2">
 <h2>Admissible Replications</h2>
 <p>*<a href="ml-cfa-convergence-summary.html">Admissible Replications and Convergence</a></p>
+<p>Next, identify the proportion of replications where ULSMV converged and admissible when WLSMV was not. Maybe you can make like a set of 2x2 tables of that show this relationship as sample size decreases.</p>
 </div>
-<div id="parameter-bias-investigation" class="section level2">
-<h2>Parameter Bias Investigation</h2>
+<div id="parameter-estimates" class="section level2">
+<h2>Parameter Estimates</h2>
 <p>*<a href="ml-cfa-parameter-bias-overview.html">Overview of Methods</a></p>
-<p>*<a href="ml-cfa-parameter-bias-factor-loadings.html">Results - Factor Loadings</a></p>
-<p>*<a href="ml-cfa-parameter-bias-level1-factor-covariances.html">Results - Level-1 Factor Covariance</a></p>
-<p>*<a href="ml-cfa-parameter-bias-level2-factor-covariances.html">Results - Level-2 Factor Covariance</a></p>
-<p>*<a href="ml-cfa-parameter-bias-level2-factor-variances.html">Results - Level-2 Factor Variance</a></p>
+<div id="bias-of-estimates" class="section level3">
+<h3>Bias of Estimates</h3>
+<p>*<a href="ml-cfa-parameter-bias-factor-loadings.html">Factor Loadings</a></p>
+<p>*<a href="ml-cfa-parameter-bias-level1-factor-covariances.html">Level-1 Factor Covariance</a></p>
+<p>*<a href="ml-cfa-parameter-bias-level2-factor-covariances.html">Level-2 Factor Covariance</a></p>
+<p>*<a href="ml-cfa-parameter-bias-level2-factor-variances.html">Level-2 Factor Variance</a></p>
+<p>*<a href="ml-cfa-parameter-bias-observed-ICC.html">Observed Variable ICC</a></p>
+<p>*<a href="ml-cfa-parameter-bias-latent-ICC.html">Latent Variable ICC</a></p>
+</div>
+<div id="effect-of-design-factors" class="section level3">
+<h3>Effect of Design Factors</h3>
+<p>The following pages investigated the effect of the simulation design (sample size, parameters, estimation) on the estimates for the different parameters and the estimated level of bias (relative bias). The final results are reported as effect sizes (e.g., omega-squared or partial-omega-squared).</p>
+<p>*<a href="ml-cfa-parameter-anova-estimates.html">Design Effects on Parameter Estimates</a></p>
+<p>*<a href="ml-cfa-parameter-anova-relative-bias.html">Design Effects on Relative Bias Estimates</a></p>
+</div>
+</div>
+<div id="standard-errors" class="section level2">
+<h2>Standard Errors</h2>
+<p>*<a href="ml-cfa-standard-error-bias-overview.html">Overview of Methods</a></p>
+<div id="bias-of-estimates-1" class="section level3">
+<h3>Bias of Estimates</h3>
+<p>*<a href="ml-cfa-standard-error-bias-factor-loadings.html">Factor Loadings</a></p>
+<p>*<a href="ml-cfa-standard-error-bias-level1-factor-covariances.html">Level-1 Factor Covariance</a></p>
+<p>*<a href="ml-cfa-standard-error-bias-level2-factor-covariances.html">Level-2 Factor Covariance</a></p>
+<p>*<a href="ml-cfa-standard-error-bias-level2-factor-variances.html">Level-2 Factor Variance</a></p>
+</div>
+<div id="effect-of-design-factors-1" class="section level3">
+<h3>Effect of Design Factors</h3>
+<p>The following pages investigated the effect of the simulation design (sample size, parameters, estimation) on the estimates for the different parameters’ standard errors and the estimated level of bias (relative bias) in those estimates. The final results are reported as effect sizes (e.g., omega-squared or partial-omega-squared).</p>
+<p>*<a href="ml-cfa-standard-error-anova-logSE.html">Design Effects on Standard Error Estimates</a></p>
+<p>*<a href="ml-cfa-standard-error-anova-relative-bias.html">Design Effects on Relative Bias of Standard Errors</a></p>
+</div>
+</div>
+<div id="convergence-of-estimates-among-estimation-methods" class="section level2">
+<h2>Convergence of Estimates among Estimation Methods</h2>
+<div id="correlation-among-estimates" class="section level3">
+<h3>Correlation among Estimates</h3>
+<p>*<a href="ml-cfa-parameter-convergence-correlation-factor-loadings.html">Factor Loadings</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-correlation-L1-factor-covariance.html">Level-1 Factor Covariance</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-correlation-L2-factor-covariance.html">Level-2 Factor Covariance</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-correlation-L2-factor-variances.html">Level-2 Factor Variances</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-correlation-L2-residual-variances.html">Level-2 Residual Variances</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-correlation-pubfigure.html">Publication Figure</a></p>
+</div>
+<div id="average-relative-difference" class="section level3">
+<h3>Average Relative Difference</h3>
+<p>*<a href="ml-cfa-parameter-convergence-ARD-factor-loadings.html">Factor Loadings</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-ARD-L1-factor-covariance.html">Level-1 Factor Covariance</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-ARD-L2-factor-covariance.html">Level-2 Factor Covariance</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-ARD-L2-factor-variances.html">Level-2 Factor Variances</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-ARD-L2-residual-variances.html">Level-2 Residual Variances</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-ARD-observed-ICC.html">Observed Variable ICC</a></p>
+<p>*<a href="ml-cfa-parameter-convergence-ARD-latent-ICC.html">Latent Variable ICC</a></p>
+</div>
 </div>
 <div id="confidence-interval-coverage" class="section level2">
 <h2>Confidence Interval Coverage</h2>
 <p>See notes on simulation for figure idea</p>
 <p>*<a href="ml-cfa-ci-coverage.html">CI Coverage - Factor Loadings</a></p>
 </div>
-<div id="convergence-of-estimates-among-estimation-methods" class="section level2">
-<h2>Convergence of Estimates among Estimation Methods</h2>
-<p>*<a href="ml-cfa-parameter-convergence.html">Parameter Convergence - Trace Plots</a></p>
-<p>*<a href="ml-cfa-parameter-convergence-correlation-factor-loadings.html">Correlation of Estimates - Factor Loadings</a></p>
-<p>*<a href="ml-cfa-parameter-convergence-correlation-L1-factor-covariance.html">Correlation of Estimates - Level-1 Factor Covariance</a></p>
-<p>*<a href="ml-cfa-parameter-convergence-correlation-L2-factor-covariance.html">Correlation of Estimates - Level-2 Factor Covariance</a></p>
-<p>*<a href="ml-cfa-parameter-convergence-correlation-L2-factor-variances.html">Correlation of Estimates - Level-2 Factor Variances</a></p>
-<p>*<a href="ml-cfa-parameter-convergence-correlation-L2-residual-variances.html">Correlation of Estimates - Level-2 Residual Variances</a></p>
-</div>
-<div id="data-cleaning" class="section level2">
-<h2>Data Cleaning</h2>
+<div id="miscellanious-pages-and-other-r-scripts-used" class="section level2">
+<h2>Miscellanious Pages and other R scripts used</h2>
 <p>*<a href="data-cleaning.html">Data Cleaning</a></p>
 </div>
 

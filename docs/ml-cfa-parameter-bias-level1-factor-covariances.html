@@ -27,6 +27,14 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
 
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
   pre:not([class]) {
@@ -365,13 +373,6 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<!-- Add a small amount of space between sections. -->
-<style type="text/css">
-div.section {
-  padding-top: 12px;
-}
-</style>
-
 <div class="fluid-row" id="header">
 
 
@@ -383,7 +384,7 @@ div.section {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -392,7 +393,7 @@ div.section {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -401,17 +402,17 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-03-31
+<strong>Last updated:</strong> 2020-06-10
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>mcfa-para-est/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.5.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
@@ -420,12 +421,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -492,13 +493,19 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreef3a547f6269e7181a627e64c8a91c8d5917e0fc3targetblankf3a547fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/mcfa-para-est/tree/f3a547f6269e7181a627e64c8a91c8d5917e0fc3" target="_blank">f3a547f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeeecb366e3b200a573540eab3625c5939657d53cftargetblankeecb366a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/mcfa-para-est/tree/eecb366e3b200a573540eab3625c5939657d53cf" target="_blank">eecb366</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreef3a547f6269e7181a627e64c8a91c8d5917e0fc3targetblankf3a547fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeeecb366e3b200a573540eab3625c5939657d53cftargetblankeecb366a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
-Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/noah-padgett/mcfa-para-est/tree/eecb366e3b200a573540eab3625c5939657d53cf" target="_blank">eecb366</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
@@ -506,6 +513,8 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    data/compiled_para_results.txt
     Ignored:    data/results_bias_est.csv
+    Ignored:    data/results_bias_se.csv
+    Ignored:    fig/
     Ignored:    manuscript/
     Ignored:    output/fact-cov-converge-largeN.pdf
     Ignored:    output/fact-cov-converge-medN.pdf
@@ -513,7 +522,48 @@ Ignored files:
     Ignored:    output/loading-converge-largeN.pdf
     Ignored:    output/loading-converge-medN.pdf
     Ignored:    output/loading-converge-smallN.pdf
+    Ignored:    references/
     Ignored:    sera-presentation/
+
+Untracked files:
+    Untracked:  analysis/ml-cfa-parameter-anova-estimates.Rmd
+    Untracked:  analysis/ml-cfa-parameter-anova-relative-bias.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-latent-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-observed-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-pub-figure.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L1-factor-covariance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L2-factor-covariance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L2-factor-variance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L2-residual-variance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-latent-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-observed-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-correlation-pubfigure.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-trace-plots-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-anova-logSE.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-anova-relative-bias.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level1-factor-covariances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level2-factor-covariances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level2-factor-variances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level2-residual-variances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-overview.Rmd
+    Untracked:  code/r_functions.R
+    Untracked:  renv.lock
+    Untracked:  renv/
+
+Unstaged changes:
+    Modified:   .gitignore
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/ml-cfa-convergence-summary.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-factor-loadings.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-level1-factor-covariances.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-level2-factor-covariances.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-level2-factor-variances.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-level2-residual-variances.Rmd
+    Modified:   analysis/ml-cfa-parameter-convergence-correlation-factor-loadings.Rmd
+    Modified:   code/get_data.R
+    Modified:   code/load_packages.R
 
 </code></pre>
 <p>
@@ -526,9 +576,86 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/ml-cfa-parameter-bias-level1-factor-covariances.Rmd</code>) and HTML (<code>docs/ml-cfa-parameter-bias-level1-factor-covariances.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/noah-padgett/mcfa-para-est/51afcfae2bb17c6924123d5f4e098f3623883b2b/docs/ml-cfa-parameter-bias-level1-factor-covariances.html" target="_blank">51afcfa</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-03-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/noah-padgett/mcfa-para-est/blob/d5ffe1d7824c247225e014b413cda649be340e29/analysis/ml-cfa-parameter-bias-level1-factor-covariances.Rmd" target="_blank">d5ffe1d</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-03-31
+</td>
+<td>
+updated bias pages
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/noah-padgett/mcfa-para-est/d5ffe1d7824c247225e014b413cda649be340e29/docs/ml-cfa-parameter-bias-level1-factor-covariances.html" target="_blank">d5ffe1d</a>
+</td>
+<td>
+noah-padgett
+</td>
+<td>
+2020-03-31
+</td>
+<td>
+updated bias pages
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -537,7 +664,7 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 source(paste0(getwd(),&quot;/code/load_packages.R&quot;))
 #source(paste0(getwd(),&quot;/code/get_data.R&quot;))</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.1 (2019-07-05)
+<pre><code>R version 3.6.3 (2020-02-29)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 18362)
 
@@ -554,30 +681,31 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] xtable_1.8-4          kableExtra_1.1.0      MplusAutomation_0.7-3
- [4] data.table_1.12.6     patchwork_1.0.0       forcats_0.4.0        
- [7] stringr_1.4.0         dplyr_0.8.3           purrr_0.3.3          
-[10] readr_1.3.1           tidyr_1.0.0           tibble_2.1.3         
-[13] ggplot2_3.2.1         tidyverse_1.3.0      
+ [1] xtable_1.8-4          kableExtra_1.1.0      cowplot_1.0.0        
+ [4] MplusAutomation_0.7-3 data.table_1.12.8     patchwork_1.0.0      
+ [7] forcats_0.5.0         stringr_1.4.0         dplyr_0.8.5          
+[10] purrr_0.3.4           readr_1.3.1           tidyr_1.1.0          
+[13] tibble_3.0.1          ggplot2_3.3.0         tidyverse_1.3.0      
+[16] workflowr_1.6.2      
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.3        lubridate_1.7.4   lattice_0.20-38   assertthat_0.2.1 
- [5] zeallot_0.1.0     rprojroot_1.3-2   digest_0.6.23     R6_2.4.1         
- [9] cellranger_1.1.0  plyr_1.8.4        backports_1.1.5   reprex_0.3.0     
-[13] evaluate_0.14     coda_0.19-3       httr_1.4.1        pillar_1.4.2     
-[17] rlang_0.4.2       lazyeval_0.2.2    readxl_1.3.1      rstudioapi_0.10  
-[21] texreg_1.36.23    rmarkdown_1.18    gsubfn_0.7        proto_1.0.0      
-[25] webshot_0.5.2     pander_0.6.3      munsell_0.5.0     broom_0.5.2      
-[29] compiler_3.6.1    httpuv_1.5.2      modelr_0.1.5      xfun_0.11        
-[33] pkgconfig_2.0.3   htmltools_0.4.0   tidyselect_0.2.5  workflowr_1.5.0  
-[37] viridisLite_0.3.0 crayon_1.3.4      dbplyr_1.4.2      withr_2.1.2      
-[41] later_1.0.0       grid_3.6.1        nlme_3.1-140      jsonlite_1.6     
-[45] gtable_0.3.0      lifecycle_0.1.0   DBI_1.0.0         git2r_0.26.1     
-[49] magrittr_1.5      scales_1.1.0      cli_1.1.0         stringi_1.4.3    
-[53] fs_1.3.1          promises_1.1.0    xml2_1.2.2        generics_0.0.2   
-[57] vctrs_0.2.0       boot_1.3-22       tools_3.6.1       glue_1.3.1       
-[61] hms_0.5.2         parallel_3.6.1    yaml_2.2.0        colorspace_1.4-1 
-[65] rvest_0.3.5       knitr_1.26        haven_2.2.0      </code></pre>
+ [1] Rcpp_1.0.4.6      lubridate_1.7.8   lattice_0.20-38   assertthat_0.2.1 
+ [5] rprojroot_1.3-2   digest_0.6.25     R6_2.4.1          cellranger_1.1.0 
+ [9] plyr_1.8.6        backports_1.1.7   reprex_0.3.0      evaluate_0.14    
+[13] coda_0.19-3       httr_1.4.1        pillar_1.4.4      rlang_0.4.6      
+[17] readxl_1.3.1      rstudioapi_0.11   whisker_0.4       blob_1.2.1       
+[21] texreg_1.36.23    gsubfn_0.7        rmarkdown_2.1     proto_1.0.0      
+[25] webshot_0.5.2     pander_0.6.3      munsell_0.5.0     broom_0.5.6      
+[29] compiler_3.6.3    httpuv_1.5.2      modelr_0.1.8      xfun_0.14        
+[33] pkgconfig_2.0.3   htmltools_0.4.0   tidyselect_1.1.0  viridisLite_0.3.0
+[37] fansi_0.4.1       crayon_1.3.4      dbplyr_1.4.4      withr_2.2.0      
+[41] later_1.0.0       grid_3.6.3        nlme_3.1-144      jsonlite_1.6.1   
+[45] gtable_0.3.0      lifecycle_0.2.0   DBI_1.1.0         git2r_0.27.1     
+[49] magrittr_1.5      scales_1.1.1      cli_2.0.2         stringi_1.4.6    
+[53] fs_1.4.1          promises_1.1.0    xml2_1.3.2        ellipsis_0.3.1   
+[57] generics_0.0.2    vctrs_0.3.0       boot_1.3-24       tools_3.6.3      
+[61] glue_1.4.1        hms_0.5.3         parallel_3.6.3    yaml_2.2.1       
+[65] colorspace_1.4-1  rvest_0.3.5       knitr_1.28        haven_2.3.0      </code></pre>
 <pre class="r"><code># general options
 theme_set(theme_bw())
 options(digits=3)</code></pre>
@@ -2572,6 +2700,1705 @@ ULSMV/WLSMV
 </tbody>
 </table>
 </div>
+<div id="relative-efficiency-by-all-conditions" class="section level2">
+<h2>Relative Efficiency by All Conditions</h2>
+<pre class="r"><code>c &lt;- sdat %&gt;%
+  group_by(Estimator, N2, N1, ICC_OV, ICC_LV) %&gt;%
+  summarise(mu = weighted.mean(muRE, wi),
+            mw = weighted.mean(mwRE, wi),
+            uw = weighted.mean(uwRE, wi))
+
+c1 &lt;- cbind(c[ c$Estimator == &#39;MLR&#39;, c( &#39;N2&#39;,&#39;N1&#39;,&#39;ICC_OV&#39;, &#39;ICC_LV&#39;,  &#39;mu&#39;, &#39;mw&#39;, &#39;uw&#39;)])
+colnames(c1) &lt;- c(&#39;N2&#39;,&#39;N1&#39;, &#39;ICC_OV&#39;, &#39;ICC_LV&#39;,c(&#39;MLR/ULSMV&#39;, &#39;MLR/WLSMV&#39;, &#39;ULSMV/WLSMV&#39;))
+
+kable(c1, format=&#39;html&#39;, digits=3, row.names = F) %&gt;%
+  kable_styling(full_width = T)</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+N2
+</th>
+<th style="text-align:left;">
+N1
+</th>
+<th style="text-align:left;">
+ICC_OV
+</th>
+<th style="text-align:left;">
+ICC_LV
+</th>
+<th style="text-align:right;">
+MLR/ULSMV
+</th>
+<th style="text-align:right;">
+MLR/WLSMV
+</th>
+<th style="text-align:right;">
+ULSMV/WLSMV
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+5.231
+</td>
+<td style="text-align:right;">
+4.289
+</td>
+<td style="text-align:right;">
+0.820
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+3.064
+</td>
+<td style="text-align:right;">
+3.442
+</td>
+<td style="text-align:right;">
+1.123
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.135
+</td>
+<td style="text-align:right;">
+1.277
+</td>
+<td style="text-align:right;">
+1.126
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.969
+</td>
+<td style="text-align:right;">
+1.057
+</td>
+<td style="text-align:right;">
+1.091
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.951
+</td>
+<td style="text-align:right;">
+1.133
+</td>
+<td style="text-align:right;">
+1.191
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.773
+</td>
+<td style="text-align:right;">
+1.014
+</td>
+<td style="text-align:right;">
+1.312
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.373
+</td>
+<td style="text-align:right;">
+1.350
+</td>
+<td style="text-align:right;">
+0.983
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.875
+</td>
+<td style="text-align:right;">
+2.455
+</td>
+<td style="text-align:right;">
+1.309
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.032
+</td>
+<td style="text-align:right;">
+1.162
+</td>
+<td style="text-align:right;">
+1.126
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.987
+</td>
+<td style="text-align:right;">
+1.109
+</td>
+<td style="text-align:right;">
+1.124
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.838
+</td>
+<td style="text-align:right;">
+1.090
+</td>
+<td style="text-align:right;">
+1.300
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.741
+</td>
+<td style="text-align:right;">
+0.982
+</td>
+<td style="text-align:right;">
+1.325
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.018
+</td>
+<td style="text-align:right;">
+1.013
+</td>
+<td style="text-align:right;">
+0.995
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.348
+</td>
+<td style="text-align:right;">
+1.933
+</td>
+<td style="text-align:right;">
+1.435
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+<td style="text-align:right;">
+1.049
+</td>
+<td style="text-align:right;">
+1.049
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.897
+</td>
+<td style="text-align:right;">
+0.973
+</td>
+<td style="text-align:right;">
+1.085
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.773
+</td>
+<td style="text-align:right;">
+0.962
+</td>
+<td style="text-align:right;">
+1.244
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.482
+</td>
+<td style="text-align:right;">
+0.930
+</td>
+<td style="text-align:right;">
+1.931
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.971
+</td>
+<td style="text-align:right;">
+1.857
+</td>
+<td style="text-align:right;">
+0.942
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.808
+</td>
+<td style="text-align:right;">
+2.323
+</td>
+<td style="text-align:right;">
+1.285
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.979
+</td>
+<td style="text-align:right;">
+1.123
+</td>
+<td style="text-align:right;">
+1.147
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.996
+</td>
+<td style="text-align:right;">
+1.053
+</td>
+<td style="text-align:right;">
+1.057
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.949
+</td>
+<td style="text-align:right;">
+1.173
+</td>
+<td style="text-align:right;">
+1.237
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.695
+</td>
+<td style="text-align:right;">
+1.002
+</td>
+<td style="text-align:right;">
+1.442
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.078
+</td>
+<td style="text-align:right;">
+1.051
+</td>
+<td style="text-align:right;">
+0.975
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.422
+</td>
+<td style="text-align:right;">
+1.800
+</td>
+<td style="text-align:right;">
+1.266
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.012
+</td>
+<td style="text-align:right;">
+1.074
+</td>
+<td style="text-align:right;">
+1.061
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.930
+</td>
+<td style="text-align:right;">
+1.007
+</td>
+<td style="text-align:right;">
+1.083
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.896
+</td>
+<td style="text-align:right;">
+1.012
+</td>
+<td style="text-align:right;">
+1.129
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.605
+</td>
+<td style="text-align:right;">
+0.978
+</td>
+<td style="text-align:right;">
+1.618
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.005
+</td>
+<td style="text-align:right;">
+0.994
+</td>
+<td style="text-align:right;">
+0.989
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.103
+</td>
+<td style="text-align:right;">
+1.337
+</td>
+<td style="text-align:right;">
+1.211
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.993
+</td>
+<td style="text-align:right;">
+0.988
+</td>
+<td style="text-align:right;">
+0.995
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.973
+</td>
+<td style="text-align:right;">
+0.963
+</td>
+<td style="text-align:right;">
+0.990
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.968
+</td>
+<td style="text-align:right;">
+0.986
+</td>
+<td style="text-align:right;">
+1.019
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+50
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.619
+</td>
+<td style="text-align:right;">
+0.929
+</td>
+<td style="text-align:right;">
+1.501
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.215
+</td>
+<td style="text-align:right;">
+1.119
+</td>
+<td style="text-align:right;">
+0.922
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.504
+</td>
+<td style="text-align:right;">
+1.795
+</td>
+<td style="text-align:right;">
+1.194
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.012
+</td>
+<td style="text-align:right;">
+1.073
+</td>
+<td style="text-align:right;">
+1.061
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.991
+</td>
+<td style="text-align:right;">
+0.992
+</td>
+<td style="text-align:right;">
+1.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.020
+</td>
+<td style="text-align:right;">
+1.058
+</td>
+<td style="text-align:right;">
+1.037
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.651
+</td>
+<td style="text-align:right;">
+0.991
+</td>
+<td style="text-align:right;">
+1.523
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.003
+</td>
+<td style="text-align:right;">
+1.001
+</td>
+<td style="text-align:right;">
+0.997
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.145
+</td>
+<td style="text-align:right;">
+1.364
+</td>
+<td style="text-align:right;">
+1.191
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.995
+</td>
+<td style="text-align:right;">
+1.030
+</td>
+<td style="text-align:right;">
+1.035
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.004
+</td>
+<td style="text-align:right;">
+0.988
+</td>
+<td style="text-align:right;">
+0.984
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.037
+</td>
+<td style="text-align:right;">
+1.041
+</td>
+<td style="text-align:right;">
+1.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.626
+</td>
+<td style="text-align:right;">
+0.988
+</td>
+<td style="text-align:right;">
+1.579
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.004
+</td>
+<td style="text-align:right;">
+0.998
+</td>
+<td style="text-align:right;">
+0.994
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.030
+</td>
+<td style="text-align:right;">
+1.090
+</td>
+<td style="text-align:right;">
+1.059
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.003
+</td>
+<td style="text-align:right;">
+0.998
+</td>
+<td style="text-align:right;">
+0.995
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.806
+</td>
+<td style="text-align:right;">
+0.986
+</td>
+<td style="text-align:right;">
+1.224
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.999
+</td>
+<td style="text-align:right;">
+1.037
+</td>
+<td style="text-align:right;">
+1.038
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+100
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.391
+</td>
+<td style="text-align:right;">
+0.961
+</td>
+<td style="text-align:right;">
+2.459
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.018
+</td>
+<td style="text-align:right;">
+1.009
+</td>
+<td style="text-align:right;">
+0.991
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.101
+</td>
+<td style="text-align:right;">
+1.230
+</td>
+<td style="text-align:right;">
+1.117
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.992
+</td>
+<td style="text-align:right;">
+1.008
+</td>
+<td style="text-align:right;">
+1.016
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.999
+</td>
+<td style="text-align:right;">
+1.003
+</td>
+<td style="text-align:right;">
+1.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.997
+</td>
+<td style="text-align:right;">
+1.018
+</td>
+<td style="text-align:right;">
+1.020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.750
+</td>
+<td style="text-align:right;">
+1.002
+</td>
+<td style="text-align:right;">
+1.335
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+1.003
+</td>
+<td style="text-align:right;">
+0.997
+</td>
+<td style="text-align:right;">
+0.994
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.010
+</td>
+<td style="text-align:right;">
+1.085
+</td>
+<td style="text-align:right;">
+1.075
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.997
+</td>
+<td style="text-align:right;">
+0.993
+</td>
+<td style="text-align:right;">
+0.996
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+<td style="text-align:right;">
+0.996
+</td>
+<td style="text-align:right;">
+0.996
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.998
+</td>
+<td style="text-align:right;">
+1.009
+</td>
+<td style="text-align:right;">
+1.011
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.738
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+<td style="text-align:right;">
+1.355
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.995
+</td>
+<td style="text-align:right;">
+0.996
+</td>
+<td style="text-align:right;">
+1.002
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+1.002
+</td>
+<td style="text-align:right;">
+1.002
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.999
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+<td style="text-align:right;">
+1.001
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.3
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.997
+</td>
+<td style="text-align:right;">
+0.997
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.1
+</td>
+<td style="text-align:right;">
+0.991
+</td>
+<td style="text-align:right;">
+1.006
+</td>
+<td style="text-align:right;">
+1.014
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+200
+</td>
+<td style="text-align:left;">
+30
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:left;">
+0.5
+</td>
+<td style="text-align:right;">
+0.387
+</td>
+<td style="text-align:right;">
+0.988
+</td>
+<td style="text-align:right;">
+2.553
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="manuscript-tables" class="section level1">
 <h1>Manuscript Tables</h1>
@@ -3075,8 +4902,8 @@ RMSE
              label=&quot;tb:fct&quot;),
       booktabs = T, include.rownames = F,
       caption.placement = &quot;top&quot;)</code></pre>
-<pre><code>% latex table generated in R 3.6.1 by xtable 1.8-4 package
-% Tue Mar 31 16:09:50 2020
+<pre><code>% latex table generated in R 3.6.3 by xtable 1.8-4 package
+% Wed Jun 10 21:23:18 2020
 \begin{table}[ht]
 \centering
 \caption{Mean Level-1 Factor Covariance, Relative Bias, and RMSE by Estimation Method} 
@@ -3108,7 +4935,7 @@ N2 &amp; N1 &amp; est &amp; RB &amp; RMSE &amp; est &amp; RB &amp; RMSE &amp; es
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.1 (2019-07-05)
+<pre><code>R version 3.6.3 (2020-02-29)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 18362)
 
@@ -3125,31 +4952,32 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] xtable_1.8-4          kableExtra_1.1.0      MplusAutomation_0.7-3
- [4] data.table_1.12.6     patchwork_1.0.0       forcats_0.4.0        
- [7] stringr_1.4.0         dplyr_0.8.3           purrr_0.3.3          
-[10] readr_1.3.1           tidyr_1.0.0           tibble_2.1.3         
-[13] ggplot2_3.2.1         tidyverse_1.3.0      
+ [1] xtable_1.8-4          kableExtra_1.1.0      cowplot_1.0.0        
+ [4] MplusAutomation_0.7-3 data.table_1.12.8     patchwork_1.0.0      
+ [7] forcats_0.5.0         stringr_1.4.0         dplyr_0.8.5          
+[10] purrr_0.3.4           readr_1.3.1           tidyr_1.1.0          
+[13] tibble_3.0.1          ggplot2_3.3.0         tidyverse_1.3.0      
+[16] workflowr_1.6.2      
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.3        lubridate_1.7.4   lattice_0.20-38   assertthat_0.2.1 
- [5] zeallot_0.1.0     rprojroot_1.3-2   digest_0.6.23     R6_2.4.1         
- [9] cellranger_1.1.0  plyr_1.8.4        backports_1.1.5   reprex_0.3.0     
-[13] evaluate_0.14     coda_0.19-3       highr_0.8         httr_1.4.1       
-[17] pillar_1.4.2      rlang_0.4.2       lazyeval_0.2.2    readxl_1.3.1     
-[21] rstudioapi_0.10   texreg_1.36.23    rmarkdown_1.18    gsubfn_0.7       
-[25] labeling_0.3      proto_1.0.0       webshot_0.5.2     pander_0.6.3     
-[29] munsell_0.5.0     broom_0.5.2       compiler_3.6.1    httpuv_1.5.2     
-[33] modelr_0.1.5      xfun_0.11         pkgconfig_2.0.3   htmltools_0.4.0  
-[37] tidyselect_0.2.5  workflowr_1.5.0   viridisLite_0.3.0 crayon_1.3.4     
-[41] dbplyr_1.4.2      withr_2.1.2       later_1.0.0       grid_3.6.1       
-[45] nlme_3.1-140      jsonlite_1.6      gtable_0.3.0      lifecycle_0.1.0  
-[49] DBI_1.0.0         git2r_0.26.1      magrittr_1.5      scales_1.1.0     
-[53] cli_1.1.0         stringi_1.4.3     reshape2_1.4.3    farver_2.0.1     
-[57] fs_1.3.1          promises_1.1.0    xml2_1.2.2        generics_0.0.2   
-[61] vctrs_0.2.0       boot_1.3-22       tools_3.6.1       glue_1.3.1       
-[65] hms_0.5.2         parallel_3.6.1    yaml_2.2.0        colorspace_1.4-1 
-[69] rvest_0.3.5       knitr_1.26        haven_2.2.0      </code></pre>
+ [1] httr_1.4.1        jsonlite_1.6.1    viridisLite_0.3.0 gsubfn_0.7       
+ [5] modelr_0.1.8      assertthat_0.2.1  highr_0.8         pander_0.6.3     
+ [9] blob_1.2.1        cellranger_1.1.0  yaml_2.2.1        pillar_1.4.4     
+[13] backports_1.1.7   lattice_0.20-38   glue_1.4.1        digest_0.6.25    
+[17] promises_1.1.0    rvest_0.3.5       colorspace_1.4-1  htmltools_0.4.0  
+[21] httpuv_1.5.2      plyr_1.8.6        pkgconfig_2.0.3   broom_0.5.6      
+[25] haven_2.3.0       scales_1.1.1      webshot_0.5.2     whisker_0.4      
+[29] later_1.0.0       git2r_0.27.1      farver_2.0.3      generics_0.0.2   
+[33] ellipsis_0.3.1    withr_2.2.0       cli_2.0.2         proto_1.0.0      
+[37] magrittr_1.5      crayon_1.3.4      readxl_1.3.1      evaluate_0.14    
+[41] fs_1.4.1          fansi_0.4.1       nlme_3.1-144      xml2_1.3.2       
+[45] tools_3.6.3       hms_0.5.3         lifecycle_0.2.0   munsell_0.5.0    
+[49] reprex_0.3.0      compiler_3.6.3    rlang_0.4.6       grid_3.6.3       
+[53] rstudioapi_0.11   texreg_1.36.23    labeling_0.3      rmarkdown_2.1    
+[57] boot_1.3-24       gtable_0.3.0      DBI_1.1.0         R6_2.4.1         
+[61] lubridate_1.7.8   knitr_1.28        rprojroot_1.3-2   stringi_1.4.6    
+[65] parallel_3.6.3    Rcpp_1.0.4.6      vctrs_0.3.0       dbplyr_1.4.4     
+[69] tidyselect_1.1.0  xfun_0.14         coda_0.19-3      </code></pre>
 </div>
 </div>
 

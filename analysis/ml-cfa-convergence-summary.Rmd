@@ -362,7 +362,7 @@ kable(c1, format='html', digits=4) %>%
 ```
 
 
-# Manuscript Table
+# Manuscript Table(s)
 
 ```{r man-table}
 
@@ -385,6 +385,30 @@ kable(c1, format='html', digits=3) %>%
 print(xtable(c1, digits = 3,align=c("l", "l", "r", "r", "r"),
              display=c("s", "d", "f", "f", "f"),
              caption="Rates of admissible replications",
+             label="tb:admiss"),
+      booktabs = T, include.rownames = F,
+      caption.placement = "top")
+
+
+# Version 2
+c <- sim_results %>%
+  group_by(Estimator, ss_l2, ss_l1) %>%
+  mutate(A = ifelse(is.na(Admissible), 0, Admissible)) %>%
+  summarise(Admissible=mean(A, na.rm = T))
+
+c1 <- cbind(c[ c$Estimator == 'MLR', c('ss_l2', 'ss_l1', 'Admissible')], 
+           c[ c$Estimator == 'ULSMV', 'Admissible'], 
+           c[ c$Estimator == 'WLSMV', 'Admissible'])
+colnames(c1) <- c('Level-2 N_2', "Level-1 N_1", 'MLR', 'ULSMV', 'WLSMV')
+
+
+kable(c1, format='html', digits=3) %>%
+  kable_styling(full_width = T)
+
+
+print(xtable(c1, digits = 3,align=c("l", "l","l", "r", "r", "r"),
+             display=c("s","s", "d", "f", "f", "f"),
+             caption="Convergence rates indicate problems for all estimation methods",
              label="tb:admiss"),
       booktabs = T, include.rownames = F,
       caption.placement = "top")

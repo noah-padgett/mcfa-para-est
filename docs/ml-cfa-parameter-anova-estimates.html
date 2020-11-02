@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2020-06-01" />
+
+<title>Design Effects on Parameter Estimates</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">ML-CFA Parameter Recovery and Estimation</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Design Effects on Parameter Estimates</h1>
+<h4 class="date">2020-06-01</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-06-10
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>mcfa-para-est/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190614code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190614)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190614code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190614)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeeecb366e3b200a573540eab3625c5939657d53cftargetblankeecb366a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/noah-padgett/mcfa-para-est/tree/eecb366e3b200a573540eab3625c5939657d53cf" target="_blank">eecb366</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomnoahpadgettmcfaparaesttreeeecb366e3b200a573540eab3625c5939657d53cftargetblankeecb366a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/noah-padgett/mcfa-para-est/tree/eecb366e3b200a573540eab3625c5939657d53cf" target="_blank">eecb366</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    data/compiled_para_results.txt
+    Ignored:    data/results_bias_est.csv
+    Ignored:    data/results_bias_se.csv
+    Ignored:    fig/
+    Ignored:    manuscript/
+    Ignored:    output/fact-cov-converge-largeN.pdf
+    Ignored:    output/fact-cov-converge-medN.pdf
+    Ignored:    output/fact-cov-converge-smallN.pdf
+    Ignored:    output/loading-converge-largeN.pdf
+    Ignored:    output/loading-converge-medN.pdf
+    Ignored:    output/loading-converge-smallN.pdf
+    Ignored:    references/
+    Ignored:    sera-presentation/
+
+Untracked files:
+    Untracked:  analysis/ml-cfa-parameter-anova-estimates.Rmd
+    Untracked:  analysis/ml-cfa-parameter-anova-relative-bias.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-latent-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-bias-observed-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L1-factor-covariance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L2-factor-covariance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L2-factor-variance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-L2-residual-variance.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-latent-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-ARD-observed-ICC.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-correlation-pubfigure.Rmd
+    Untracked:  analysis/ml-cfa-parameter-convergence-trace-plots-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-anova-logSE.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-anova-relative-bias.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-factor-loadings.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level1-factor-covariances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level2-factor-covariances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level2-factor-variances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-level2-residual-variances.Rmd
+    Untracked:  analysis/ml-cfa-standard-error-bias-overview.Rmd
+    Untracked:  code/r_functions.R
+    Untracked:  renv.lock
+    Untracked:  renv/
+
+Unstaged changes:
+    Modified:   .gitignore
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/ml-cfa-convergence-summary.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-factor-loadings.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-level1-factor-covariances.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-level2-factor-covariances.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-level2-factor-variances.Rmd
+    Modified:   analysis/ml-cfa-parameter-bias-level2-residual-variances.Rmd
+    Modified:   analysis/ml-cfa-parameter-convergence-correlation-factor-loadings.Rmd
+    Modified:   code/get_data.R
+    Modified:   code/load_packages.R
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<p>The purpose of this page is to identify the impact of design factors on parameter estimates. This is done using analysis of variance (factorial) on the parameter estimates.</p>
+<div id="packages-and-set-up" class="section level1">
+<h1>Packages and Set-Up</h1>
+<pre class="r"><code>rm(list=ls())
+source(paste0(getwd(),&quot;/code/load_packages.R&quot;))
+source(paste0(getwd(),&quot;/code/get_data.R&quot;))
+source(paste0(getwd(),&quot;/code/r_functions.R&quot;))
+
+# general options
+theme_set(theme_bw())
+options(digits=3)
+
+##Chunk iptions
+knitr::opts_chunk$set(out.width=&quot;225%&quot;)</code></pre>
+</div>
+<div id="data-management" class="section level1">
+<h1>Data Management</h1>
+<pre class="r"><code>pvec &lt;- c(paste0(&#39;lambda1&#39;,1:6), paste0(&#39;lambda2&#39;,6:10), &#39;psiW12&#39;,&#39;psiB1&#39;, &#39;psiB2&#39;, &#39;psiB12&#39;, paste0(&#39;thetaB&#39;,1:10))
+
+# take out non-converged/inadmissible cases
+sim_results &lt;- filter(sim_results, Converge==1, Admissible==1)
+
+# Set conditions levels as categorical values
+sim_results &lt;- sim_results %&gt;%
+  mutate(N1 = factor(N1, c(&quot;5&quot;, &quot;10&quot;, &quot;30&quot;)),
+         N2 = factor(N2, c(&quot;30&quot;, &quot;50&quot;, &quot;100&quot;, &quot;200&quot;)),
+         ICC_OV = factor(ICC_OV, c(&quot;0.1&quot;,&quot;0.3&quot;, &quot;0.5&quot;)),
+         ICC_LV = factor(ICC_LV, c(&quot;0.1&quot;, &quot;0.5&quot;)))
+
+# convert to long format
+long_results &lt;- sim_results[,c(&quot;Condition&quot;, &quot;Replication&quot;, &quot;N1&quot;, &quot;N2&quot;, &quot;ICC_OV&quot;, &quot;ICC_LV&quot;, &quot;Estimator&quot;, pvec)] %&gt;%
+  pivot_longer(
+    cols = all_of(pvec),
+    names_to = &quot;Parameter&quot;,
+    values_to = &quot;Estimate&quot;
+  )</code></pre>
+<p>Now, we are only going to do ANOVA on the estimates.</p>
+<pre class="r"><code># Object to Story Results
+resultsList &lt;- list()</code></pre>
+</div>
+<div id="anova-and-effect-sizes-for-distributional-differences" class="section level1">
+<h1>ANOVA and effect sizes for distributional differences</h1>
+<p>For this simulation experiment, there were 5 factors systematically varied. Of these 5 factors, 4 were factors influencing the observed data and 1 were factors pertaining to estimation and model fitting. The factors were</p>
+<ol style="list-style-type: decimal">
+<li>Level-1 sample size (5, 10, 30)</li>
+<li>Level-2 sample size (30, 50, 100, 200)</li>
+<li>Observed indicator ICC (.1, .3, .5)</li>
+<li>Latent variable ICC (.1, .5)</li>
+<li>Model estimator (MLR, ULSMV, WLSMV)</li>
+</ol>
+<p>For each parameter SE, an analysis of variance (ANOVA) was conducted in order to test how much influence each of these design factors.</p>
+<p>General Linear Model investigated for estimated parameters was: <span class="math display">\[
+Y_{ijklmn} = \mu + \alpha_{j} + \beta_{k} + \gamma_{l} + \delta_m + \theta_n +\\
+(\alpha\beta)_{jk} + (\alpha\gamma)_{jl}+ (\alpha\delta)_{jm}  + (\alpha\theta)_{jn}+ \\
+(\beta\gamma)_{kl}+ (\beta\delta)_{km} +  (\beta\theta)_{kn}+ (\gamma\delta)_{lm} + + (\gamma\theta)_{ln} + (\delta\theta)_{mn} + \varepsilon_{ijklmn}
+\]</span> where</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(\mu\)</span> is the grand mean,</li>
+<li><span class="math inline">\(\alpha_{j}\)</span> is the effect of Level-1 sample size,<br />
+</li>
+<li><span class="math inline">\(\beta_{k}\)</span> is the effect of Level-2 sample size,</li>
+<li><span class="math inline">\(\gamma_{l}\)</span> is the effect of Observed indicator ICC,</li>
+<li><span class="math inline">\(\delta_m\)</span> is the effect of Latent variable ICC,</li>
+<li><span class="math inline">\(\theta_n\)</span> is the effect of Model estimator ,</li>
+<li><span class="math inline">\((\alpha\beta)_{jk}\)</span> is the interaction between Level-1 sample size and Level-2 sample size,</li>
+<li><span class="math inline">\((\alpha\gamma)_{jl}\)</span> is the interaction between Level-1 sample size and Observed indicator ICC,</li>
+<li><span class="math inline">\((\alpha\delta)_{jm}\)</span> is the interaction between Level-1 sample size and Latent variable ICC,</li>
+<li><span class="math inline">\((\alpha\theta)_{jn}\)</span> is the interaction between Level-1 sample size and Model estimator ,</li>
+<li><span class="math inline">\((\beta\gamma)_{kl}\)</span> is the interaction between Level-2 sample size and Observed indicator ICC,</li>
+<li><span class="math inline">\((\beta\delta)_{km}\)</span> is the interaction between Level-2 sample size and Latent variable ICC,</li>
+<li><span class="math inline">\((\beta\theta)_{kn}\)</span> is the interaction between Level-2 sample size and Model estimator ,</li>
+<li><span class="math inline">\((\gamma\delta)_{lm}\)</span> is the interaction between Observed indicator ICC and Latent variable ICC,</li>
+<li><span class="math inline">\((\gamma\theta)_{ln}\)</span> is the interaction between Observed indicator ICC and Model estimator ,</li>
+<li><span class="math inline">\((\delta\theta)_{mn}\)</span> is the interaction between Latent variable ICC and Model estimator , and</li>
+<li><span class="math inline">\(\varepsilon_{ijklmn}\)</span> is the residual error for the <span class="math inline">\(i^{th}\)</span> observed SE estimate.</li>
+</ol>
+<p>Note that for most of these terms there are actually 2 or 3 terms actually estimated. These additional terms are because of the categorical nature of each effect so we have to create “reference” groups and calculate the effect of being in a group other than the reference group. Higher order interactions were omitted for clarity of interpretation of the model. If interested in higher-order interactions, please see Maxwell and Delaney (2004).</p>
+<p>The real reason the higher order interaction was omitted: Because I have no clue how to interpret a 5-way interaction (whatever the heck that is), I am limiting the ANOVA to all bivariate interactions.</p>
+<p>Diagnostics for factorial ANOVA:</p>
+<ol style="list-style-type: decimal">
+<li>Independence of Observations</li>
+<li>Normality of residuals across cells for the design</li>
+<li>Homogeneity of variance across cells</li>
+</ol>
+<p>Independence of observations is by design, where these data were randomly generated from a known population and observations are across replications and are independent. The normality assumptions is that the residuals of the models are normally distributed across the design cells. The normality assumption is tested by investigation by Shapiro-Wilks Test, the K-S test, and visual inspection of QQ-plots and histograms. The equality of variance is checked through Levene’s test across all the different conditions/groupings. Furthermore, the plots of the residuals are also indicative of the equality of variance across groups as there should be no apparent pattern to the residual plots.</p>
+<div id="factor-loadings" class="section level2">
+<h2>Factor Loadings</h2>
+<div id="assumption-checking" class="section level3">
+<h3>Assumption Checking</h3>
+<pre class="r"><code>sdat &lt;- filter(long_results, Parameter %like% &quot;lambda&quot;)
+
+sdat &lt;- sdat %&gt;%
+  group_by(Replication, N1, N2, ICC_OV, ICC_LV, Estimator) %&gt;%
+  summarise(Estimate = mean(Estimate))
+
+# first, look at summary of Estimate Estimates
+boxplot(sdat$Estimate)</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-fl-1.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>## model factors...
+flist &lt;- c(&#39;N1&#39;, &#39;N2&#39;, &#39;ICC_OV&#39;, &#39;ICC_LV&#39;, &#39;Estimator&#39;)
+## Check assumptions
+anova_assumptions_check(
+  sdat, &#39;Estimate&#39;, factors = flist,
+  model = as.formula(&#39;Estimate ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator&#39;))</code></pre>
+<pre><code>
+ ============================= 
+
+ Tests and Plots of Normality:</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-fl-2.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>
+ Shapiro-Wilks Test of Normality of Residuals:
+
+    Shapiro-Wilk normality test
+
+data:  res
+W = 0.3, p-value &lt;2e-16
+
+
+ K-S Test for Normality of Residuals:
+
+    One-sample Kolmogorov-Smirnov test
+
+data:  aov.out$residuals
+D = 0.5, p-value &lt;2e-16
+alternative hypothesis: two-sided</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-fl-3.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-fl-4.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-fl-5.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-fl-6.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-fl-7.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>
+ ============================= 
+
+ Tests of Homogeneity of Variance
+
+ 
+ Levenes Test:  N1 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2     206 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  N2 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     3     216 &lt;2e-16 ***
+      83506                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  ICC_OV 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2    3722 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  ICC_LV 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     1    3934 &lt;2e-16 ***
+      83508                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  Estimator 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2     560 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="anova-results" class="section level3">
+<h3>ANOVA Results</h3>
+<pre class="r"><code>model = as.formula(&#39;Estimate ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator&#39;)
+
+fit &lt;- aov(model, data = sdat)
+fit.out &lt;- summary(fit)
+fit.out</code></pre>
+<pre><code>                    Df Sum Sq Mean Sq  F value  Pr(&gt;F)    
+N1                   2      1       0 8.61e+01 &lt; 2e-16 ***
+N2                   3      2       1 1.75e+02 &lt; 2e-16 ***
+ICC_OV               2     10       5 1.30e+03 &lt; 2e-16 ***
+ICC_LV               1      7       7 1.78e+03 &lt; 2e-16 ***
+Estimator            2    837     419 1.11e+05 &lt; 2e-16 ***
+N1:N2                6      0       0 5.28e+00 1.9e-05 ***
+N1:ICC_OV            4      0       0 1.57e+00    0.18    
+N1:ICC_LV            2      0       0 1.14e+00    0.32    
+N1:Estimator         4      1       0 4.83e+01 &lt; 2e-16 ***
+N2:ICC_OV            6      0       0 1.30e+01 9.9e-15 ***
+N2:ICC_LV            3      0       0 1.39e+00    0.24    
+N2:Estimator         6      1       0 4.23e+01 &lt; 2e-16 ***
+ICC_OV:ICC_LV        2      0       0 3.21e+01 1.2e-14 ***
+ICC_OV:Estimator     4     18       4 1.17e+03 &lt; 2e-16 ***
+ICC_LV:Estimator     2      5       2 6.09e+02 &lt; 2e-16 ***
+Residuals        83460    315       0                     
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>resultsList[[&quot;FactorLoadings&quot;]] &lt;- cbind(omega2(fit.out), p_omega2(fit.out))
+resultsList[[&quot;FactorLoadings&quot;]]</code></pre>
+<pre><code>                 omega^2 partial-omega^2
+N1                0.0005          0.0020
+N2                0.0016          0.0062
+ICC_OV            0.0082          0.0303
+ICC_LV            0.0056          0.0209
+Estimator         0.6997          0.7263
+N1:N2             0.0001          0.0003
+N1:ICC_OV         0.0000          0.0000
+N1:ICC_LV         0.0000          0.0000
+N1:Estimator      0.0006          0.0023
+N2:ICC_OV         0.0002          0.0009
+N2:ICC_LV         0.0000          0.0000
+N2:Estimator      0.0008          0.0030
+ICC_OV:ICC_LV     0.0002          0.0007
+ICC_OV:Estimator  0.0148          0.0532
+ICC_LV:Estimator  0.0038          0.0144</code></pre>
+</div>
+</div>
+<div id="level-1-factor-covariance" class="section level2">
+<h2>Level-1 factor Covariance</h2>
+<div id="assumption-checking-1" class="section level3">
+<h3>Assumption Checking</h3>
+<pre class="r"><code>sdat &lt;- filter(long_results, Parameter %like% &quot;psiW&quot;)
+
+sdat &lt;- sdat %&gt;%
+  group_by(Replication, N1, N2, ICC_OV, ICC_LV, Estimator) %&gt;%
+  summarise(Estimate = mean(Estimate))
+
+# first, look at summary of Estimate Estimates
+boxplot(sdat$Estimate)</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l1cv-1.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>## model factors...
+flist &lt;- c(&#39;N1&#39;, &#39;N2&#39;, &#39;ICC_OV&#39;, &#39;ICC_LV&#39;, &#39;Estimator&#39;)
+## Check assumptions
+anova_assumptions_check(
+  sdat, &#39;Estimate&#39;, factors = flist,
+  model = as.formula(&#39;Estimate ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator&#39;))</code></pre>
+<pre><code>
+ ============================= 
+
+ Tests and Plots of Normality:</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l1cv-2.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>
+ Shapiro-Wilks Test of Normality of Residuals:
+
+    Shapiro-Wilk normality test
+
+data:  res
+W = 0.9, p-value &lt;2e-16
+
+
+ K-S Test for Normality of Residuals:
+
+    One-sample Kolmogorov-Smirnov test
+
+data:  aov.out$residuals
+D = 0.4, p-value &lt;2e-16
+alternative hypothesis: two-sided</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l1cv-3.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l1cv-4.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l1cv-5.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l1cv-6.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l1cv-7.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>
+ ============================= 
+
+ Tests of Homogeneity of Variance
+
+ 
+ Levenes Test:  N1 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2    5540 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  N2 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     3    3105 &lt;2e-16 ***
+      83506                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  ICC_OV 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2     492 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  ICC_LV 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     1     353 &lt;2e-16 ***
+      83508                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  Estimator 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value  Pr(&gt;F)    
+group     2    26.4 3.3e-12 ***
+      83507                    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="anova-results-1" class="section level3">
+<h3>ANOVA Results</h3>
+<pre class="r"><code>model = as.formula(&#39;Estimate ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator&#39;)
+
+fit &lt;- aov(model, data = sdat)
+fit.out &lt;- summary(fit)
+fit.out</code></pre>
+<pre><code>                    Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+N1                   2      0   0.040    6.53 0.00146 ** 
+N2                   3      0   0.029    4.77 0.00250 ** 
+ICC_OV               2      0   0.033    5.37 0.00468 ** 
+ICC_LV               1      0   0.390   63.60 1.5e-15 ***
+Estimator            2      0   0.146   23.88 4.3e-11 ***
+N1:N2                6      0   0.003    0.47 0.82865    
+N1:ICC_OV            4      0   0.019    3.05 0.01581 *  
+N1:ICC_LV            2      0   0.145   23.68 5.2e-11 ***
+N1:Estimator         4      0   0.022    3.54 0.00676 ** 
+N2:ICC_OV            6      0   0.002    0.32 0.92465    
+N2:ICC_LV            3      0   0.024    3.97 0.00768 ** 
+N2:Estimator         6      0   0.025    4.08 0.00042 ***
+ICC_OV:ICC_LV        2      0   0.022    3.64 0.02635 *  
+ICC_OV:Estimator     4      0   0.038    6.13 6.2e-05 ***
+ICC_LV:Estimator     2      0   0.109   17.81 1.9e-08 ***
+Residuals        83460    511   0.006                    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>resultsList[[&quot;Level1-FactorCovariance&quot;]] &lt;- cbind(omega2(fit.out), p_omega2(fit.out))
+resultsList[[&quot;Level1-FactorCovariance&quot;]]</code></pre>
+<pre><code>                 omega^2 partial-omega^2
+N1                 1e-04           1e-04
+N2                 1e-04           1e-04
+ICC_OV             1e-04           1e-04
+ICC_LV             7e-04           7e-04
+Estimator          5e-04           5e-04
+N1:N2              0e+00           0e+00
+N1:ICC_OV          1e-04           1e-04
+N1:ICC_LV          5e-04           5e-04
+N1:Estimator       1e-04           1e-04
+N2:ICC_OV          0e+00           0e+00
+N2:ICC_LV          1e-04           1e-04
+N2:Estimator       2e-04           2e-04
+ICC_OV:ICC_LV      1e-04           1e-04
+ICC_OV:Estimator   2e-04           2e-04
+ICC_LV:Estimator   4e-04           4e-04</code></pre>
+</div>
+</div>
+<div id="level-2-factor-covariances" class="section level2">
+<h2>Level-2 factor (co)variances</h2>
+<div id="assumption-checking-2" class="section level3">
+<h3>Assumption Checking</h3>
+<pre class="r"><code>sdat &lt;- filter(long_results, Parameter %like% &quot;psiB&quot;)
+
+sdat &lt;- sdat %&gt;%
+  group_by(Replication, N1, N2, ICC_OV, ICC_LV, Estimator) %&gt;%
+  summarise(Estimate = mean(Estimate))
+
+# first, look at summary of Estimate Estimates
+boxplot(sdat$Estimate)</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2cv-1.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>## model factors...
+flist &lt;- c(&#39;N1&#39;, &#39;N2&#39;, &#39;ICC_OV&#39;, &#39;ICC_LV&#39;, &#39;Estimator&#39;)
+## Check assumptions
+anova_assumptions_check(
+  sdat, &#39;Estimate&#39;, factors = flist,
+  model = as.formula(&#39;Estimate ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator&#39;))</code></pre>
+<pre><code>
+ ============================= 
+
+ Tests and Plots of Normality:</code></pre>
+<pre><code>
+ Shapiro-Wilks Test of Normality of Residuals:
+
+    Shapiro-Wilk normality test
+
+data:  res
+W = 0.9, p-value &lt;2e-16
+
+
+ K-S Test for Normality of Residuals:</code></pre>
+<pre><code>Warning in ks.test(aov.out$residuals, &quot;pnorm&quot;, alternative = &quot;two.sided&quot;): ties
+should not be present for the Kolmogorov-Smirnov test</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2cv-2.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>
+    One-sample Kolmogorov-Smirnov test
+
+data:  aov.out$residuals
+D = 0.4, p-value &lt;2e-16
+alternative hypothesis: two-sided</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2cv-3.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2cv-4.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2cv-5.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2cv-6.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2cv-7.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>
+ ============================= 
+
+ Tests of Homogeneity of Variance
+
+ 
+ Levenes Test:  N1 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)   
+group     2    5.27 0.0051 **
+      83507                  
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  N2 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     3    29.8 &lt;2e-16 ***
+      83506                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  ICC_OV 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2    93.2 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  ICC_LV 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     1   19468 &lt;2e-16 ***
+      83508                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  Estimator 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2     292 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="anova-results-2" class="section level3">
+<h3>ANOVA Results</h3>
+<pre class="r"><code>model = as.formula(&#39;Estimate ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator&#39;)
+
+fit &lt;- aov(model, data = sdat)
+fit.out &lt;- summary(fit)
+fit.out</code></pre>
+<pre><code>                    Df Sum Sq Mean Sq  F value  Pr(&gt;F)    
+N1                   2     31      16 7.51e+02 &lt; 2e-16 ***
+N2                   3     52      17 8.36e+02 &lt; 2e-16 ***
+ICC_OV               2    241     121 5.83e+03 &lt; 2e-16 ***
+ICC_LV               1   8759    8759 4.23e+05 &lt; 2e-16 ***
+Estimator            2     34      17 8.23e+02 &lt; 2e-16 ***
+N1:N2                6      2       0 1.58e+01 &lt; 2e-16 ***
+N1:ICC_OV            4      0       0 5.55e+00 0.00018 ***
+N1:ICC_LV            2      0       0 1.19e+01 6.7e-06 ***
+N1:Estimator         4      4       1 4.43e+01 &lt; 2e-16 ***
+N2:ICC_OV            6      3       0 2.11e+01 &lt; 2e-16 ***
+N2:ICC_LV            3      7       2 1.06e+02 &lt; 2e-16 ***
+N2:Estimator         6     25       4 2.03e+02 &lt; 2e-16 ***
+ICC_OV:ICC_LV        2      2       1 3.78e+01 &lt; 2e-16 ***
+ICC_OV:Estimator     4      5       1 5.74e+01 &lt; 2e-16 ***
+ICC_LV:Estimator     2     10       5 2.35e+02 &lt; 2e-16 ***
+Residuals        83460   1728       0                     
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>resultsList[[&quot;Level2-FactorCovariance&quot;]] &lt;- cbind(omega2(fit.out), p_omega2(fit.out))
+resultsList[[&quot;Level2-FactorCovariance&quot;]]</code></pre>
+<pre><code>                 omega^2 partial-omega^2
+N1                0.0028          0.0176
+N2                0.0048          0.0291
+ICC_OV            0.0221          0.1224
+ICC_LV            0.8034          0.8351
+Estimator         0.0031          0.0193
+N1:N2             0.0002          0.0011
+N1:ICC_OV         0.0000          0.0002
+N1:ICC_LV         0.0000          0.0003
+N1:Estimator      0.0003          0.0021
+N2:ICC_OV         0.0002          0.0014
+N2:ICC_LV         0.0006          0.0038
+N2:Estimator      0.0023          0.0143
+ICC_OV:ICC_LV     0.0001          0.0009
+ICC_OV:Estimator  0.0004          0.0027
+ICC_LV:Estimator  0.0009          0.0056</code></pre>
+</div>
+</div>
+<div id="level-2-item-residual-variances" class="section level2">
+<h2>Level-2 item residual variances</h2>
+<div id="assumption-checking-3" class="section level3">
+<h3>Assumption Checking</h3>
+<pre class="r"><code>sdat &lt;- filter(long_results, Parameter %like% &quot;thetaB&quot;)
+
+sdat &lt;- sdat %&gt;%
+  group_by(Replication, N1, N2, ICC_OV, ICC_LV, Estimator) %&gt;%
+  summarise(Estimate = mean(Estimate))
+
+# first, look at summary of Estimate Estimates
+boxplot(sdat$Estimate)</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2r-1.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>## model factors...
+flist &lt;- c(&#39;N1&#39;, &#39;N2&#39;, &#39;ICC_OV&#39;, &#39;ICC_LV&#39;, &#39;Estimator&#39;)
+## Check assumptions
+anova_assumptions_check(
+  sdat, &#39;Estimate&#39;, factors = flist,
+  model = as.formula(&#39;Estimate ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator&#39;))</code></pre>
+<pre><code>
+ ============================= 
+
+ Tests and Plots of Normality:</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2r-2.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>
+ Shapiro-Wilks Test of Normality of Residuals:
+
+    Shapiro-Wilk normality test
+
+data:  res
+W = 0.8, p-value &lt;2e-16
+
+
+ K-S Test for Normality of Residuals:
+
+    One-sample Kolmogorov-Smirnov test
+
+data:  aov.out$residuals
+D = 0.4, p-value &lt;2e-16
+alternative hypothesis: two-sided</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2r-3.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2r-4.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2r-5.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2r-6.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/ml-cfa-parameter-anova-estimates.Rmd/ac-anova-l2r-7.png" width="225%" style="display: block; margin: auto;" /></p>
+<pre><code>
+ ============================= 
+
+ Tests of Homogeneity of Variance
+
+ 
+ Levenes Test:  N1 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2     136 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  N2 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     3    51.4 &lt;2e-16 ***
+      83506                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  ICC_OV 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2   58990 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  ICC_LV 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     1     832 &lt;2e-16 ***
+      83508                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+ 
+ Levenes Test:  Estimator 
+ 
+ 
+Levene&#39;s Test for Homogeneity of Variance (center = &quot;mean&quot;)
+         Df F value Pr(&gt;F)    
+group     2   21534 &lt;2e-16 ***
+      83507                   
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="anova-results-3" class="section level3">
+<h3>ANOVA Results</h3>
+<pre class="r"><code>model = as.formula(&#39;Estimate ~ N1 + N2 + ICC_OV + ICC_LV + Estimator + N1:N2 + N1:ICC_OV + N1:ICC_LV + N1:Estimator + N2:ICC_OV + N2:ICC_LV + N2:Estimator + ICC_OV:ICC_LV +  ICC_OV:Estimator  + ICC_LV:Estimator&#39;)
+
+fit &lt;- aov(model, data = sdat)
+fit.out &lt;- summary(fit)
+fit.out</code></pre>
+<pre><code>                    Df Sum Sq Mean Sq  F value  Pr(&gt;F)    
+N1                   2     61      31 6.73e+03 &lt; 2e-16 ***
+N2                   3     28       9 2.07e+03 &lt; 2e-16 ***
+ICC_OV               2   6341    3171 6.95e+05 &lt; 2e-16 ***
+ICC_LV               1      0       0 3.17e+01 1.8e-08 ***
+Estimator            2   2060    1030 2.26e+05 &lt; 2e-16 ***
+N1:N2                6      3       1 1.24e+02 &lt; 2e-16 ***
+N1:ICC_OV            4      3       1 1.74e+02 &lt; 2e-16 ***
+N1:ICC_LV            2      0       0 3.37e+00   0.034 *  
+N1:Estimator         4     18       4 9.73e+02 &lt; 2e-16 ***
+N2:ICC_OV            6      9       2 3.41e+02 &lt; 2e-16 ***
+N2:ICC_LV            3      1       0 8.41e+01 &lt; 2e-16 ***
+N2:Estimator         6     16       3 5.77e+02 &lt; 2e-16 ***
+ICC_OV:ICC_LV        2      3       2 3.82e+02 &lt; 2e-16 ***
+ICC_OV:Estimator     4   1163     291 6.37e+04 &lt; 2e-16 ***
+ICC_LV:Estimator     2      7       4 7.74e+02 &lt; 2e-16 ***
+Residuals        83460    381       0                     
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>resultsList[[&quot;Level2-ResidualCovariance&quot;]] &lt;- cbind(omega2(fit.out), p_omega2(fit.out))
+resultsList[[&quot;Level2-ResidualCovariance&quot;]]</code></pre>
+<pre><code>                 omega^2 partial-omega^2
+N1                0.0061          0.1387
+N2                0.0028          0.0693
+ICC_OV            0.6281          0.9433
+ICC_LV            0.0000          0.0004
+Estimator         0.2040          0.8439
+N1:N2             0.0003          0.0088
+N1:ICC_OV         0.0003          0.0082
+N1:ICC_LV         0.0000          0.0001
+N1:Estimator      0.0018          0.0445
+N2:ICC_OV         0.0009          0.0239
+N2:ICC_LV         0.0001          0.0030
+N2:Estimator      0.0016          0.0398
+ICC_OV:ICC_LV     0.0003          0.0090
+ICC_OV:Estimator  0.1152          0.7532
+ICC_LV:Estimator  0.0007          0.0182</code></pre>
+</div>
+</div>
+</div>
+<div id="summary-table-of-effect-sizes" class="section level1">
+<h1>Summary Table of Effect Sizes</h1>
+<pre class="r"><code>tb &lt;- cbind(resultsList[[1]], resultsList[[2]], resultsList[[3]], resultsList[[4]])
+
+kable(tb, format=&#39;html&#39;) %&gt;%
+    kable_styling(full_width = T) %&gt;%
+    add_header_above(c(&#39;Effect&#39;=1,&#39;Factor Loadings&#39;=2,&#39;Level-1 Factor Covariance&#39;=2,&#39;Level-2 Factor (co)variance&#39;=2,&#39;Level-2 Item Residual Variance&#39;=2))</code></pre>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Effect
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Factor Loadings
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Level-1 Factor Covariance
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Level-2 Factor (co)variance
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Level-2 Item Residual Variance
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+omega^2
+</th>
+<th style="text-align:right;">
+partial-omega^2
+</th>
+<th style="text-align:right;">
+omega^2
+</th>
+<th style="text-align:right;">
+partial-omega^2
+</th>
+<th style="text-align:right;">
+omega^2
+</th>
+<th style="text-align:right;">
+partial-omega^2
+</th>
+<th style="text-align:right;">
+omega^2
+</th>
+<th style="text-align:right;">
+partial-omega^2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+N1
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.139
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N2
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.069
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ICC_OV
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.122
+</td>
+<td style="text-align:right;">
+0.628
+</td>
+<td style="text-align:right;">
+0.943
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ICC_LV
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.803
+</td>
+<td style="text-align:right;">
+0.835
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Estimator
+</td>
+<td style="text-align:right;">
+0.700
+</td>
+<td style="text-align:right;">
+0.726
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.204
+</td>
+<td style="text-align:right;">
+0.844
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N1:N2
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N1:ICC_OV
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N1:ICC_LV
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N1:Estimator
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.044
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N2:ICC_OV
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N2:ICC_LV
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N2:Estimator
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.014
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+<td style="text-align:right;">
+0.040
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ICC_OV:ICC_LV
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ICC_OV:Estimator
+</td>
+<td style="text-align:right;">
+0.015
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.115
+</td>
+<td style="text-align:right;">
+0.753
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ICC_LV:Estimator
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.014
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>## Print out in tex
+print(xtable(tb, digits = 3), booktabs = T, include.rownames = T)</code></pre>
+<pre><code>% latex table generated in R 3.6.3 by xtable 1.8-4 package
+% Wed Jun 10 19:37:06 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrr}
+  \toprule
+ &amp; omega\verb|^|2 &amp; partial-omega\verb|^|2 &amp; omega\verb|^|2 &amp; partial-omega\verb|^|2 &amp; omega\verb|^|2 &amp; partial-omega\verb|^|2 &amp; omega\verb|^|2 &amp; partial-omega\verb|^|2 \\ 
+  \midrule
+N1               &amp; 0.000 &amp; 0.002 &amp; 0.000 &amp; 0.000 &amp; 0.003 &amp; 0.018 &amp; 0.006 &amp; 0.139 \\ 
+  N2               &amp; 0.002 &amp; 0.006 &amp; 0.000 &amp; 0.000 &amp; 0.005 &amp; 0.029 &amp; 0.003 &amp; 0.069 \\ 
+  ICC\_OV           &amp; 0.008 &amp; 0.030 &amp; 0.000 &amp; 0.000 &amp; 0.022 &amp; 0.122 &amp; 0.628 &amp; 0.943 \\ 
+  ICC\_LV           &amp; 0.006 &amp; 0.021 &amp; 0.001 &amp; 0.001 &amp; 0.803 &amp; 0.835 &amp; 0.000 &amp; 0.000 \\ 
+  Estimator        &amp; 0.700 &amp; 0.726 &amp; 0.000 &amp; 0.000 &amp; 0.003 &amp; 0.019 &amp; 0.204 &amp; 0.844 \\ 
+  N1:N2            &amp; 0.000 &amp; 0.000 &amp; -0.000 &amp; -0.000 &amp; 0.000 &amp; 0.001 &amp; 0.000 &amp; 0.009 \\ 
+  N1:ICC\_OV        &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.008 \\ 
+  N1:ICC\_LV        &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 \\ 
+  N1:Estimator     &amp; 0.001 &amp; 0.002 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.002 &amp; 0.002 &amp; 0.044 \\ 
+  N2:ICC\_OV        &amp; 0.000 &amp; 0.001 &amp; -0.000 &amp; -0.000 &amp; 0.000 &amp; 0.001 &amp; 0.001 &amp; 0.024 \\ 
+  N2:ICC\_LV        &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.001 &amp; 0.004 &amp; 0.000 &amp; 0.003 \\ 
+  N2:Estimator     &amp; 0.001 &amp; 0.003 &amp; 0.000 &amp; 0.000 &amp; 0.002 &amp; 0.014 &amp; 0.002 &amp; 0.040 \\ 
+  ICC\_OV:ICC\_LV    &amp; 0.000 &amp; 0.001 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.001 &amp; 0.000 &amp; 0.009 \\ 
+  ICC\_OV:Estimator &amp; 0.015 &amp; 0.053 &amp; 0.000 &amp; 0.000 &amp; 0.000 &amp; 0.003 &amp; 0.115 &amp; 0.753 \\ 
+  ICC\_LV:Estimator &amp; 0.004 &amp; 0.014 &amp; 0.000 &amp; 0.000 &amp; 0.001 &amp; 0.006 &amp; 0.001 &amp; 0.018 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}</code></pre>
+<pre class="r"><code># ## Table of partial-omega2
+# tb &lt;- cbind(resultsList[[1]][,1, drop=F], resultsList[[2]][,1, drop=F], resultsList[[3]][,1, drop=F], resultsList[[4]][,1, drop=F])
+# 
+# kable(tb, format=&#39;html&#39;) %&gt;%
+#     kable_styling(full_width = T) %&gt;%
+#     add_header_above(c(&#39;Effect&#39;=1,&#39;Factor Loadings&#39;=1,&#39;Level-1 Factor Covariance&#39;=1,&#39;Level-2 Factor (co)variance&#39;=2,&#39;Level-2 Item Residual Variance&#39;=2))
+# 
+# ## Print out in tex
+# print(xtable(tb, digits = 3), booktabs = T, include.rownames = T)
+# 
+# 
+# ## Table of omega-2
+# tb &lt;- cbind(resultsList[[1]][,1, drop=F], resultsList[[2]][,1, drop=F], resultsList[[3]][,1, drop=F], resultsList[[4]][,1, drop=F])
+# 
+# kable(tb, format=&#39;html&#39;) %&gt;%
+#     kable_styling(full_width = T) %&gt;%
+#     add_header_above(c(&#39;Effect&#39;=1,&#39;Factor Loadings&#39;=2,&#39;Level-1 Factor Covariance&#39;=2,&#39;Level-2 Factor (co)variance&#39;=2,&#39;Level-2 Item Residual Variance&#39;=2))
+# 
+# ## Print out in tex
+# print(xtable(tb, digits = 3), booktabs = T, include.rownames = T)</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.3 (2020-02-29)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 18362)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] xtable_1.8-4          kableExtra_1.1.0      cowplot_1.0.0        
+ [4] MplusAutomation_0.7-3 data.table_1.12.8     patchwork_1.0.0      
+ [7] forcats_0.5.0         stringr_1.4.0         dplyr_0.8.5          
+[10] purrr_0.3.4           readr_1.3.1           tidyr_1.1.0          
+[13] tibble_3.0.1          ggplot2_3.3.0         tidyverse_1.3.0      
+[16] workflowr_1.6.2      
+
+loaded via a namespace (and not attached):
+ [1] nlme_3.1-144      fs_1.4.1          lubridate_1.7.8   webshot_0.5.2    
+ [5] httr_1.4.1        rprojroot_1.3-2   tools_3.6.3       backports_1.1.7  
+ [9] R6_2.4.1          DBI_1.1.0         colorspace_1.4-1  withr_2.2.0      
+[13] tidyselect_1.1.0  curl_4.3          compiler_3.6.3    git2r_0.27.1     
+[17] cli_2.0.2         rvest_0.3.5       xml2_1.3.2        labeling_0.3     
+[21] scales_1.1.1      digest_0.6.25     foreign_0.8-75    rmarkdown_2.1    
+[25] rio_0.5.16        pkgconfig_2.0.3   htmltools_0.4.0   highr_0.8        
+[29] dbplyr_1.4.4      rlang_0.4.6       readxl_1.3.1      rstudioapi_0.11  
+[33] generics_0.0.2    farver_2.0.3      jsonlite_1.6.1    zip_2.0.4        
+[37] car_3.0-8         magrittr_1.5      texreg_1.36.23    Rcpp_1.0.4.6     
+[41] munsell_0.5.0     fansi_0.4.1       abind_1.4-5       proto_1.0.0      
+[45] lifecycle_0.2.0   stringi_1.4.6     yaml_2.2.1        carData_3.0-4    
+[49] plyr_1.8.6        grid_3.6.3        blob_1.2.1        parallel_3.6.3   
+[53] promises_1.1.0    crayon_1.3.4      lattice_0.20-38   haven_2.3.0      
+[57] pander_0.6.3      hms_0.5.3         knitr_1.28        pillar_1.4.4     
+[61] boot_1.3-24       reprex_0.3.0      glue_1.4.1        evaluate_0.14    
+[65] modelr_0.1.8      vctrs_0.3.0       httpuv_1.5.2      cellranger_1.1.0 
+[69] gtable_0.3.0      assertthat_0.2.1  gsubfn_0.7        xfun_0.14        
+[73] openxlsx_4.1.5    broom_0.5.6       coda_0.19-3       later_1.0.0      
+[77] viridisLite_0.3.0 ellipsis_0.3.1   </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

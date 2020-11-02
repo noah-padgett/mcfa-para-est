@@ -1,0 +1,224 @@
+---
+title: "ML-CFA: Standard Error Bias Overview"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+On this page, we describe the methods that are used for decomposing the effects on parameter estimations in terms of different estimates of bias with respect to standard errors.
+
+# Empirical Standard Error 
+
+First, we need to compute what the ``true'' standard errors are with respect to each parameter.
+We have generated a sampling distribution for each parameter in our study, and so can use this sample distribution to compute an ``empirical standard error.''
+The empirical standard error is simply the standard deviation of the sampling distribution of the parameter (in that specific condition) (Bandalos \& Gagné, 2012).
+Which we will call $SE(\hat{\theta}_i)$, the empirical standard error of the $i$-th parameter.
+
+# Standard Error Bias
+
+The bias of standard errors is formally computed as
+
+\[
+Bias\left(SE(\hat{\theta}_i)\right) = \sum_{j=1}^{n_r}\left(\frac{\widehat{SE}(\hat{\theta}_i)_j- SE(\hat{\theta}_i)}{SE(\hat{\theta}_i)}\right)/n_r\times 100
+\]
+where, $\widehat{SE}(\hat{\theta}_i)_j$ is the estimated standard error of the $i$-th parameter in the $j$-th replication.
+We will follow the suggestion of Hoogland and Boomsma (1998) that bias $\leq \mid 5\%\mid$ is considered an ``acceptable'' level of bias.
+
+
+Bias will be estimated for
+
+1. Factor loadings ($\lambda_{1-10}$),
+2. Level-1 factor covariance ($\psi_{W12}$),
+3. Level-2 factor (co)variances ($\psi_{B1}, \psi_{B2}, \psi_{B12}$),
+4. Level-2 item residual variances ($\theta_{B1-10}$), and
+
+
+## Estimation Method Efficiency
+
+Another aspect of the standard error estimates that was of interest was the variability in standard error estimates between estimation methods.
+Meaning, which estimation method was least variable relative to the other methods.
+We compute an efficiency ratio (or relative efficiency) between estimation methods (m = MLR, u = ULSMV, and w = WLSMV).
+\[
+RE = \sqrt{\left(\frac{\sum_{\forall j}(\widehat{SE}(\hat{\theta}_i)_{mj}- SE(\hat{\theta}_i))^2}{\sum_{\forall j}(\widehat{SE}(\hat{\theta}_i)_{uj}- SE(\hat{\theta}_i))^2}\right)}
+\]
+where RE = relative efficiency,
+and the ratio was computed for all three pairwise comparisons of (m, u, w).
+
+# Computing bias and efficiency estimates
+
+Here, we estimated the bias estimates.
+
+First, we set up some functions to compute the values of interest.
+
+```{r eval=F}
+#compute RB
+# p = parameter estimate of interest
+# pt = true value of parameter of interest
+est_relative_bias <- function(data, p, pt){
+  
+  nr <- nrow(data)
+  data[, pt] <- as.numeric(data[,pt, drop=T])
+  
+  rb <- sum((data[, p] - data[, pt])/data[,pt], na.rm = T)/nr*100
+  names(rb) <- 'RB'
+  return(rb)
+}
+
+# compute RMSE components
+est_rmse <- function(data, p, pt){
+  nr <- nrow(data)
+  data[, pt] <- as.numeric(data[,pt, drop=T])
+  
+  est_a <- mean(data[,p, drop=T], na.rm = T)
+  bias <- (est_a - data[,pt, drop=T][1])**2
+  sv <- sum((data[, p, drop=T] - est_a)**2, na.rm=T)/nr
+  rmse <- bias + sv
+  out <- c(rmse, bias, sv)
+  names(out) <- c('RMSE', 'Bias', 'SampVar')
+  return(out)
+}
+
+# compute estimated relative efficiency of 
+#  parameter est between two estimation methods
+est_relative_efficiency <- function(data, p, pt, est1, est2){
+
+  dat1 <- filter(data, Estimator == est1)
+  dat2 <- filter(data, Estimator == est2)
+  dat1[,pt] <- as.numeric(dat1[,pt, drop=T])
+  dat2[,pt] <- as.numeric(dat2[,pt, drop=T])
+  re <- sqrt(sum( (dat1[, p, drop=T] - dat1[, pt, drop=T])**2, na.rm=T)/sum( (dat2[, p, drop=T] - dat2[, pt, drop=T])**2, na.rm=T))
+  names(re) <- 'RE'
+  return(re)
+}
+
+
+```
+
+## Running Computations
+
+Next, loop through the desired results to get the estimates of bias of interest.
+For more details on the naming of variables for the true values, see the [Data Cleaning](data-cleaning.html) page.
+
+```{r get-res, eval=F}
+
+source(paste0(getwd(),"/code/load_packages.R"))
+source(paste0(getwd(),"/code/get_data.R"))
+
+# take out non-converged/inadmissible cases
+sim_results <- filter(sim_results, Converge==1, Admissible==1)
+
+# set up vectors of variable names
+pvec <- c(paste0('selambda1',1:6), paste0('selambda2',6:10), 'sepsiW12','sepsiB1', 'sepsiB2', 'sepsiB12', paste0('sethetaB',1:10))
+
+# Compute empirical standard errors
+sim_results <- sim_results %>%
+  group_by(Condition, Estimator) %>%
+  mutate(EmpSElambda11 = sd(lambda11), EmpSElambda12 = sd(lambda12),
+         EmpSElambda13 = sd(lambda13), EmpSElambda14 = sd(lambda14),
+         EmpSElambda15 = sd(lambda15), EmpSElambda16 = sd(lambda16),
+         EmpSElambda26 = sd(lambda26), EmpSElambda27 = sd(lambda27),
+         EmpSElambda28 = sd(lambda28), EmpSElambda29 = sd(lambda29),
+         EmpSElambda210 = sd(lambda210),
+         EmpSEpsiW12 = sd(psiW12), EmpSEpsiB1 = sd(psiB1),
+         EmpSEpsiB2 = sd(psiB2), EmpSEpsiB12 = sd(psiB12),
+         EmpSEthetaB1 = sd(thetaB1), EmpSEthetaB2 = sd(thetaB2),
+         EmpSEthetaB3 = sd(thetaB3), EmpSEthetaB4 = sd(thetaB4),
+         EmpSEthetaB5 = sd(thetaB5), EmpSEthetaB6 = sd(thetaB6),
+         EmpSEthetaB7 = sd(thetaB7), EmpSEthetaB8 = sd(thetaB8),
+         EmpSEthetaB9 = sd(thetaB9), EmpSEthetaB10 = sd(thetaB10))
+
+# vector of empirical SE names
+# set up vectors of variable names
+ptvec <- c(paste0('EmpSElambda1',1:6), paste0('EmpSElambda2',6:10), 'EmpSEpsiW12','EmpSEpsiB1', 'EmpSEpsiB2', 'EmpSEpsiB12', paste0('EmpSEthetaB',1:10))
+
+# iterators - conditions
+N1 <- unique(sim_results$ss_l1)
+N2 <- unique(sim_results$ss_l2)
+ICC_LV <- unique(sim_results$icc_lv)
+ICC_OV <- unique(sim_results$icc_ov)
+EST <- unique(sim_results$Estimator)
+
+# results matrix
+result <- data.frame(matrix(nrow=length(N1)*length(N2)*length(ICC_LV)*length(ICC_OV)*length(pvec)*length(EST), ncol=(17)))
+colnames(result) <- c('N1', 'N2', 'ICC_LV' ,'ICC_OV', 'Variable', 'Estimator','EmpSE', 'RB', 'RMSE', 'Bias', 'SampVar', 'muRE', 'mwRE', 'uwRE', 'nRep', 'estMean', 'estSD')
+
+j <- 1 # row id
+for(n1 in N1){
+  for(n2 in N2){
+    for(iccl in ICC_LV){
+      for(icco in ICC_OV){
+        for(i in 1:length(pvec)){
+            
+            dat <- filter(sim_results, ss_l1 == n1, ss_l2==n2,
+                          icc_lv==iccl, icc_ov==icco)
+            result[j:(j+2), 1:5] <- matrix(rep(c(n1,n2, iccl,icco, pvec[i]),3),
+                                           ncol=5, byrow = T)
+              
+              # compute bias by each estimation method
+              k <- 0
+              for(est in EST){
+                sdat <- filter(dat, Estimator==est)
+                result[j+k, 6] <- est
+                result[j+k, 7] <- sdat[1, ptvec[i], drop=T]
+                result[j+k, 8] <- est_relative_bias(sdat, pvec[i], ptvec[i])
+                result[j+k, 9:11] <- est_rmse(sdat, pvec[i], ptvec[i])
+                result[j+k, 15] <- nrow(sdat) # number of converged replications
+                result[j+k, 16] <- mean(sdat[, pvec[i], drop=T])
+                result[j+k, 17] <- sd(sdat[, pvec[i], drop=T])
+                k<-k+1
+              }
+              # Compute Relative Efficiency
+              # MLR vs. ULSMV
+              result[j:(j+2), 12] <- est_relative_efficiency(dat, pvec[i], ptvec[i],
+                                                       'MLR','ULSMV')
+              # MLR vs. WLSMV
+              result[j:(j+2), 13] <- est_relative_efficiency(dat, pvec[i], ptvec[i],
+                                                       'MLR','WLSMV')
+              # ULSMV vs. WLSMV
+              result[j:(j+2), 14] <- est_relative_efficiency(dat, pvec[i], ptvec[i],
+                                                       'ULSMV','WLSMV')
+              
+          # update row
+          j <- j+3
+        }
+      }
+    }
+  }
+}
+
+```
+
+So, there are a lot of results that could be reported from this matrix of results.
+We have saved these results and these estimates are included in the accompanying Shiny app for more detailed exploration by those interested.
+Here, we describe a subset of the results that we feel are most important.
+
+# Summarizing Results
+
+First, we will plot estimates (boxplots) to show how these estimates changed across conditions.
+To summarize the results we will average over the parameters that only differ y indices.
+Meaning we will describe the "average factor loading bias" by reporting the average bias for factor loadings.
+Additionally, different conditions resultedin different "sample sizes."
+By this we mean the number of uses replications.
+The different number of cases per condition was accounted for by creating a "weight" variable for each row of the `result` object.
+This meant that conditions that had more usable replications counted more towards to averages reported (or count as much as if we averaged over the individual replications).
+
+```{r eval=F}
+
+result$wi <- result$nRep/500
+# 500 is the max number of replications per cell
+
+# Save Results
+write_csv(result, path=paste0(w.d, "/data/results_bias_se.csv"))
+
+```
+
+
+# References
+
+1. Bandalos, D. L., & Gagné, P. (2012). Simulation methods in structural equation modeling. In R. H. Hoyle (Ed.), Handbook of structural equation modeling (pp. 92–108). New York, NY: Guilford Press.
+
+2. Hoogland, J. J., & Boomsma, A. (1998). Robustness studies in covariance structure modeling: An overview and a meta-analysis. Sociological Methods & Research, 26(3), 329-367.
+

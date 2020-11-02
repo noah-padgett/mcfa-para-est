@@ -18,9 +18,6 @@ sim_results <- filter(sim_results, Converge==1 & Admissible==1)
 
 ```
 
-```{r}
-sessionInfo()
-```
 
 # General Descrition
 
@@ -94,9 +91,11 @@ cor.est$C95 <- as.factor(ifelse(cor.est$Cprop >= 0.95, ">= 95%", "< 95%"))
 
 ```
 
-## Plots Between Conditions
+## Single Conditions
 
-```{r}
+### All Conditions
+
+```{r all-c}
 
 cols=c("< 90%"="#56B4E9", ">= 90%"="#CC79A7")
 p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
@@ -106,7 +105,7 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   geom_jitter(data=filter(cor.est, C90==">= 90%"),
               width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
   lims(y=c(0,1))+
-  labs(y="Correlation between Estimates",
+  labs(y="Correlation",
        x=NULL,
        title="Correlation amoung Estimates: Factor Loadings")+
   scale_color_manual(name="% Admissible", values=cols)+
@@ -114,6 +113,11 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   theme(panel.grid = element_blank())
 p
 
+```
+
+### By Level-1 Sample Size
+
+```{r l1}
 
 p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   geom_boxplot(outlier.shape = NA) +
@@ -122,7 +126,7 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   geom_jitter(data=filter(cor.est, C90==">= 90%"),
               width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
   lims(y=c(0,1))+
-  labs(y="Correlation between Estimates",
+  labs(y="Correlation",
        x=NULL,
        title="Correlation amoung Estimates: Factor Loadings",
        subtitle = "Conditional on Level-1 Sample Size")+
@@ -133,6 +137,11 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
         axis.text.x = element_text(angle=90))
 p
 
+```
+
+### By Level-2 Sample Size
+
+```{r l2}
 
 p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   geom_boxplot(outlier.shape = NA) +
@@ -141,7 +150,7 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   geom_jitter(data=filter(cor.est, C90==">= 90%"),
               width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
   lims(y=c(0,1))+
-  labs(y="Correlation between Estimates",
+  labs(y="Correlation",
        x=NULL,
        title="Correlation amoung Estimates: Factor Loadings",
        subtitle = "Conditional on Level-2 Sample Size")+
@@ -151,6 +160,11 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   theme(panel.grid = element_blank(),
         axis.text.x = element_text(angle=90))
 p
+```
+
+### By Observed Variable ICC
+
+```{r ovicc}
 
 p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   geom_boxplot(outlier.shape = NA) +
@@ -159,7 +173,7 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   geom_jitter(data=filter(cor.est, C90==">= 90%"),
               width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
   lims(y=c(0,1))+
-  labs(y="Correlation between Estimates",
+  labs(y="Correlation",
        x=NULL,
        title="Correlation amoung Estimates: Factor Loadings",
        subtitle = "Conditional on Observed Variable ICC")+
@@ -169,6 +183,11 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   theme(panel.grid = element_blank(),
         axis.text.x = element_text(angle=90))
 p
+```
+
+### By Latent Variable ICC
+
+```{r lvicc}
 
 p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   geom_boxplot(outlier.shape = NA) +
@@ -177,7 +196,7 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
   geom_jitter(data=filter(cor.est, C90==">= 90%"),
               width=0.3, aes(x=Cor, y=Est, color=">= 90%")) +
   lims(y=c(0,1))+
-  labs(y="Correlation between Estimates",
+  labs(y="Correlation",
        x=NULL,
        title="Correlation amoung Estimates: Factor Loadings",
        subtitle = "Conditional on Latent Variable ICC")+
@@ -188,4 +207,44 @@ p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
         axis.text.x = element_text(angle=90))
 p
 
+```
+
+# Publication Figure
+
+```{r}
+
+cols=c("< 90%"="#56B4E9", ">= 90%"="#CC79A7")
+shps=c("< 90%"=16, ">= 90%"=17)
+p <- ggplot(cor.est, aes(x=Cor, y=Est)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(data=filter(cor.est, C90=="< 90%"),
+              width=0.3, size=2, alpha=0.7,
+              aes(x=Cor, y=Est,
+                  color="< 90%", shape="< 90%")) +
+  geom_jitter(data=filter(cor.est, C90==">= 90%"),
+              width=0.3, size=2, alpha=0.7,
+              aes(x=Cor, y=Est,
+                  color=">= 90%", shape=">= 90%")) +
+  lims(y=c(0,1))+
+  labs(y="Correlation",
+       x=NULL)+
+  scale_color_manual(name="% Admissible", values=cols)+
+  scale_shape_manual(name="% Admissible", values=shps)+
+  theme_bw()+
+  theme(panel.grid = element_blank(),
+        legend.position = c(0.5,0.25),
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=12),
+        axis.title.y = element_text(size=12),
+        axis.text.y = element_text(size=10),
+        axis.text.x = element_text(angle=20, hjust=1,
+                                   vjust = 1, size=12))
+p
+
+ggsave("fig/estimate_correlation_factor_loading.pdf",p, units="in", height=3.5, width=5)
+
+```
+
+```{r session-info}
+sessionInfo()
 ```

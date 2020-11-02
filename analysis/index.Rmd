@@ -20,21 +20,96 @@ This project is additional results from R. Noah Padgett's master's thesis projec
 The simulation project was quite extensive and mainly focused on fit statistics.
 This project extends that work by using the a subset of the output files to report on parameter recovery. 
 
+
 ## Admissible Replications
 
 *[Admissible Replications and Convergence](ml-cfa-convergence-summary.html)
 
-## Parameter Bias Investigation
+Next, identify the proportion of replications where ULSMV converged and admissible when WLSMV was not.
+Maybe you can make like a set of 2x2 tables of that show this relationship as sample size decreases.
+
+## Bias Evaluation
+
+
+
+### Parameter Bias
 
 *[Overview of Methods](ml-cfa-parameter-bias-overview.html)
 
-*[Results - Factor Loadings](ml-cfa-parameter-bias-factor-loadings.html)
+*[Factor Loadings](ml-cfa-parameter-bias-factor-loadings.html)
 
-*[Results - Level-1 Factor Covariance](ml-cfa-parameter-bias-level1-factor-covariances.html)
+*[Level-1 Factor Covariance](ml-cfa-parameter-bias-level1-factor-covariances.html)
 
-*[Results - Level-2 Factor Covariance](ml-cfa-parameter-bias-level2-factor-covariances.html)
+*[Level-2 Factor Covariance](ml-cfa-parameter-bias-level2-factor-covariances.html)
 
-*[Results - Level-2 Factor Variance](ml-cfa-parameter-bias-level2-factor-variances.html)
+*[Level-2 Factor Variance](ml-cfa-parameter-bias-level2-factor-variances.html)
+
+*[Observed Variable ICC](ml-cfa-parameter-bias-observed-ICC.html)
+
+*[Latent Variable ICC](ml-cfa-parameter-bias-latent-ICC.html)
+
+
+#### Effect of Design Factors
+
+The following pages investigated the effect of the simulation design (sample size, parameters, estimation) on the estimates for the different parameters and the estimated level of bias (relative bias).
+The final results are reported as effect sizes (e.g., omega-squared or partial-omega-squared).
+
+*[Design Effects on Parameter Estimates](ml-cfa-parameter-anova-estimates.html)
+
+*[Design Effects on Relative Bias Estimates](ml-cfa-parameter-anova-relative-bias.html)
+
+### Standard Error Bias
+
+*[Overview of Methods](ml-cfa-standard-error-bias-overview.html)
+
+*[Factor Loadings](ml-cfa-standard-error-bias-factor-loadings.html)
+
+*[Level-1 Factor Covariance](ml-cfa-standard-error-bias-level1-factor-covariances.html)
+
+*[Level-2 Factor Covariance](ml-cfa-standard-error-bias-level2-factor-covariances.html)
+
+*[Level-2 Factor Variance](ml-cfa-standard-error-bias-level2-factor-variances.html)
+
+#### Effect of Design Factors
+
+The following pages investigated the effect of the simulation design (sample size, parameters, estimation) on the estimates for the different parameters' standard errors and the estimated level of bias (relative bias) in those estimates.
+The final results are reported as effect sizes (e.g., omega-squared or partial-omega-squared).
+
+*[Design Effects on Standard Error Estimates](ml-cfa-standard-error-anova-logSE.html)
+
+*[Design Effects on Relative Bias of Standard Errors](ml-cfa-standard-error-anova-relative-bias.html)
+
+## Convergence of Estimates among Estimation Methods
+
+### Correlation among Estimates
+
+*[Factor Loadings](ml-cfa-parameter-convergence-correlation-factor-loadings.html)
+
+*[Level-1 Factor Covariance](ml-cfa-parameter-convergence-correlation-L1-factor-covariance.html)
+
+*[Level-2 Factor Covariance](ml-cfa-parameter-convergence-correlation-L2-factor-covariance.html)
+
+*[Level-2 Factor Variances](ml-cfa-parameter-convergence-correlation-L2-factor-variances.html)
+
+*[Level-2 Residual Variances](ml-cfa-parameter-convergence-correlation-L2-residual-variances.html)
+
+*[Publication Figure](ml-cfa-parameter-convergence-correlation-pubfigure.html)
+
+### Average Relative Difference
+
+*[Factor Loadings](ml-cfa-parameter-convergence-ARD-factor-loadings.html)
+
+*[Level-1 Factor Covariance](ml-cfa-parameter-convergence-ARD-L1-factor-covariance.html)
+
+*[Level-2 Factor Covariance](ml-cfa-parameter-convergence-ARD-L2-factor-covariance.html)
+
+*[Level-2 Factor Variances](ml-cfa-parameter-convergence-ARD-L2-factor-variances.html)
+
+*[Level-2 Residual Variances](ml-cfa-parameter-convergence-ARD-L2-residual-variances.html)
+
+*[Observed Variable ICC](ml-cfa-parameter-convergence-ARD-observed-ICC.html)
+
+*[Latent Variable ICC](ml-cfa-parameter-convergence-ARD-latent-ICC.html)
 
 ## Confidence Interval Coverage
 
@@ -42,20 +117,6 @@ See notes on simulation for figure idea
 
 *[CI Coverage - Factor Loadings](ml-cfa-ci-coverage.html)
 
-## Convergence of Estimates among Estimation Methods
-
-*[Parameter Convergence - Trace Plots](ml-cfa-parameter-convergence.html)
-
-*[Correlation of Estimates - Factor Loadings](ml-cfa-parameter-convergence-correlation-factor-loadings.html)
-
-*[Correlation of Estimates - Level-1 Factor Covariance](ml-cfa-parameter-convergence-correlation-L1-factor-covariance.html)
-
-*[Correlation of Estimates - Level-2 Factor Covariance](ml-cfa-parameter-convergence-correlation-L2-factor-covariance.html)
-
-*[Correlation of Estimates - Level-2 Factor Variances](ml-cfa-parameter-convergence-correlation-L2-factor-variances.html)
-
-*[Correlation of Estimates - Level-2 Residual Variances](ml-cfa-parameter-convergence-correlation-L2-residual-variances.html)
-
-## Data Cleaning
+## Miscellanious Pages and other R scripts used
 
 *[Data Cleaning](data-cleaning.html)

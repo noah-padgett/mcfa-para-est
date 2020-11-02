@@ -1,0 +1,20 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+[!htp]
+\centering
+\begin{subfigure}[b]{1\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{fig/relative_bias_overview}
+\caption{Relative bias of parameter estimates showed distinct differences among estimation methods}
+\label{fig:rb-para}
+\end{subfigure}
+
+\begin{subfigure}[b]{1\textwidth}
+\centering
+\includegraphics[width=0.8\textwidth]{fig/relative_se_bias_overview}
+\caption{Standard errors were biased under most low sample size conditions}
+\label{fig:rb-se}
+\end{subfigure}
+\caption{Bias associated with parameter and standard error estimates. {(a) Parameter estimates including intraclass correlation estimates; (b) Standard error estimates. Each point represents the estimated relative bias in a single condition. We have highlighted the effect of the level-2 sample size which is an important consideration for ML-CFA.}}
+\label{fig:rb}
+\end{figure*}

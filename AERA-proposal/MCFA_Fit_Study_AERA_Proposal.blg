@@ -1,0 +1,17 @@
+[0] Config.pm:304> INFO - This is Biber 2.13
+[4] Config.pm:307> INFO - Logfile is 'MCFA_Fit_Study_AERA_Proposal.blg'
+[48] biber-MSWIN64:315> INFO - === 
+[82] Biber.pm:375> INFO - Reading 'MCFA_Fit_Study_AERA_Proposal.bcf'
+[231] Biber.pm:905> INFO - Found 17 citekeys in bib section 0
+[257] Biber.pm:4196> INFO - Processing section 0
+[260] Utils.pm:75> INFO - Globbing data source 'references.bib'
+[278] Utils.pm:91> INFO - Globbed data source 'references.bib' to references.bib
+[292] Biber.pm:4373> INFO - Looking for bibtex format file 'references.bib' for section 0
+[307] bibtex.pm:1462> INFO - LaTeX decoding ...
+[400] bibtex.pm:1281> INFO - Found BibTeX data source 'references.bib'
+[550] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[550] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[551] Biber.pm:4024> INFO - Sorting list 'apa/global//global/global' of type 'entry' with template 'apa' and locale 'en-US'
+[551] Biber.pm:4030> INFO - No sort tailoring available for locale 'en-US'
+[587] bbl.pm:648> INFO - Writing 'MCFA_Fit_Study_AERA_Proposal.bbl' with encoding 'UTF-8'
+[635] bbl.pm:751> INFO - Output to MCFA_Fit_Study_AERA_Proposal.bbl

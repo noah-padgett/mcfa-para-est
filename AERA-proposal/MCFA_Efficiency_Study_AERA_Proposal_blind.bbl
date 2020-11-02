@@ -1,0 +1,759 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{apa/global//global/global}
+    \entry{Asparouhov2007}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=1eb0c057d8b42cd074edd2ab035552ec}{%
+           family={Asparouhov},
+           familyi={A\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=1,uniquepart=given,hash=24ef8755438d164d9d0353464d9964f7}{%
+           family={Muth{é}n},
+           familyi={M\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod},
+           givenun=1}}%
+      }
+      \list{location}{1}{%
+        {Salt Lake City, Utah}%
+      }
+      \strng{namehash}{552d5b1d0472e736f1108aeedea15109}
+      \strng{fullhash}{552d5b1d0472e736f1108aeedea15109}
+      \strng{bibnamehash}{552d5b1d0472e736f1108aeedea15109}
+      \strng{authorbibnamehash}{552d5b1d0472e736f1108aeedea15109}
+      \strng{authornamehash}{552d5b1d0472e736f1108aeedea15109}
+      \strng{authorfullhash}{552d5b1d0472e736f1108aeedea15109}
+      \field{sortinit}{A}
+      \field{sortinithash}{a3dcedd53b04d1adfd5ac303ecd5e6fa}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Joint Statistical Meeting: Section on Statistics in Epidemiology}
+      \field{title}{{Computationally efficient estimation of multilevel high-dimensional latent variable models}}
+      \field{year}{2007}
+      \field{pages}{2531\bibrangedash 2535}
+      \range{pages}{5}
+      \verb{urlraw}
+      \verb https://www.statmodel.com/download/JSM2007000746.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.statmodel.com/download/JSM2007000746.pdf
+      \endverb
+    \endentry
+    \entry{Bandalos2012}{inbook}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=ff1daf798cf5ba2f891cd08665c1eadd}{%
+           family={Bandalos},
+           familyi={B\bibinitperiod},
+           given={Deborah\bibnamedelima L},
+           giveni={D\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=959c80f2c6f52eafbda5be90e3f2d89b}{%
+           family={Gagn{é}},
+           familyi={G\bibinitperiod},
+           given={Phillip},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=9e0b88d63e3699f6d773c33005851068}{%
+           family={Hoyle},
+           familyi={H\bibinitperiod},
+           given={Rick\bibnamedelima H.},
+           giveni={R\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY}%
+      }
+      \list{publisher}{1}{%
+        {Guilford Press}%
+      }
+      \strng{namehash}{eb02758f8b6dcec138d0048f7909de66}
+      \strng{fullhash}{eb02758f8b6dcec138d0048f7909de66}
+      \strng{bibnamehash}{eb02758f8b6dcec138d0048f7909de66}
+      \strng{authorbibnamehash}{eb02758f8b6dcec138d0048f7909de66}
+      \strng{authornamehash}{eb02758f8b6dcec138d0048f7909de66}
+      \strng{authorfullhash}{eb02758f8b6dcec138d0048f7909de66}
+      \strng{editorbibnamehash}{9e0b88d63e3699f6d773c33005851068}
+      \strng{editornamehash}{9e0b88d63e3699f6d773c33005851068}
+      \strng{editorfullhash}{9e0b88d63e3699f6d773c33005851068}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Handbook of structural equation modeling}
+      \field{title}{{Simulation methods in structural equation modeling}}
+      \field{year}{2012}
+      \field{pages}{92\bibrangedash 108}
+      \range{pages}{17}
+    \endentry
+    \entry{Bandalos2013}{inbook}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=ff1daf798cf5ba2f891cd08665c1eadd}{%
+           family={Bandalos},
+           familyi={B\bibinitperiod},
+           given={Deborah\bibnamedelima L},
+           giveni={D\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=85d68092357856059514520a9e4893f8}{%
+           family={Leite},
+           familyi={L\bibinitperiod},
+           given={W},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=81e7485b2a44f35f3715b22b94df851c}{%
+           family={Hancock},
+           familyi={H\bibinitperiod},
+           given={Gregory\bibnamedelima R.},
+           giveni={G\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=8335dd75844b2afdb084cbf946b77eba}{%
+           family={Mueller},
+           familyi={M\bibinitperiod},
+           given={Ralph\bibnamedelima O.},
+           giveni={R\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Charlotte, NC}%
+      }
+      \list{publisher}{1}{%
+        {Information Age Publishing}%
+      }
+      \strng{namehash}{5ca5f2efc43c2459c739b47be01b09b5}
+      \strng{fullhash}{5ca5f2efc43c2459c739b47be01b09b5}
+      \strng{bibnamehash}{5ca5f2efc43c2459c739b47be01b09b5}
+      \strng{authorbibnamehash}{5ca5f2efc43c2459c739b47be01b09b5}
+      \strng{authornamehash}{5ca5f2efc43c2459c739b47be01b09b5}
+      \strng{authorfullhash}{5ca5f2efc43c2459c739b47be01b09b5}
+      \strng{editorbibnamehash}{4b40c6c09b6eb79ad5dc5678e06328bb}
+      \strng{editornamehash}{4b40c6c09b6eb79ad5dc5678e06328bb}
+      \strng{editorfullhash}{4b40c6c09b6eb79ad5dc5678e06328bb}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Structural equation modeling: A second course}
+      \field{edition}{2nd}
+      \field{title}{{The use of Monte Carlo studies in structural equation modeling research}}
+      \field{year}{2013}
+      \field{pages}{625\bibrangedash 666}
+      \range{pages}{42}
+    \endentry
+    \entry{DiStefano2014}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=cdc66892360080c0f674e892feb34cf9}{%
+           family={DiStefano},
+           familyi={D\bibinitperiod},
+           given={Christine},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=85e4929b2b77524c2a2b52378b4f99b0}{%
+           family={Morgan},
+           familyi={M\bibinitperiod},
+           given={Grant\bibnamedelima B.},
+           giveni={G\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{4156a2e28820eaff7e0adc158a15a2bf}
+      \strng{fullhash}{4156a2e28820eaff7e0adc158a15a2bf}
+      \strng{bibnamehash}{4156a2e28820eaff7e0adc158a15a2bf}
+      \strng{authorbibnamehash}{4156a2e28820eaff7e0adc158a15a2bf}
+      \strng{authornamehash}{4156a2e28820eaff7e0adc158a15a2bf}
+      \strng{authorfullhash}{4156a2e28820eaff7e0adc158a15a2bf}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Structural Equation Modeling: A Multidisciplinary Journal}
+      \field{number}{3}
+      \field{title}{{A comparison of diagonal weighted least squares robust estimation techniques for ordinal data}}
+      \field{volume}{21}
+      \field{year}{2014}
+      \field{pages}{425\bibrangedash 438}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1080/10705511.2014.915373
+      \endverb
+    \endentry
+    \entry{Finney2013}{inbook}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=3e8412baa1a71021c37d2b19d0b7c07a}{%
+           family={Finney},
+           familyi={F\bibinitperiod},
+           given={Sara\bibnamedelima J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cdc66892360080c0f674e892feb34cf9}{%
+           family={DiStefano},
+           familyi={D\bibinitperiod},
+           given={Christine},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=81e7485b2a44f35f3715b22b94df851c}{%
+           family={Hancock},
+           familyi={H\bibinitperiod},
+           given={Gregory\bibnamedelima R.},
+           giveni={G\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=8335dd75844b2afdb084cbf946b77eba}{%
+           family={Mueller},
+           familyi={M\bibinitperiod},
+           given={Ralph\bibnamedelima O.},
+           giveni={R\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Charlotte, NC}%
+      }
+      \list{publisher}{1}{%
+        {Information Age Publishing}%
+      }
+      \strng{namehash}{b9eb76c7fa55bb2c9463bb5e07b4e41b}
+      \strng{fullhash}{b9eb76c7fa55bb2c9463bb5e07b4e41b}
+      \strng{bibnamehash}{b9eb76c7fa55bb2c9463bb5e07b4e41b}
+      \strng{authorbibnamehash}{b9eb76c7fa55bb2c9463bb5e07b4e41b}
+      \strng{authornamehash}{b9eb76c7fa55bb2c9463bb5e07b4e41b}
+      \strng{authorfullhash}{b9eb76c7fa55bb2c9463bb5e07b4e41b}
+      \strng{editorbibnamehash}{4b40c6c09b6eb79ad5dc5678e06328bb}
+      \strng{editornamehash}{4b40c6c09b6eb79ad5dc5678e06328bb}
+      \strng{editorfullhash}{4b40c6c09b6eb79ad5dc5678e06328bb}
+      \field{sortinit}{F}
+      \field{sortinithash}{fb0c0faa89eb6abae8213bf60e6799ea}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Structural equation modeling: A second course}
+      \field{chapter}{11}
+      \field{edition}{2nd}
+      \field{title}{{Nonnormal and categorical data in structural equation modeling}}
+      \field{year}{2013}
+      \field{pages}{439\bibrangedash 492}
+      \range{pages}{54}
+    \endentry
+    \entry{Forero2009}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=e44c93a469b9c0d06e8d9ebe0002930b}{%
+           family={Forero},
+           familyi={F\bibinitperiod},
+           given={Carlos\bibnamedelima G.},
+           giveni={C\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1864bed0dc1578554f7d6a9aaf4eb6b0}{%
+           family={Maydeu-Olivares},
+           familyi={M\bibinithyphendelim O\bibinitperiod},
+           given={Alberto},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=60854936e5863ff87a34f662aca86175}{%
+           family={Gallardo-Pujol},
+           familyi={G\bibinithyphendelim P\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{746e55ead4a0546dab94e43759c3f417}
+      \strng{fullhash}{5d95584c9af64143f21d1697145d1759}
+      \strng{bibnamehash}{5d95584c9af64143f21d1697145d1759}
+      \strng{authorbibnamehash}{5d95584c9af64143f21d1697145d1759}
+      \strng{authornamehash}{746e55ead4a0546dab94e43759c3f417}
+      \strng{authorfullhash}{5d95584c9af64143f21d1697145d1759}
+      \field{sortinit}{F}
+      \field{sortinithash}{fb0c0faa89eb6abae8213bf60e6799ea}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Structural Equation Modeling: A Multidisciplinary Journal}
+      \field{number}{4}
+      \field{title}{{Factor analysis with ordinal indicators: A Monte Carlo study comparing DWLS and ULS sstimation}}
+      \field{volume}{16}
+      \field{year}{2009}
+      \field{pages}{625\bibrangedash 641}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1080/10705510903203573
+      \endverb
+    \endentry
+    \entry{Goldstein1988}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=84dc0044caf3593c8a707fda3a383c1d}{%
+           family={Goldstein},
+           familyi={G\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ce719af687ab21cefa9007ed31c172e5}{%
+           family={McDonald},
+           familyi={M\bibinitperiod},
+           given={Roderick\bibnamedelima P.},
+           giveni={R\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{72bdabe8e27a7a75de7710f5f0c87be0}
+      \strng{fullhash}{72bdabe8e27a7a75de7710f5f0c87be0}
+      \strng{bibnamehash}{72bdabe8e27a7a75de7710f5f0c87be0}
+      \strng{authorbibnamehash}{72bdabe8e27a7a75de7710f5f0c87be0}
+      \strng{authornamehash}{72bdabe8e27a7a75de7710f5f0c87be0}
+      \strng{authorfullhash}{72bdabe8e27a7a75de7710f5f0c87be0}
+      \field{sortinit}{G}
+      \field{sortinithash}{62eb2aa29549e4fdbd3cb154ec5711cb}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychometrika}
+      \field{number}{4}
+      \field{title}{{A general model for the analysis of multilevel data}}
+      \field{volume}{53}
+      \field{year}{1988}
+      \field{pages}{455\bibrangedash 467}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 0033-3123/88/0900-9022500.75/0
+      \endverb
+      \verb{file}
+      \verb :C$\backslash$:/Users/noahp/AppData/Local/Mendeley Ltd./Mendeley Desktop/Downloaded/Goldstein, McDonald - 1988 - A general model for the analysis of multilevel data.pdf:pdf
+      \endverb
+    \endentry
+    \entry{Hallquist2018}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=e147c3cb6c34db58cdd3c6292275c4e1}{%
+           family={Hallquist},
+           familyi={H\bibinitperiod},
+           given={Michael\bibnamedelima N.},
+           giveni={M\bibinitperiod\bibinitdelim N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=813dfefff87ced02053c4ff203bfd102}{%
+           family={Wiley},
+           familyi={W\bibinitperiod},
+           given={Joshua\bibnamedelima F.},
+           giveni={J\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{ca9d71123cce61779ca73328a51055d6}
+      \strng{fullhash}{ca9d71123cce61779ca73328a51055d6}
+      \strng{bibnamehash}{ca9d71123cce61779ca73328a51055d6}
+      \strng{authorbibnamehash}{ca9d71123cce61779ca73328a51055d6}
+      \strng{authornamehash}{ca9d71123cce61779ca73328a51055d6}
+      \strng{authorfullhash}{ca9d71123cce61779ca73328a51055d6}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Structural Equation Modeling: A Multidisciplinary Journal}
+      \field{number}{4}
+      \field{title}{{MplusAutomation: An R package for facilitating large-scale latent variable analyses in Mplus}}
+      \field{volume}{25}
+      \field{year}{2018}
+      \field{pages}{621\bibrangedash 638}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1080/10705511.2017.1402334
+      \endverb
+    \endentry
+    \entry{Heck2015}{book}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=87ee6f185b8b433cd836910b247f86cb}{%
+           family={Heck},
+           familyi={H\bibinitperiod},
+           given={Ronald\bibnamedelima H.},
+           giveni={R\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7fdb739bf94b7b5f8737d4e02099ca19}{%
+           family={Thomas},
+           familyi={T\bibinitperiod},
+           given={Scott\bibnamedelima L.},
+           giveni={S\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{location}{1}{%
+        {New York, NY}%
+      }
+      \list{publisher}{1}{%
+        {Routledge}%
+      }
+      \strng{namehash}{0ef34622a2d796c5db6509116f2bbf4e}
+      \strng{fullhash}{0ef34622a2d796c5db6509116f2bbf4e}
+      \strng{bibnamehash}{0ef34622a2d796c5db6509116f2bbf4e}
+      \strng{authorbibnamehash}{0ef34622a2d796c5db6509116f2bbf4e}
+      \strng{authornamehash}{0ef34622a2d796c5db6509116f2bbf4e}
+      \strng{authorfullhash}{0ef34622a2d796c5db6509116f2bbf4e}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{Third}
+      \field{isbn}{0805829636}
+      \field{issn}{01466216}
+      \field{title}{{An introduction to multilevel modeling techniques: MLM and SEM approaches using Mplus.}}
+      \field{year}{2015}
+      \field{pages}{155\bibrangedash 171}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1177/0146621609344848
+      \endverb
+      \verb{urlraw}
+      \verb https://www.taylorfrancis.com/books/9781317598503
+      \endverb
+      \verb{url}
+      \verb https://www.taylorfrancis.com/books/9781317598503
+      \endverb
+    \endentry
+    \entry{Hoogland1998}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=ef31c6450dfbf8e7047034c8de7530c1}{%
+           family={Hoogland},
+           familyi={H\bibinitperiod},
+           given={Jeffrey\bibnamedelima J.},
+           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1b82e681819cd06fc75190a4942affc2}{%
+           family={Boomsma},
+           familyi={B\bibinitperiod},
+           given={Anne},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {SAGE Publications Inc.}%
+      }
+      \strng{namehash}{eeb73bcbfe41cfd6c4c8505df1254131}
+      \strng{fullhash}{eeb73bcbfe41cfd6c4c8505df1254131}
+      \strng{bibnamehash}{eeb73bcbfe41cfd6c4c8505df1254131}
+      \strng{authorbibnamehash}{eeb73bcbfe41cfd6c4c8505df1254131}
+      \strng{authornamehash}{eeb73bcbfe41cfd6c4c8505df1254131}
+      \strng{authorfullhash}{eeb73bcbfe41cfd6c4c8505df1254131}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Sociological Methods and Research}
+      \field{number}{3}
+      \field{title}{{Robustness studies in covariance structure modeling an overview and a meta-analysis}}
+      \field{volume}{26}
+      \field{year}{1998}
+      \field{pages}{329\bibrangedash 367}
+      \range{pages}{39}
+      \verb{doi}
+      \verb 10.1177/0049124198026003003
+      \endverb
+    \endentry
+    \entry{Hox2010}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=281867109a00a49f1fc580f1382d7e98}{%
+           family={Hox},
+           familyi={H\bibinitperiod},
+           given={Joop},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=15d2a522975872acc9a63d6297b891f2}{%
+           family={Maas},
+           familyi={M\bibinitperiod},
+           given={Cora\bibnamedelima J.M.},
+           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a08309fad9dea5eaffdea2d14bf6786b}{%
+           family={Brinkhuis},
+           familyi={B\bibinitperiod},
+           given={Matthieu\bibnamedelima J.S.},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {John Wiley {\&} Sons, Ltd}%
+      }
+      \strng{namehash}{e80299a4987d8c4e93adaf93e7dd0ed3}
+      \strng{fullhash}{bda8f2e58f4f3ea7b663d1069db3fbb5}
+      \strng{bibnamehash}{bda8f2e58f4f3ea7b663d1069db3fbb5}
+      \strng{authorbibnamehash}{bda8f2e58f4f3ea7b663d1069db3fbb5}
+      \strng{authornamehash}{e80299a4987d8c4e93adaf93e7dd0ed3}
+      \strng{authorfullhash}{bda8f2e58f4f3ea7b663d1069db3fbb5}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Statistica Neerlandica}
+      \field{number}{2}
+      \field{title}{{The effect of estimation method and sample size in multilevel structural equation modeling}}
+      \field{volume}{64}
+      \field{year}{2010}
+      \field{pages}{157\bibrangedash 170}
+      \range{pages}{14}
+    \endentry
+    \entry{Muthen1984}{article}{}
+      \name{author}{1}{}{%
+        {{un=1,uniquepart=given,hash=fa213ffcf8a716b9b4b861af0fcfabc6}{%
+           family={Muth{é}n},
+           familyi={M\bibinitperiod},
+           given={Bengt},
+           giveni={B\bibinitperiod},
+           givenun=1}}%
+      }
+      \list{publisher}{1}{%
+        {Springer-Verlag}%
+      }
+      \strng{namehash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{fullhash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{bibnamehash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{authorbibnamehash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{authornamehash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{authorfullhash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \field{extraname}{1}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Psychometrika}
+      \field{number}{1}
+      \field{title}{{A general structural equation model with dichotomous, ordered categorical, and continuous latent variable indicators}}
+      \field{volume}{49}
+      \field{year}{1984}
+      \field{pages}{115\bibrangedash 132}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1007/BF02294210
+      \endverb
+    \endentry
+    \entry{Muthen1994}{article}{}
+      \name{author}{1}{}{%
+        {{un=1,uniquepart=given,hash=fa213ffcf8a716b9b4b861af0fcfabc6}{%
+           family={Muth{é}n},
+           familyi={M\bibinitperiod},
+           given={Bengt},
+           giveni={B\bibinitperiod},
+           givenun=1}}%
+      }
+      \strng{namehash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{fullhash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{bibnamehash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{authorbibnamehash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{authornamehash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \strng{authorfullhash}{fa213ffcf8a716b9b4b861af0fcfabc6}
+      \field{extraname}{2}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Sociological Methods {\&} Research}
+      \field{number}{3}
+      \field{title}{{Multilevel covariance structure analysis}}
+      \field{volume}{22}
+      \field{year}{1994}
+      \field{pages}{376\bibrangedash 398}
+      \range{pages}{23}
+      \verb{doi}
+      \verb 10.1177/0049124194022003006
+      \endverb
+    \endentry
+    \entry{Muthen2017}{book}{}
+      \name{author}{2}{}{%
+        {{un=1,uniquepart=given,hash=906ac9df01097ca9cd4e298807fa1435}{%
+           family={Muth{é}n},
+           familyi={M\bibinitperiod},
+           given={L.K.},
+           giveni={L\bibinitperiod},
+           givenun=1}}%
+        {{un=1,uniquepart=given,hash=2d9cd69a5c48793763803ba2bbde7603}{%
+           family={Muth{é}n},
+           familyi={M\bibinitperiod},
+           given={B.O.},
+           giveni={B\bibinitperiod},
+           givenun=1}}%
+      }
+      \list{location}{1}{%
+        {Los Angeles, CA}%
+      }
+      \list{publisher}{1}{%
+        {Muth{é}n {\&} Muth{é}n}%
+      }
+      \strng{namehash}{af834eb0c390cb78842e9d84c27bf04f}
+      \strng{fullhash}{af834eb0c390cb78842e9d84c27bf04f}
+      \strng{bibnamehash}{af834eb0c390cb78842e9d84c27bf04f}
+      \strng{authorbibnamehash}{af834eb0c390cb78842e9d84c27bf04f}
+      \strng{authornamehash}{af834eb0c390cb78842e9d84c27bf04f}
+      \strng{authorfullhash}{af834eb0c390cb78842e9d84c27bf04f}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{8th}
+      \field{title}{{Mplus User's Guide}}
+      \field{year}{2017}
+    \endentry
+    \entry{Navruz2016}{thesis}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=429e52b028bbfab71e175eee44732333}{%
+           family={Navruz},
+           familyi={N\bibinitperiod},
+           given={Bilgin},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Texas A{\&}M University}%
+      }
+      \strng{namehash}{429e52b028bbfab71e175eee44732333}
+      \strng{fullhash}{429e52b028bbfab71e175eee44732333}
+      \strng{bibnamehash}{429e52b028bbfab71e175eee44732333}
+      \strng{authorbibnamehash}{429e52b028bbfab71e175eee44732333}
+      \strng{authornamehash}{429e52b028bbfab71e175eee44732333}
+      \strng{authorfullhash}{429e52b028bbfab71e175eee44732333}
+      \field{sortinit}{N}
+      \field{sortinithash}{98cf339a479c0454fe09153a08675a15}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{The behaviors of robust weighted least squares estimation techniques for categorical/ordinal data in multilevel CFA models}}
+      \field{type}{phdthesis}
+      \field{year}{2016}
+      \field{pages}{1\bibrangedash 269}
+      \range{pages}{269}
+    \endentry
+    \entry{Stapleton2016}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=3d1d64d9940842a062f8888a301de4a3}{%
+           family={Stapleton},
+           familyi={S\bibinitperiod},
+           given={Laura\bibnamedelima M.},
+           giveni={L\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0ed96699d88cd428f686b4427f8af079}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Ji\bibnamedelima Seung},
+           giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=81e7485b2a44f35f3715b22b94df851c}{%
+           family={Hancock},
+           familyi={H\bibinitperiod},
+           given={Gregory\bibnamedelima R.},
+           giveni={G\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{46e587cb72d562781fa60131fa149e01}
+      \strng{fullhash}{f706c2406fcdfc15794dcbf455811071}
+      \strng{bibnamehash}{f706c2406fcdfc15794dcbf455811071}
+      \strng{authorbibnamehash}{f706c2406fcdfc15794dcbf455811071}
+      \strng{authornamehash}{46e587cb72d562781fa60131fa149e01}
+      \strng{authorfullhash}{f706c2406fcdfc15794dcbf455811071}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Educational and Behavioral Statistics}
+      \field{number}{5}
+      \field{title}{{Construct meaning in multilevel settings}}
+      \field{volume}{41}
+      \field{year}{2016}
+      \field{pages}{481\bibrangedash 520}
+      \range{pages}{40}
+      \verb{doi}
+      \verb 10.3102/1076998616646200
+      \endverb
+    \endentry
+    \entry{Yang2010}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=8b5f6f048c9bfc1da7d65ce97d9c7955}{%
+           family={Yang-Wallentin},
+           familyi={Y\bibinithyphendelim W\bibinitperiod},
+           given={Fan},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1f1aee4354599dea3ab95ecf7f798510}{%
+           family={J{ö}reskog},
+           familyi={J\bibinitperiod},
+           given={Karl\bibnamedelima G.},
+           giveni={K\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=82ec79161c60e4d6262d1fc2647c09e6}{%
+           family={Luo},
+           familyi={L\bibinitperiod},
+           given={Hao},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{37c79709cf589d4b414960bd9a971eab}
+      \strng{fullhash}{a7c791169129976ffe1579c598fb1c30}
+      \strng{bibnamehash}{a7c791169129976ffe1579c598fb1c30}
+      \strng{authorbibnamehash}{a7c791169129976ffe1579c598fb1c30}
+      \strng{authornamehash}{37c79709cf589d4b414960bd9a971eab}
+      \strng{authorfullhash}{a7c791169129976ffe1579c598fb1c30}
+      \field{sortinit}{Y}
+      \field{sortinithash}{6ae2ff5458ff901249c2745238c951b7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Structural Equation Modeling: A Multidisciplinary Journal}
+      \field{number}{3}
+      \field{title}{{Confirmatory factor analysis of ordinal variables with misspecified models}}
+      \field{volume}{17}
+      \field{year}{2010}
+      \field{pages}{392\bibrangedash 423}
+      \range{pages}{32}
+      \verb{doi}
+      \verb 10.1080/10705511.2010.489003
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
